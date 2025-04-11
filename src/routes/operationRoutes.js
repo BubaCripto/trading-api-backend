@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const operationController = require('../controllers/operationcontroller');
+const operationController = require('../controllers/operations/operationController');
 const { auth, authorize } = require('../middleware/auth');
 const checkOperationOwnership = require('../middleware/checkOperationOwnership');
 

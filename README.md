@@ -35,7 +35,7 @@ src/
 ## 📦 Instalação
 
 ```bash
-git clone https://seu-repo-aqui.git
+git clone https://github.com/BubaCripto/trading-api-backend.git
 cd trading-api
 npm install
 ```

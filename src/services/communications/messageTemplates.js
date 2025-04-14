@@ -26,13 +26,12 @@ function formatEventHistory(events) {
 }
 
 function formatMetrics(operation) {
-  //if (!operation.pnlPercentage) return '';
-
+  const metrics = operation.history || {};
   return `
 📊 Performance:
-- P&L: ${formatPercentage(operation.pnlPercentage)}
-- P&L Amount: ${formatPrice(operation.pnlAmount)}
-- Risk/Reward: ${operation.riskRewardRatio ? Number(operation.riskRewardRatio).toFixed(2) : 'N/A'}`;
+- P&L: ${formatPercentage(metrics.pnlPercentage)}
+- P&L Amount: ${formatPrice(metrics.pnlAmount)}
+- Risk/Reward: ${metrics.riskRewardRatio ? Number(metrics.riskRewardRatio).toFixed(2) : 'N/A'}`;
 }
 
 function formatBaseInfo(operation) {
@@ -55,6 +54,7 @@ function formatTradeDetails(operation) {
 function entrySignal(operation) {
   return `
 🚨 NOVA OPERAÇÃO ${getSignalColor(operation.signal)}
+
 ${formatBaseInfo(operation)}
 
 🎯 Alvos:
@@ -70,6 +70,7 @@ ${operation.description || 'Sem descrição'}
 function updateSignal(operation) {
   return `
 🔄 ATUALIZAÇÃO ${getSignalColor(operation.signal)}
+
 ${formatBaseInfo(operation)}
 
 📊 Status dos Alvos:
@@ -86,10 +87,11 @@ ${formatEventHistory(operation.history.events)}
 function stopReachedMessage(operation) {
   return `
 ⛔ STOP LOSS ATINGIDO ${getSignalColor(operation.signal)}
+
 ${formatBaseInfo(operation)}
 
-${formatMetrics(operation)}
 ${formatTradeDetails(operation)}
+${formatMetrics(operation)}
 
 ⏰ Histórico:
 ${formatEventHistory(operation.history.events)}
@@ -100,13 +102,14 @@ ${formatEventHistory(operation.history.events)}
 function closedManualMessage(operation) {
   return `
 🔒 FECHAMENTO MANUAL ${getSignalColor(operation.signal)}
+
 ${formatBaseInfo(operation)}
 
 📈 Alvos Definidos:
 ${formatTargetsList(operation.targets, operation.history)}
 
-${formatMetrics(operation)}
 ${formatTradeDetails(operation)}
+${formatMetrics(operation)}
 
 ⏰ Histórico:
 ${formatEventHistory(operation.history.events)}
@@ -117,6 +120,7 @@ ${formatEventHistory(operation.history.events)}
 function cancelledMessage(operation) {
   return `
 ⚠️ OPERAÇÃO CANCELADA ${getSignalColor(operation.signal)}
+
 ${formatBaseInfo(operation)}
 
 📈 Alvos Planejados:

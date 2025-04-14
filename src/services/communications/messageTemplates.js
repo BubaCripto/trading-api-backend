@@ -26,14 +26,13 @@ function formatEventHistory(events) {
 }
 
 function formatMetrics(operation) {
-  const metrics = operation.history || {};
-  if (!metrics.pnlPercentage) return '';
+  //if (!operation.pnlPercentage) return '';
 
   return `
 📊 Performance:
-- P&L: ${formatPercentage(metrics.pnlPercentage)}
-- P&L Amount: ${formatPrice(metrics.pnlAmount)}
-- Risk/Reward: ${metrics.riskRewardRatio ? Number(metrics.riskRewardRatio).toFixed(2) : 'N/A'}`;
+- P&L: ${formatPercentage(operation.pnlPercentage)}
+- P&L Amount: ${formatPrice(operation.pnlAmount)}
+- Risk/Reward: ${operation.riskRewardRatio ? Number(operation.riskRewardRatio).toFixed(2) : 'N/A'}`;
 }
 
 function formatBaseInfo(operation) {

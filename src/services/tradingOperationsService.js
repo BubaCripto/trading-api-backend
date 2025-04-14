@@ -12,12 +12,14 @@ class TradingOperationsService {
   calculateTradeMetrics(operation, exitPrice) {
     const isLong = operation.signal === 'LONG';
     const entryPrice = operation.history.entry || operation.entry;
+    const baseCapital = 1000; // Capital base fixo de $1000
 
     // Calcula P&L
     const priceDiff = exitPrice - entryPrice;
     const direction = isLong ? 1 : -1;
     const pnlPercentage = (direction * priceDiff / entryPrice) * 100 * operation.leverage;
-    const pnlAmount = (direction * priceDiff) * operation.leverage;
+    const leveragedCapital = baseCapital * operation.leverage;
+    const pnlAmount = (leveragedCapital * pnlPercentage) / 100;
 
     // Calcula Risk/Reward
     const risk = Math.abs(entryPrice - operation.stop);

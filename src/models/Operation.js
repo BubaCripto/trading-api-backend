@@ -67,6 +67,7 @@ const operationSchema = new mongoose.Schema({
   },
   history: {
     isOpen: { type: Boolean, default: false },
+    isNew: { type: Boolean, default: true },
     isClosed: { type: Boolean, default: false },
     isStop: { type: Boolean, default: false },
     stop: Boolean,

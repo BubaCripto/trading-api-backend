@@ -51,9 +51,25 @@ function formatTradeDetails(operation) {
 - Data/Hora: ${formatDate(operation.date)}`;
 }
 
-function entrySignal(operation) {
+function newSignal(operation) {
   return `
 🚨 NOVA OPERAÇÃO ${getSignalColor(operation.signal)}
+
+${formatBaseInfo(operation)}
+
+🎯 Alvos:
+${formatTargetsList(operation.targets, operation.history)}
+${formatTradeDetails(operation)}
+
+📝 Descrição:
+${operation.description || 'Sem descrição'}
+
+👤 Trader: ${operation.username || 'Anônimo'}`;
+}
+
+function entrySignal(operation) {
+  return `
+🚨 ENTRAMOS NA OPERAÇÃO ${getSignalColor(operation.signal)}
 
 ${formatBaseInfo(operation)}
 
@@ -133,6 +149,7 @@ ${formatTradeDetails(operation)}
 }
 
 module.exports = {
+  newSignal,
   entrySignal,
   updateSignal,
   stopReachedMessage,

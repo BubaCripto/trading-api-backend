@@ -5,6 +5,8 @@ class MessageFormatterService {
     const enrichedOperation = operation;
 
     switch (type) {
+      case 'NEW':
+        return messageTemplates.newSignal(enrichedOperation);
       case 'ENTRY':
         return messageTemplates.entrySignal(enrichedOperation);
       case 'TARGET_HIT':

@@ -104,8 +104,32 @@ class TradingOperationsService {
       }
     };
 
-    await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
-    await notificationService.notify('ENTRY', operation);
+    const updatedOperation = await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
+    await notificationService.notify('ENTRY', updatedOperation);
+    return true;
+  }
+
+  async processNew(operation) {
+    if (!operation.history.isNew) return false;
+
+    const updates = {
+      history: {
+        ...operation.history,
+        isNew: false,
+        events: [
+          ...(operation.history.events || []),
+          {
+            event: 'New',
+            price: 0,
+            timestamp: new Date(),
+            details: `new position`
+          }
+        ]
+      }
+    };
+
+    const updatedOperation = await Operation.findByIdAndUpdate(operation._id, updates, { new: false });
+    await notificationService.notify('NEW', updatedOperation);
     return true;
   }
 
@@ -168,8 +192,8 @@ class TradingOperationsService {
         };
       }
 
-      await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
-      await notificationService.notify('TARGET_HIT', operation);
+      const updatedOperation = await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
+      await notificationService.notify('TARGET_HIT', updatedOperation);
     }
   }
 
@@ -204,8 +228,8 @@ class TradingOperationsService {
       }
     };
 
-    await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
-    await notificationService.notify('STOP_LOSS', operation);
+    const updatedOperation = await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
+    await notificationService.notify('STOP_LOSS', updatedOperation);
     return true;
   }
 
@@ -255,8 +279,8 @@ class TradingOperationsService {
         }
       };
 
-      await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
-      await notificationService.notify('CANCELLED', operation);
+      const updatedOperation = await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
+      await notificationService.notify('CANCELLED', updatedOperation);
       return true;
     }
 
@@ -301,6 +325,7 @@ class TradingOperationsService {
         }
 
         const results = await Promise.all([
+          this.processNew(operation),
           this.processEntry(operation, currentPrice),
           this.processTargets(operation, currentPrice),
           this.processStopLoss(operation, currentPrice),
@@ -348,8 +373,8 @@ class TradingOperationsService {
       }
     };
 
-    await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
-    await notificationService.notify('MANUAL_CLOSE', operation);
+    const updatedOperation = await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
+    await notificationService.notify('MANUAL_CLOSE', updatedOperation);
     return true;
   }
 

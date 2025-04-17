@@ -24,6 +24,24 @@ const options = {
         },
       },
     },
+    tags: [
+      {
+        name: 'Users',
+        description: 'Gerenciamento de usuários e autenticação'
+      },
+      {
+        name: 'Operations',
+        description: 'Endpoints relacionados às operações de trading'
+      },
+      {
+        name: 'Communities',
+        description: 'Endpoints relacionados às comunidades'
+      },
+      {
+        name: 'Communications',
+        description: 'Gerenciamento de comunicações das comunidades'
+      }
+    ]
   },
   apis: ['./src/routes/*.js'], // Path to the API routes
 };

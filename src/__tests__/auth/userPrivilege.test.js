@@ -13,11 +13,11 @@ beforeAll(async () => {
   await User.deleteMany({});
 
   // Cria ADMIN
-  await request(app).post('/api/users').send({
+  await User.create({
     username: 'admin',
     email: 'admin@example.com',
     password: 'admin123',
-    role: 'ADMIN',
+    role: 'ADMIN'
   });
 
   // Login ADMIN

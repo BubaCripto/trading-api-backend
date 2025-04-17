@@ -1,0 +1,2486 @@
+[{
+  "_id": {
+    "$oid": "67c7514a0d2526d165f7a368"
+  },
+  "date": "2025-03-04T13:01:05.839Z",
+  "message_id": 2077,
+  "pair": "XRP",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 2.5082,
+  "entry2": 2.5282,
+  "stop": 2.2968,
+  "description": "XRP respeito as EMAs do 4h como um forte suporte https://www.tradingview.com/x/vJp3v7MM/",
+  "notes": "",
+  "targets": [
+    2.7196,
+    2.8253,
+    2.931,
+    3.0367
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 2.50766679567987,
+    "exit": 2.2941513955243
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67c751d20d2526d165f7a369"
+  },
+  "date": "2025-03-04T13:01:05.839Z",
+  "message_id": 2078,
+  "pair": "DOGE",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.2,
+  "entry2": 0.203,
+  "stop": 0.18261,
+  "description": "DOGE buscou região de suporte e pegou força e iniciando um rompimento das EMA 8 https://www.tradingview.com/x/2oWNeuqK/",
+  "notes": "",
+  "targets": [
+    0.21739,
+    0.22609,
+    0.23478,
+    0.24348
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 0.21739,
+        "date": "2025-03-06T05:21:18.172Z",
+        "status": "Target reached: $0.21739"
+      }
+    ],
+    "entry": 0.200712684048935,
+    "exit": 0.18228124233991
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67cb9410265d0b109c9dcbfe"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2088,
+  "pair": "BCH",
+  "signal": "SHORT",
+  "leverage": "3",
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": "388.5",
+  "entry2": "392",
+  "stop": "421.5",
+  "description": "BCH Perdendo EMAs em tempos gráficos menores e formando uma Order Block no 1h https://www.tradingview.com/x/21XVerDm/",
+  "notes": "",
+  "targets": [
+    375,
+    365,
+    360,
+    350,
+    339,
+    322,
+    306
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado Manualmente",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 375,
+        "date": "2025-03-09T10:11:57.241Z",
+        "status": "Target reached: $375"
+      },
+      {
+        "target": 365,
+        "date": "2025-03-09T16:32:13.899Z",
+        "status": "Target reached: $365"
+      },
+      {
+        "target": 360,
+        "date": "2025-03-09T23:05:01.116Z",
+        "status": "Target reached: $360"
+      },
+      {
+        "target": 350,
+        "date": "2025-03-10T14:57:03.302Z",
+        "status": "Target reached: $350"
+      },
+      {
+        "target": 339,
+        "date": "2025-03-10T18:54:49.365Z",
+        "status": "Target reached: $339"
+      },
+      {
+        "target": 322,
+        "date": "2025-03-11T00:36:06.341Z",
+        "status": "Target reached: $322"
+      }
+    ],
+    "entry": 390.400280125491,
+    "exit": 345.025107482871
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Closed",
+  "status_signal": "Closed manual"
+},
+{
+  "_id": {
+    "$oid": "67cb98b9265d0b109c9dcbff"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2089,
+  "pair": "LTC",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 110.5,
+  "entry2": 111.1,
+  "stop": 104.8,
+  "description": "LTC Iniciando recuperação em time frames menores, aguardar o rompimento da região da ENTRADA para validação do Trade https://www.tradingview.com/x/DDc1QQb7/",
+  "notes": "",
+  "targets": [
+    115.4,
+    118.9,
+    122.5,
+    128.7
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Operação cancelada",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": true,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": []
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Cancelled"
+},
+{
+  "_id": {
+    "$oid": "67cdc0cf265d0b109c9dcc00"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2095,
+  "pair": "OM",
+  "signal": "SHORT",
+  "leverage": "3",
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": "6.4146",
+  "entry2": "6.4186",
+  "stop": "6.844",
+  "description": "Ombro cabeça ombro no diário https://www.tradingview.com/x/y19L4OJk/\r\nOrder Block criada no 4h https://www.tradingview.com/x/gIzkJndK/",
+  "notes": "",
+  "targets": [
+    5.9852,
+    5.7705,
+    5.5558,
+    5.3411
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado Manualmente",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 5.9852,
+        "date": "2025-03-10T15:05:33.114Z",
+        "status": "Target reached: $5.9852"
+      }
+    ],
+    "entry": 6.414252129114938,
+    "exit": 6.585934338057893
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Closed",
+  "status_signal": "Closed manual"
+},
+{
+  "_id": {
+    "$oid": "67cdeeb9265d0b109c9dcc01"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2098,
+  "pair": "ALCH",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Alto",
+  "entry": 0.05751,
+  "entry2": 0.05791,
+  "stop": 0.05394,
+  "description": "Um trade arriscado devido a fraqueza do mercado, mas seguiremos o trade setup.\r\nEstocástico sobre-vendido no 4h e rompendo EMAs https://www.tradingview.com/x/SeH0IBRF/\r\n1H capturou liquidez e iniciou um rompimento ascendentes das EMAs https://www.tradingview.com/x/T5qPE54E/",
+  "notes": "",
+  "targets": [
+    0.06108,
+    0.06286,
+    0.06465,
+    0.06643
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "New",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": []
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master"
+},
+{
+  "_id": {
+    "$oid": "67ce3ab9265d0b109c9dcc02"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2102,
+  "pair": "ENA",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.4376,
+  "entry2": 0.4436,
+  "stop": 0.4062,
+  "description": "ENA buscou suporte em 0.5 de fibo e na EMA 80 do 4h, por mais que tenha uma Order Block a frente, pelo aumento de volume podemos ter um rompimento https://www.tradingview.com/x/nTT82E4H/",
+  "notes": "",
+  "targets": [
+    0.469,
+    0.4847,
+    0.5004,
+    0.5161
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 0.469,
+        "date": "2025-03-10T09:17:47.299Z",
+        "status": "Target reached: $0.469"
+      }
+    ],
+    "entry": 0.4385631481249716,
+    "exit": 0.4060941976362181
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67cf8199265d0b109c9dcc03"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2111,
+  "pair": "WIF",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.4289,
+  "entry2": 0.4339,
+  "stop": 0.4708,
+  "description": "WIF perdendo regiões de suporte desde o seu lançamento. Moeda extremamente fraca https://www.tradingview.com/x/5PC0S8qk/",
+  "notes": "",
+  "targets": [
+    0.387,
+    0.366,
+    0.3451,
+    0.3242
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 0.4284209876994585,
+    "exit": 0.470881104143948
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67cf8241265d0b109c9dcc04"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2113,
+  "pair": "LTC",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 87.7,
+  "entry2": 88.2,
+  "stop": 99.05,
+  "description": "LTC perdendo EMA 80 no semanal, até a próxima região de liquidez temos uma queda de -42% https://www.tradingview.com/x/h7lFekJr/",
+  "notes": "",
+  "targets": [
+    76.35,
+    70.68,
+    65,
+    59.33
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado Manualmente",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 87.4060066764201,
+    "exit": 92.8616422868129
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Closed",
+  "status_signal": "Closed manual"
+},
+{
+  "_id": {
+    "$oid": "67cf83dd265d0b109c9dcc05"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2115,
+  "pair": "AAVE",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 176.84,
+  "entry2": 177.84,
+  "stop": 187.42,
+  "description": "AAVE em um triângulo descendente perdendo a base https://www.tradingview.com/x/9AQ9Fk5y/",
+  "notes": "",
+  "targets": [
+    166.26,
+    160.97,
+    155.68,
+    150.39
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado Manualmente",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 166.26,
+        "date": "2025-03-12T14:46:58.861Z",
+        "status": "Target reached: $166.26"
+      },
+      {
+        "target": 160.97,
+        "date": "2025-03-13T19:25:33.154Z",
+        "status": "Target reached: $160.97"
+      }
+    ],
+    "entry": 176.738166293656,
+    "exit": 172.972875124417
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Closed",
+  "status_signal": "Closed manual"
+},
+{
+  "_id": {
+    "$oid": "67cf84e1265d0b109c9dcc06"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2118,
+  "pair": "SOL",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 115.23,
+  "entry2": 116.23,
+  "stop": 120.21,
+  "description": "SOL perdendo regiões de suporte no diário https://www.tradingview.com/x/3Yw66MCf/\r\nRecem Criando uma região de Order Block no 1h https://www.tradingview.com/x/bo37ms2l/",
+  "notes": "",
+  "targets": [
+    110.25,
+    107.76,
+    105.27,
+    102.78
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 114.691703463894,
+    "exit": 120.275314953926
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67d2324c265d0b109c9dcc07"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2124,
+  "pair": "XRP",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 2.238,
+  "entry2": 2.249,
+  "stop": 2.182,
+  "description": "XRP protegeu regiões de suporte no 4h e no diário https://www.tradingview.com/x/ZumDrtAA/ iniciando recuperação",
+  "notes": "",
+  "targets": [
+    2.294,
+    2.328,
+    2.365,
+    2.405
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar todos os alvos",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": true,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 2.294,
+        "date": "2025-03-13T12:18:32.284Z",
+        "status": "Target reached: $2.294"
+      },
+      {
+        "target": 2.328,
+        "date": "2025-03-13T13:22:47.417Z",
+        "status": "Target reached: $2.328"
+      },
+      {
+        "target": 2.365,
+        "date": "2025-03-14T15:06:53.065Z",
+        "status": "Target reached: $2.365"
+      },
+      {
+        "target": 2.405,
+        "date": "2025-03-15T02:53:53.389Z",
+        "status": "Target reached: $2.405"
+      }
+    ],
+    "entry": 2.24250263681319,
+    "exit": 2.40558363650151
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "all targets reaching"
+},
+{
+  "_id": {
+    "$oid": "67d5d36e265d0b109c9dcc08"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2135,
+  "pair": "BCH",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 345.2,
+  "entry2": 345.8,
+  "stop": 323.5,
+  "description": "BCH rompendo EMAs e rompendo uma cunha descendente no 4h https://www.tradingview.com/x/54BgejSk/",
+  "notes": "",
+  "targets": [
+    366.9,
+    377.8,
+    388.6,
+    399.4
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 345.35092630824,
+    "exit": 323.337447757798
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67d5d3fa265d0b109c9dcc09"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2137,
+  "pair": "BNB",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 611.2,
+  "entry2": 612.8,
+  "stop": 570.9,
+  "description": "BNB em um triângulo ascendente no 4h https://www.tradingview.com/x/hRzLkN5h/",
+  "notes": "",
+  "targets": [
+    651.5,
+    671.7,
+    691.8,
+    712
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 611.4057083978457,
+    "exit": 570.6353026134229
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67d5d47b265d0b109c9dcc0a"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2139,
+  "pair": "GALA",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.01704,
+  "entry2": 0.01734,
+  "stop": 0.01602,
+  "description": "GALA em um triãnguulo ascendente no 4h https://www.tradingview.com/x/r6tt1IGS/",
+  "notes": "",
+  "targets": [
+    0.01806,
+    0.01857,
+    0.01908,
+    0.01959
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 0.01806,
+        "date": "2025-03-24T06:08:52.337Z",
+        "status": "Target reached: $0.01806"
+      },
+      {
+        "target": 0.01857,
+        "date": "2025-03-24T14:18:54.397Z",
+        "status": "Target reached: $0.01857"
+      },
+      {
+        "target": 0.01908,
+        "date": "2025-03-26T10:49:47.308Z",
+        "status": "Target reached: $0.01908"
+      }
+    ],
+    "entry": 0.01707151031371809,
+    "exit": 0.01601812172190397
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67d774f7265d0b109c9dcc0b"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2141,
+  "pair": "ENA",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.3687,
+  "entry2": 0.3727,
+  "stop": 0.3344,
+  "description": "ENA protegeu em a região de suporte em 0.33 e rompendo EMA 8 no 4h https://www.tradingview.com/x/sixHCyTU/",
+  "notes": "",
+  "targets": [
+    0.403,
+    0.4202,
+    0.4373,
+    0.4545
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 0.403,
+        "date": "2025-03-24T13:32:55.030Z",
+        "status": "Target reached: $0.403"
+      },
+      {
+        "target": 0.4202,
+        "date": "2025-03-25T10:38:57.963Z",
+        "status": "Target reached: $0.4202"
+      },
+      {
+        "target": 0.4373,
+        "date": "2025-03-25T13:15:43.645Z",
+        "status": "Target reached: $0.4373"
+      }
+    ],
+    "entry": 0.3691597103302537,
+    "exit": 0.3342577819918429
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67d775b3265d0b109c9dcc0c"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2143,
+  "pair": "DOGE",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.17126,
+  "entry2": 0.17226,
+  "stop": 0.16276,
+  "description": "DOGE em um triângulo ascendente no 4h validando mais uma vez a base como suporte https://www.tradingview.com/x/EGvDWAjB/",
+  "notes": "",
+  "targets": [
+    0.17976,
+    0.18401,
+    0.18826,
+    0.19251
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar todos os alvos",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": true,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 0.17976,
+        "date": "2025-03-24T14:11:25.403Z",
+        "status": "Target reached: $0.17976"
+      },
+      {
+        "target": 0.18401,
+        "date": "2025-03-24T14:19:24.393Z",
+        "status": "Target reached: $0.18401"
+      },
+      {
+        "target": 0.18826,
+        "date": "2025-03-24T19:11:55.933Z",
+        "status": "Target reached: $0.18826"
+      },
+      {
+        "target": 0.19251,
+        "date": "2025-03-25T15:01:59.133Z",
+        "status": "Target reached: $0.19251"
+      }
+    ],
+    "entry": 0.171267006522235,
+    "exit": 0.192943392514494
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "all targets reaching"
+},
+{
+  "_id": {
+    "$oid": "67da10bc265d0b109c9dcc0d"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2145,
+  "pair": "PEPE",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.00000731,
+  "entry2": 0.00000751,
+  "stop": 0.00000646,
+  "description": "PEPE formou um OCOi no 4h e 1D https://www.tradingview.com/x/4KiXAGji/",
+  "notes": "",
+  "targets": [
+    0.00000816,
+    0.00000858,
+    0.00000901,
+    0.00000944
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 0.00000816,
+        "date": "2025-03-24T19:21:25.954Z",
+        "status": "Target reached: $0.00000816"
+      },
+      {
+        "target": 0.00000858,
+        "date": "2025-03-26T07:29:31.924Z",
+        "status": "Target reached: $0.00000858"
+      },
+      {
+        "target": 0.00000901,
+        "date": "2025-03-26T10:28:32.558Z",
+        "status": "Target reached: $0.00000901"
+      }
+    ],
+    "entry": 0.00000729286200082859,
+    "exit": 0.000006458637316052261
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67da14dc265d0b109c9dcc0e"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2147,
+  "pair": "LINK",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 14.014,
+  "entry2": 14.214,
+  "stop": 13.353,
+  "description": "LINK em formação de um Triângulo Ascendente no 4h https://www.tradingview.com/x/vyzcr3tM/",
+  "notes": "",
+  "targets": [
+    14.675,
+    15.005,
+    15.336,
+    15.666
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar todos os alvos",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": true,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 14.675,
+        "date": "2025-03-19T15:50:16.331Z",
+        "status": "Target reached: $14.675"
+      },
+      {
+        "target": 15.005,
+        "date": "2025-03-19T23:41:16.905Z",
+        "status": "Target reached: $15.005"
+      },
+      {
+        "target": 15.336,
+        "date": "2025-03-24T14:18:41.559Z",
+        "status": "Target reached: $15.336"
+      },
+      {
+        "target": 15.666,
+        "date": "2025-03-26T05:44:16.738Z",
+        "status": "Target reached: $15.666"
+      }
+    ],
+    "entry": 14.0141627444658,
+    "exit": 15.6790077430003
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "all targets reaching"
+},
+{
+  "_id": {
+    "$oid": "67de172e265d0b109c9dcc0f"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2152,
+  "pair": "AAVE",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 179.44,
+  "entry2": 179.84,
+  "stop": 164.7,
+  "description": "AAVE em um triângulo ascendente no 4h https://www.tradingview.com/x/xfq5ORB6/",
+  "notes": "",
+  "targets": [
+    194.18,
+    201.55,
+    208.92,
+    216.29
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 194.18,
+        "date": "2025-03-24T08:54:22.902Z",
+        "status": "Target reached: $194.18"
+      }
+    ],
+    "entry": 179.388144147364,
+    "exit": 164.558008888394
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67e0215c265d0b109c9dcc10"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2154,
+  "pair": "XRP",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 2.4095,
+  "entry2": 2.4195,
+  "stop": 2.3637,
+  "description": "Estocástico sobrevendido no 4h e apoio da EMA 80 https://www.tradingview.com/x/Heh9czte",
+  "notes": "",
+  "targets": [
+    2.4553,
+    2.4782,
+    2.5011,
+    2.524
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 2.4553,
+        "date": "2025-03-24T00:38:06.815Z",
+        "status": "Target reached: $2.4553"
+      },
+      {
+        "target": 2.4782,
+        "date": "2025-03-24T14:14:54.386Z",
+        "status": "Target reached: $2.4782"
+      },
+      {
+        "target": 2.5011,
+        "date": "2025-03-24T14:18:24.397Z",
+        "status": "Target reached: $2.5011"
+      }
+    ],
+    "entry": 2.41230189609295,
+    "exit": 2.36242933825221
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67e34849265d0b109c9dcc11"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2171,
+  "pair": "LTC",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 94.76,
+  "entry2": 95.36,
+  "stop": 90.51,
+  "description": "LTC está num padrão de triângulo ascendente, suportes e resistências bem respeitados https://www.tradingview.com/x/ikKVNFAx/",
+  "notes": "",
+  "targets": [
+    99.01,
+    101.14,
+    103.26,
+    105.39
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 94.6908644790542,
+    "exit": 90.4774997953474
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67e34997265d0b109c9dcc12"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2173,
+  "pair": "CRO",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Alto",
+  "entry": 0.11162,
+  "entry2": 0.11262,
+  "stop": 0.10074,
+  "description": "CRO rompendo resistencias significativas, trade arriscado https://www.tradingview.com/x/qaVlKCdk/",
+  "notes": "",
+  "targets": [
+    0.1225,
+    0.12794,
+    0.13338,
+    0.13882
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 0.111793516294131,
+    "exit": 0.100712244359702
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67e5fe24265d0b109c9dcc13"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2181,
+  "pair": "UNI",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 6.804,
+  "entry2": 6.904,
+  "stop": 6.573,
+  "description": "Estocastico sobre-vendido + rompimentos das EMAs no 4h https://www.tradingview.com/x/P01i8sup/",
+  "notes": "",
+  "targets": [
+    7.035,
+    7.151,
+    7.266,
+    7.381
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 6.80900950705229,
+    "exit": 6.54030534233566
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67e5fed1265d0b109c9dcc14"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2183,
+  "pair": "TIA",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 3.775,
+  "entry2": 3.875,
+  "stop": 3.462,
+  "description": "Padrão triângulo ascendente no 4h https://www.tradingview.com/x/kOF7LK7U/",
+  "notes": "",
+  "targets": [
+    4.088,
+    4.244,
+    4.401,
+    4.557
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 3.78347601346502,
+    "exit": 3.45466586274836
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67e9e712265d0b109c9dcc15"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2190,
+  "pair": "LAYER",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 1.448,
+  "entry2": 1.4552,
+  "stop": 1.3456,
+  "description": "LAYER em forte tendência de alta, esperando um pullback para continuação https://www.tradingview.com/x/PNN40zAa/",
+  "notes": "",
+  "targets": [
+    1.5475,
+    1.6211,
+    1.6947,
+    1.7683
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 1.449656906525136,
+    "exit": 1.344878276787113
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67e9e874265d0b109c9dcc16"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2192,
+  "pair": "VINE",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.033,
+  "entry2": 0.03316,
+  "stop": 0.0294,
+  "description": "Possível squeeze armado se romper a resistência imediata em $0.0346 https://www.tradingview.com/x/CUxy5Rf5/",
+  "notes": "",
+  "targets": [
+    0.0366,
+    0.0387,
+    0.0408,
+    0.0429
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar todos os alvos",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": true,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 0.0366,
+        "date": "2025-03-31T04:38:26.438Z",
+        "status": "Target reached: $0.0366"
+      },
+      {
+        "target": 0.0387,
+        "date": "2025-03-31T04:45:26.510Z",
+        "status": "Target reached: $0.0387"
+      },
+      {
+        "target": 0.0408,
+        "date": "2025-03-31T04:47:41.449Z",
+        "status": "Target reached: $0.0408"
+      },
+      {
+        "target": 0.0429,
+        "date": "2025-03-31T09:52:26.944Z",
+        "status": "Target reached: $0.0429"
+      }
+    ],
+    "entry": 0.03290680320553366,
+    "exit": 0.04317974445619809
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "all targets reaching"
+},
+{
+  "_id": {
+    "$oid": "67eb3fb3265d0b109c9dcc17"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2199,
+  "pair": "PNUT",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.1833,
+  "entry2": 0.1842,
+  "stop": 0.1746,
+  "description": "Padrão de equilibrio no 4h https://www.tradingview.com/x/FF2zD7Vy/",
+  "notes": "",
+  "targets": [
+    0.192,
+    0.1963,
+    0.2005,
+    0.2047
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 0.1828192005349633,
+    "exit": 0.1742504823971754
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67ec52f4265d0b109c9dcc18"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2202,
+  "pair": "ETH",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 1909,
+  "entry2": 1918.55,
+  "stop": 1869.6,
+  "description": "Candle no diário demonstrando força compradora e tentando superar a EMA 8 https://www.tradingview.com/x/EvpNpObz/",
+  "notes": "",
+  "targets": [
+    1948.4,
+    1968.15,
+    1987.9,
+    2007.65
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 1912.48243183752,
+    "exit": 1865.07191516696
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67ec5424265d0b109c9dcc19"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2204,
+  "pair": "BTC",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 85240,
+  "entry2": 85666,
+  "stop": 82460,
+  "description": "BTC 4h formandou um OCOi e está superando as EMAs https://www.tradingview.com/x/ZiwAeQ4d/",
+  "notes": "",
+  "targets": [
+    88015,
+    89660,
+    91310,
+    92960
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 88015,
+        "date": "2025-04-02T20:16:38.545Z",
+        "status": "Target reached: $88015"
+      }
+    ],
+    "entry": 85229.8227780335,
+    "exit": 82410.7507345031
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67ec567e265d0b109c9dcc1a"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2206,
+  "pair": "SUI",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 2.422,
+  "entry2": 2.4341,
+  "stop": 2.292,
+  "description": "SUI retomando alta após o rompimento de uma cunha descendente https://www.tradingview.com/x/auPjh4Pt/",
+  "notes": "",
+  "targets": [
+    2.552,
+    2.619,
+    2.684,
+    2.75
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 2.43193080055838,
+    "exit": 2.28824009392874
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67ef2652265d0b109c9dcc1b"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2214,
+  "pair": "OM",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 6.406,
+  "entry2": 6.438,
+  "stop": 6.228,
+  "description": "Triângulo ascendente inicjando rompimento no 1h https://www.tradingview.com/x/OIT7u2EH/",
+  "notes": "",
+  "targets": [
+    6.584,
+    6.74,
+    6.896,
+    7.053
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 6.437638268936097,
+    "exit": 6.226812496693161
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67ef2a3c265d0b109c9dcc1c"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2216,
+  "pair": "CRV",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.525,
+  "entry2": 0.528,
+  "stop": 0.489,
+  "description": "Suporte bem validado na EMA 80 4h + padrão de equilibrio no 1D https://www.tradingview.com/x/jLuoCtcN/",
+  "notes": "",
+  "targets": [
+    0.561,
+    0.58,
+    0.597,
+    0.615
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 0.525454970559755,
+    "exit": 0.488822882548109
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67f16756265d0b109c9dcc1d"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2220,
+  "pair": "AVAX",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 17.897,
+  "entry2": 17.986,
+  "stop": 19.146,
+  "description": "AVAX em forte tendência de baixa, abaixo de todas as EMAs e perdendo zonas de suporte https://www.tradingview.com/x/W2mb1EeY/",
+  "notes": "",
+  "targets": [
+    16.64,
+    15.38,
+    14.13,
+    12.88
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 16.64,
+        "date": "2025-04-06T18:01:27.769Z",
+        "status": "Target reached: $16.64"
+      },
+      {
+        "target": 15.38,
+        "date": "2025-04-07T06:27:59.276Z",
+        "status": "Target reached: $15.38"
+      }
+    ],
+    "entry": 17.9013305453747,
+    "exit": 19.1510300897074
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67f16853265d0b109c9dcc1e"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2222,
+  "pair": "AUCTION",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 14.557,
+  "entry2": 14.63,
+  "stop": 13.55,
+  "description": "Reversão do movimento baixista iniciado, rompimento da EMA 8 e 123 de compra no 1D https://www.tradingview.com/x/qSCLbJmj/",
+  "notes": "",
+  "targets": [
+    15.56,
+    16.56,
+    17.56,
+    18.55
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 15.56,
+        "date": "2025-04-06T00:30:11.513Z",
+        "status": "Target reached: $15.56"
+      },
+      {
+        "target": 16.56,
+        "date": "2025-04-06T02:01:09.898Z",
+        "status": "Target reached: $16.56"
+      }
+    ],
+    "entry": 14.5914643912406,
+    "exit": 13.3967122355509
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67f32b10265d0b109c9dcc1f"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2229,
+  "pair": "OM",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 6.08,
+  "entry2": 6.01,
+  "stop": 5.82,
+  "description": "Forte recuperação após forte queda, rompimentos das EMAs em timeframes menores https://www.tradingview.com/x/RMOdrAEy/",
+  "notes": "",
+  "targets": [
+    6.34,
+    6.52,
+    6.7,
+    6.88
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 6.10507452567225,
+    "exit": 5.811954765476642
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67f471af265d0b109c9dcc20"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2233,
+  "pair": "POL",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.175,
+  "entry2": 0.173,
+  "stop": 0.1642,
+  "description": "Recuperação em V + reversão das EMAs https://www.tradingview.com/x/FhAHMrZd/",
+  "notes": "",
+  "targets": [
+    0.1858,
+    0.1966,
+    0.2074,
+    0.2182
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 0.1750208502363217,
+    "exit": 0.1641915797842
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67f53137265d0b109c9dcc21"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2235,
+  "pair": "XRP",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 1.951,
+  "entry2": 1.941,
+  "stop": 1.862,
+  "description": "Estocástico sobrevendido e recuperação em V e rompimento das EMAs sinalizando fundo https://www.tradingview.com/x/J5UnaTzc/",
+  "notes": "",
+  "targets": [
+    2.04,
+    2.129,
+    2.218,
+    2.307
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 1.94325258635598,
+    "exit": 1.86187835445163
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67f533f3265d0b109c9dcc22"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2237,
+  "pair": "BCH",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 283,
+  "entry2": 281.6,
+  "stop": 268.3,
+  "description": "Sinais de fundo bem claros em BCH, Estocástico sobrevendido, rompimentos das EMAs https://www.tradingview.com/x/VP8SwKVE/",
+  "notes": "",
+  "targets": [
+    297.7,
+    312.4,
+    327.1,
+    341.8
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 282.766967046855,
+    "exit": 268.048617235578
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67f535f3265d0b109c9dcc23"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2239,
+  "pair": "SUI",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 2.054,
+  "entry2": 2.044,
+  "stop": 1.935,
+  "description": "Forte candle de ignição no 4H rompendo sequência de baixas https://www.tradingview.com/x/dDkiiu1V/",
+  "notes": "",
+  "targets": [
+    2.173,
+    2.292,
+    2.411,
+    2.53
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 2.04411360215888,
+    "exit": 1.93376163910154
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67f6d651265d0b109c9dcc24"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2245,
+  "pair": "BTC",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 82269,
+  "entry2": 81857,
+  "stop": 78350,
+  "description": "Bitcoin marcou um fundo duplo no 4h e realizou uma nova captura de liquidez em 75k https://www.tradingview.com/x/ngNwCoWa/",
+  "notes": "",
+  "targets": [
+    86188,
+    90107,
+    94026,
+    97945,
+    99450
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Alvos alcançados",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [
+      {
+        "target": 86188,
+        "date": "2025-04-15T13:47:21.714Z",
+        "status": "Target reached: $86188"
+      }
+    ],
+    "entry": 82144.9365975903,
+    "exit": 86214.4477349096
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open",
+  "status_signal": "Targets"
+},
+{
+  "_id": {
+    "$oid": "67f6d7ff265d0b109c9dcc25"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2247,
+  "pair": "OM",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 6.512,
+  "entry2": 6.479,
+  "stop": 6.178,
+  "description": "OM fez um grande pivot de alta no 4h além da captura de liquidez https://www.tradingview.com/x/sWyXQlLj/",
+  "notes": "",
+  "targets": [
+    6.846,
+    7.18,
+    7.514,
+    7.848
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Operação cancelada",
+    "isOpen": false,
+    "stop": false,
+    "isCancelled": true,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": []
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Cancelled"
+},
+{
+  "_id": {
+    "$oid": "67f6d8f1265d0b109c9dcc26"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2248,
+  "pair": "BNB",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 579.5,
+  "entry2": 568,
+  "stop": 532,
+  "description": "BNB fez um pivot de alta no 4h apos captura de liquidez https://www.tradingview.com/x/9GZ8onyP/",
+  "notes": "",
+  "targets": [
+    608,
+    632,
+    658,
+    683,
+    710
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Aberta",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [],
+    "entry": 579.7439183611
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open"
+},
+{
+  "_id": {
+    "$oid": "67f864d8265d0b109c9dcc27"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2251,
+  "pair": "FARTCOIN",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.765,
+  "entry2": 0.735,
+  "stop": 0.692,
+  "description": "Após forte alta FARTCOIN fez um pullback e validando a EMA 8 como suporte no 4h além de corrigir até 0,382 de fibonacci https://www.tradingview.com/x/waUEkXSH/",
+  "notes": "",
+  "targets": [
+    0.82,
+    0.92,
+    1.03,
+    1.12
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Alvos alcançados",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [
+      {
+        "target": 0.82,
+        "date": "2025-04-11T02:24:01.612Z",
+        "status": "Target reached: $0.82"
+      },
+      {
+        "target": 0.92,
+        "date": "2025-04-11T10:36:33.610Z",
+        "status": "Target reached: $0.92"
+      }
+    ],
+    "entry": 0.7672,
+    "exit": 0.9228
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open",
+  "status_signal": "Targets"
+},
+{
+  "_id": {
+    "$oid": "67f86817265d0b109c9dcc28"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2253,
+  "pair": "ADA",
+  "signal": "SHORT",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.61,
+  "entry2": 0.625,
+  "stop": 0.655,
+  "description": "Estocástico cruzando para baixo, EMA 80 e OB como resistência imediata https://www.tradingview.com/x/5QVbQj95/",
+  "notes": "",
+  "targets": [
+    0.578,
+    0.55,
+    0.51,
+    0.48
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 0.607570737493627,
+    "exit": 0.655710458724509
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "67f9868c265d0b109c9dcc29"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2258,
+  "pair": "SUI",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 2.235,
+  "entry2": 2.2462,
+  "stop": 2.1487,
+  "description": "Estocástico com cruzamento positivo no diário com rompimento da EMA 8 https://www.tradingview.com/x/2rSByAcL/",
+  "notes": "",
+  "targets": [
+    2.3213,
+    2.4076,
+    2.4939,
+    2.5802
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Fechado depois de alcançar alvos",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": true,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [
+      {
+        "target": 2.3213,
+        "date": "2025-04-12T14:24:39.630Z",
+        "status": "Target reached: $2.3213"
+      },
+      {
+        "target": 2.4076,
+        "date": "2025-04-13T03:53:56.968Z",
+        "status": "Target reached: $2.4076"
+      }
+    ],
+    "entry": 2.23438240301428,
+    "exit": 2.14759506332613
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "stop with targets"
+},
+{
+  "_id": {
+    "$oid": "67f98750265d0b109c9dcc2a"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2260,
+  "pair": "AAVE",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 138.32,
+  "entry2": 139.01,
+  "stop": 129.58,
+  "description": "Por mais que AAVE ainda não tenha formado um rompimento da EMA 8 no diário, podemos antecipar essa forte movimentação de alta levando em consideração o cruzamento positivo do estocástico e também a forte captura de liquidez https://www.tradingview.com/x/B3ySzFuB/",
+  "notes": "",
+  "targets": [
+    147.06,
+    155.8,
+    164.54,
+    173.28,
+    177.5
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Alvos alcançados",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [
+      {
+        "target": 147.06,
+        "date": "2025-04-12T14:33:24.710Z",
+        "status": "Target reached: $147.06"
+      }
+    ],
+    "entry": 138.357428843895,
+    "exit": 147.165841633242
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open",
+  "status_signal": "Targets"
+},
+{
+  "_id": {
+    "$oid": "67f98865265d0b109c9dcc2b"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2262,
+  "pair": "SOL",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 122.04,
+  "entry2": 122.65,
+  "stop": 108.38,
+  "description": "SOL em forte recuperação no diário, estocástico com cruzamento positivo e rompimento ascendente da EMA 8 https://www.tradingview.com/x/1nnEO23p/",
+  "notes": "",
+  "targets": [
+    135.7,
+    142.53,
+    149.36,
+    156.19,
+    165.75
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Alvos alcançados",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": true,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [
+      {
+        "target": 135.7,
+        "date": "2025-04-14T02:34:45.464Z",
+        "status": "Target reached: $135.7"
+      }
+    ],
+    "entry": 122.556595638109,
+    "exit": 135.849030729761
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open",
+  "status_signal": "Targets"
+},
+{
+  "_id": {
+    "$oid": "67f98a2c265d0b109c9dcc2c"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2264,
+  "pair": "LTC",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 77,
+  "entry2": 77.38,
+  "stop": 71.1,
+  "description": "LTC fez uma excelente captura de liquidez em suporte fortes e agora está iniciando uma recuperação no gráfico diário após rompimento da EMA 8 https://www.tradingview.com/x/PArRxFZ2/",
+  "notes": "",
+  "targets": [
+    82.9,
+    85.85,
+    88.8,
+    91.75,
+    96.55
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Aberta",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [],
+    "entry": 76.678471883711
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open"
+},
+{
+  "_id": {
+    "$oid": "67fc677f265d0b109c9dcc2d"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2270,
+  "pair": "BCH",
+  "signal": "LONG",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 353.8,
+  "entry2": 355.57,
+  "stop": 311.1,
+  "description": "BCH rompendo EMAs no diário e ensaiando um cruzamento ascendente https://www.tradingview.com/x/ICClkNtK/",
+  "notes": "",
+  "targets": [
+    396.5,
+    417.9,
+    439.3,
+    460.7,
+    478.5
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Aberta",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [],
+    "entry": 355.126047981147
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open"
+},
+{
+  "_id": {
+    "$oid": "67fc68d3265d0b109c9dcc2e"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2272,
+  "pair": "WIF",
+  "signal": "LONG",
+  "leverage": 5,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.4683,
+  "entry2": 0.4707,
+  "stop": 0.4242,
+  "description": "Após diversos toques na OB, WIF está ganhando força para um rompimento ascendente https://www.tradingview.com/x/GqHYLvxK/",
+  "notes": "",
+  "targets": [
+    0.5124,
+    0.5345,
+    0.5566,
+    0.5787,
+    0.6455
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Stop Alcançado",
+    "isOpen": false,
+    "stop": true,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": true,
+    "targets": [],
+    "entry": 0.469872523687619,
+    "exit": 0.424176949344454
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": 2,
+  "status_signal": "Stop"
+},
+{
+  "_id": {
+    "$oid": "68000852265d0b109c9dcc2f"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2278,
+  "pair": "ONDO",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.8195,
+  "entry2": 0.8236,
+  "stop": 0.8837,
+  "description": "ONDO sentindo a resistência de uma grande OrderBlock no 4h/1D e perdendo as EMAs https://www.tradingview.com/x/V9luDsew/",
+  "notes": "",
+  "targets": [
+    0.755,
+    0.72,
+    0.69,
+    0.663
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Aberta",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [],
+    "entry": 0.822480788363546
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open"
+},
+{
+  "_id": {
+    "$oid": "68000916265d0b109c9dcc30"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2280,
+  "pair": "ADA",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.6078,
+  "entry2": 0.6108,
+  "stop": 0.679,
+  "description": "ADA perdendo EMAs e sentindo forte resistência em uma OrderBlock no 4h https://www.tradingview.com/x/V3VJl66O/",
+  "notes": "",
+  "targets": [
+    0.537,
+    0.501,
+    0.4685,
+    0.4375
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Aberta",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [],
+    "entry": 0.607989479569667
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open"
+},
+{
+  "_id": {
+    "$oid": "680009e5265d0b109c9dcc31"
+  },
+  "date": "2025-03-07T16:11:17.151Z",
+  "message_id": 2282,
+  "pair": "ENA",
+  "signal": "SHORT",
+  "leverage": 3,
+  "strategy": "Swing",
+  "risk": "Moderado",
+  "entry": 0.2687,
+  "entry2": 0.27,
+  "stop": 0.3132,
+  "description": "ENA em tebbdência de baixa em todos os timeframes, sentindo resistências nas orderblock e perdendo EMAs https://www.tradingview.com/x/xBIhBGRP/",
+  "notes": "",
+  "targets": [
+    0.2243,
+    0.2005,
+    0.1767,
+    0.153
+  ],
+  "history": {
+    "targetsReachedDetails": [],
+    "status": "Aberta",
+    "isOpen": true,
+    "stop": false,
+    "isCancelled": false,
+    "stopWithTargets": false,
+    "targetsReached": false,
+    "allTargetsReached": false,
+    "isClosed": false,
+    "targets": [],
+    "entry": 0.2696179215456087
+  },
+  "userId": "6757510b5bb84c2977dec9d4",
+  "username": "Trader Master",
+  "status": "Open"
+}]

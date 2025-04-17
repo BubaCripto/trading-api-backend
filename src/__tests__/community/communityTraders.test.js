@@ -13,12 +13,13 @@ beforeAll(async () => {
   await Community.deleteMany({});
 
   // Criar ADMIN
-  await request(app).post('/api/users').send({
+  const adminUser = new User({
     username: 'adminUser',
     email: 'admin@test.com',
     password: 'adminpass',
     role: 'ADMIN'
   });
+  await adminUser.save();
 
   const adminLogin = await request(app).post('/api/users/login').send({
     email: 'admin@test.com',

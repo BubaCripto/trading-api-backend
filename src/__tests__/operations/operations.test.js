@@ -15,7 +15,7 @@ beforeAll(async () => {
 
   traderEmail = `trader_${Date.now()}@example.com`;
 
-  await request(app).post('/api/users').send({
+  await User.create({
     username: 'traderuser',
     email: traderEmail,
     password: 'password123',

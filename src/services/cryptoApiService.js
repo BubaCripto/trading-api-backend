@@ -8,7 +8,7 @@ class CryptoApiService {
     this.apiKeys = process.env.CRYPTO_API_KEYS.split(',');
     this.currentKeyIndex = 0;
     this.baseUrl = process.env.CRYPTO_API_BASE_URL;
-    this.cache = new NodeCache({ stdTTL: 15 }); // 1 minuto de cache
+    this.cache = new NodeCache({ stdTTL: 15 }); // 15 segundos de cache
 
     logger.info(`🔑 CryptoAPI Service iniciado com ${this.apiKeys.length} chaves`);
   }

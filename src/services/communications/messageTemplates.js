@@ -53,7 +53,7 @@ function formatTradeDetails(operation) {
 
 function newSignal(operation) {
   return `
-🚨 NOVA OPERAÇÃO ${getSignalColor(operation.signal)}
+🚨 NOVA OPERAÇÃO 🚨
 
 ${formatBaseInfo(operation)}
 
@@ -69,7 +69,7 @@ ${operation.description || 'Sem descrição'}
 
 function entrySignal(operation) {
   return `
-🚨 ENTRAMOS NA OPERAÇÃO ${getSignalColor(operation.signal)}
+🚨 ENTRAMOS NA OPERAÇÃO 🚨
 
 ${formatBaseInfo(operation)}
 
@@ -85,7 +85,7 @@ ${operation.description || 'Sem descrição'}
 
 function updateSignal(operation) {
   return `
-🔄 ATUALIZAÇÃO ${getSignalColor(operation.signal)}
+🔄 ATUALIZAÇÃO 🔄
 
 ${formatBaseInfo(operation)}
 
@@ -102,7 +102,7 @@ ${formatEventHistory(operation.history.events)}
 
 function stopReachedMessage(operation) {
   return `
-⛔ STOP LOSS ATINGIDO ${getSignalColor(operation.signal)}
+⛔ STOP LOSS ATINGIDO ⛔
 
 ${formatBaseInfo(operation)}
 
@@ -117,7 +117,7 @@ ${formatEventHistory(operation.history.events)}
 
 function closedManualMessage(operation) {
   return `
-🔒 FECHAMENTO MANUAL ${getSignalColor(operation.signal)}
+🔒 FECHAMENTO MANUAL 🔒
 
 ${formatBaseInfo(operation)}
 
@@ -135,7 +135,7 @@ ${formatEventHistory(operation.history.events)}
 
 function cancelledMessage(operation) {
   return `
-⚠️ OPERAÇÃO CANCELADA ${getSignalColor(operation.signal)}
+⚠️ OPERAÇÃO CANCELADA ⚠️
 
 ${formatBaseInfo(operation)}
 

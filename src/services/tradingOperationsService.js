@@ -91,6 +91,8 @@ class TradingOperationsService {
         ...operation.history,
         isOpen: true,
         entry: currentPrice,
+        inNew:false,
+        isOpen: true,
         entryDate: new Date(),
         events: [
           ...(operation.history.events || []),

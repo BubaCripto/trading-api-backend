@@ -11,12 +11,13 @@ beforeAll(async () => {
   await User.deleteMany({});
   await Community.deleteMany({});
 
-  await request(app).post('/api/users').send({
+  const adminUser = new User({
     username: 'adminUser',
     email: 'admin@example.com',
     password: 'adminpass',
     role: 'ADMIN'
   });
+  await adminUser.save();
 
   const login = await request(app).post('/api/users/login').send({
     email: 'admin@example.com',

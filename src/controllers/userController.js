@@ -17,7 +17,13 @@ const userController = {
         });
       }
 
-      const user = new User({ username, email, password, role });
+      if (role && role === 'ADMIN') {
+        return res.status(403).json({
+          message: 'Não é permitido criar usuário com role ADMIN'
+        });
+      }
+
+      const user = new User({ username, email, password, role: role || 'TRADER' });
       await user.save();
 
       const userResponse = user.toObject();
@@ -59,10 +65,17 @@ const userController = {
   // Get user by ID
   async getUserById(req, res) {
     try {
-      const user = await User.findById(req.params.id, '-password');
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+      const targetId = req.params.id;
+  
+      if (req.user.role !== 'ADMIN' && req.user._id.toString() !== targetId) {
+        return res.status(403).json({ message: 'Acesso negado' });
       }
+  
+      const user = await User.findById(targetId, '-password');
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+  
       res.json(user);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -73,10 +86,32 @@ const userController = {
   async updateUser(req, res) {
     try {
       const { username, email, password, role } = req.body;
+      const userId = req.params.id;
 
+      // Verificar se o usuário existe
+      const existingUserCheck = await User.findById(userId);
+      if (!existingUserCheck) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      // Verificar permissão
+      if (req.user.role !== 'ADMIN' && req.user._id.toString() !== userId) {
+        return res.status(403).json({ message: 'Acesso negado' });
+      }
+      // Impedir alteração de role ou email por não-admins
+      if (req.body.role && req.user.role !== 'ADMIN') {
+        return res.status(403).json({ message: 'Não autorizado a alterar a role' });
+      }
+      if (req.body.email && req.user.role !== 'ADMIN') {
+        return res.status(403).json({ message: 'Não autorizado a alterar o email' });
+      }
+
+
+      // Validar dados de atualização
+      const updateData = {};
       if (username || email) {
         const existingUser = await User.findOne({
-          _id: { $ne: req.params.id },
+          _id: { $ne: userId },
           $or: [
             { email: email || '' },
             { username: username || '' }
@@ -85,31 +120,38 @@ const userController = {
 
         if (existingUser) {
           return res.status(400).json({
-            message: 'Username or email already exists'
+            message: 'Username ou email já existe'
           });
         }
+
+        if (username) updateData.username = username;
+        if (email) updateData.email = email.toLowerCase();
       }
 
-      const updateData = { username, email };
-      if (password) updateData.password = password;
+      // Atualizar senha com hash
+      if (password) {
+        updateData.password = password;
+      }
 
+      // Apenas admin pode atualizar role
       if (req.user.role === 'ADMIN' && role) {
+        const validRoles = ['TRADER', 'USER', 'COMMUNITY'];
+        if (!validRoles.includes(role)) {
+          return res.status(400).json({ message: 'Role inválida' });
+        }
         updateData.role = role;
       }
 
+      // Atualizar usuário
       const user = await User.findByIdAndUpdate(
-        req.params.id,
+        userId,
         updateData,
         { new: true, runValidators: true }
       ).select('-password');
 
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-
       res.json(user);
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      res.status(500).json({ message: 'Erro ao atualizar usuário' });
     }
   },
 

@@ -75,8 +75,9 @@ describe('🛡️ Escalonamento de Privilégios', () => {
       .set('Authorization', `Bearer ${traderToken}`)
       .send({ role: 'ADMIN' });
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body.role).not.toBe('ADMIN'); // role deve continuar sendo 'TRADER'
+      expect(res.statusCode).toBe(403);
+      expect(res.body.message).toMatch(/acesso negado|não autorizado/i);
+      
   });
 
   test('✅ ADMIN pode atualizar role do usuário', async () => {

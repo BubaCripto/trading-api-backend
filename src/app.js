@@ -9,6 +9,9 @@ const userRoutes = require('./routes/userRoutes');
 const communityRoutes = require('./routes/communityRoutes');
 const communicationRoutes = require('./routes/communicationRoutes');
 const tradingOperationsService = require('./services/tradingOperationsService');
+const profileRoutes = require('./routes/profileRoutes'); 
+
+
 
 // Initialize express app
 const app = express();
@@ -27,6 +30,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // Routes
 app.use('/api/operations', operationRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/profiles', profileRoutes);
 app.use('/api/communities', communityRoutes);
 app.use('/api/communications', communicationRoutes);
 

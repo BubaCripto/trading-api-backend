@@ -29,7 +29,7 @@ const {
  *       400:
  *         description: Período inválido
  */
-router.get('/ranking', auth, rankingController.getTraderRanking);
+router.get('/ranking',  rankingController.getTraderRanking);
 
 const {
   canCreateOperation,
@@ -330,6 +330,6 @@ router.patch('/:id/request-manual-close', auth, canEditOperation, operationContr
  *                   avgRiskReward:
  *                     type: number
  */
-router.get('/ranking', auth, rankingController.getTraderRanking);
+router.get('/ranking',  rankingController.getTraderRanking);
 
 module.exports = router;

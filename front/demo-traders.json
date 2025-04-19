@@ -1,0 +1,101 @@
+[
+  {
+    "_id": "trader001",
+    "username": "cryptobox",
+    "winRate": 65.59,
+    "totalProfit": 94275.35,
+    "riskRewardRatio": 2.99,
+    "followers": 2257,
+    "pnlSeries": [1610.33, 1705.98, 1662.94, -554.69, 518.16, 1288.13, 1997.39, 419.86, 1802.61, 221.46],
+    "profile": {
+      "nomeCompleto": "CryptoBox",
+      "imagemPerfil": "https://i.pravatar.cc/150?img=12"
+    }
+  },
+  {
+    "_id": "trader002",
+    "username": "ultrarisk",
+    "winRate": 57.68,
+    "totalProfit": 90469.64,
+    "riskRewardRatio": 2.32,
+    "followers": 2503,
+    "pnlSeries": [841.08, 968.45, 309.22, 792.4, 756.72, 1972.37, 164.4, 821.75, 1415.62, 947.43],
+    "profile": {
+      "nomeCompleto": "UltraRisk",
+      "imagemPerfil": "https://i.pravatar.cc/150?img=8"
+    }
+  },
+    {
+      "_id": "trader003",
+      "username": "airnoelle",
+      "winRate": 46.84,
+      "totalProfit": 130786.52,
+      "riskRewardRatio": 1.5,
+      "followers": 474,
+      "profile": {
+        "nomeCompleto": "Airnoelle",
+        "imagemPerfil": "https://i.pravatar.cc/150?img=16"
+      }
+    },
+    {
+      "_id": "trader004",
+      "username": "doc",
+      "winRate": 77.1,
+      "totalProfit": 72433.84,
+      "riskRewardRatio": 2.7,
+      "followers": 1523,
+      "profile": {
+        "nomeCompleto": "D.O.C",
+        "imagemPerfil": "https://i.pravatar.cc/150?img=14"
+      }
+    },
+    {
+      "_id": "trader005",
+      "username": "black_angle",
+      "winRate": 61.2,
+      "totalProfit": 59111.75,
+      "riskRewardRatio": 2.3,
+      "followers": 891,
+      "profile": {
+        "nomeCompleto": "Black Angle",
+        "imagemPerfil": "https://i.pravatar.cc/150?img=10"
+      }
+    },
+    {
+      "_id": "trader006",
+      "username": "luffy888",
+      "winRate": 83.9,
+      "totalProfit": 96551.88,
+      "riskRewardRatio": 3.5,
+      "followers": 6300,
+      "profile": {
+        "nomeCompleto": "Luffy888",
+        "imagemPerfil": "https://i.pravatar.cc/150?img=5"
+      }
+    },
+    {
+      "_id": "trader007",
+      "username": "bestrike",
+      "winRate": 88.2,
+      "totalProfit": 11456.89,
+      "riskRewardRatio": 4.1,
+      "followers": 37,
+      "profile": {
+        "nomeCompleto": "BeStrike",
+        "imagemPerfil": "https://i.pravatar.cc/150?img=24"
+      }
+    },
+    {
+      "_id": "trader008",
+      "username": "hamoun",
+      "winRate": 39.07,
+      "totalProfit": 6738.39,
+      "riskRewardRatio": 1.1,
+      "followers": 55,
+      "profile": {
+        "nomeCompleto": "Hamoun UAE",
+        "imagemPerfil": "https://i.pravatar.cc/150?img=33"
+      }
+    }
+  ]
+  

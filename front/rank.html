@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ranking de Traders</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-white min-h-screen">
+  <header class="bg-zinc-900 text-white px-6 py-8">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      <div>
+        <h1 class="text-3xl md:text-4xl font-extrabold">Encontre Traders de Alta Performance</h1>
+        <p class="mt-2 text-lg text-zinc-300">
+          Mais de <span class="text-amber-400 font-bold">11.229</span> comunidades já contrataram talentos para elevar seus resultados.
+        </p>
+  
+        <div class="mt-4 flex flex-wrap items-center gap-4 text-sm text-amber-400 font-medium">
+          <a href="#" class="hover:underline">Quero ser contratado →</a>
+          <a href="#" class="hover:underline flex items-center gap-1">
+            📘 Ver como funciona
+          </a>
+        </div>
+      </div>
+  
+      <div class="bg-zinc-800 rounded-lg p-6 flex items-center justify-between shadow-md">
+        <div>
+          <p class="text-xs text-gray-400 mb-1">Para comunidades sérias</p>
+          <p class="text-lg font-semibold leading-snug">Contrate traders com histórico real,<br />gestão e consistência comprovadas</p>
+          <p class="text-sm mt-2 text-green-400">Acesse oportunidades com <strong>traders verificados</strong> agora mesmo</p>
+        </div>
+        <img src="https://cdn-icons-png.flaticon.com/512/1170/1170576.png" alt="Contrate Trader" class="w-16 md:w-20" />
+      </div>
+    </div>
+  
+    <div class="max-w-7xl mx-auto mt-6 flex flex-wrap items-center justify-between gap-3 text-sm">
+      <div class="flex gap-3">
+        <span class="px-2 py-0.5 bg-amber-600 rounded text-white text-xs">Performance Verificada</span>
+        <span class="text-zinc-300">Traders Profissionais</span>
+        <span class="font-semibold text-white underline underline-offset-4 decoration-white">Comunidades Ativas</span>
+      </div>
+  
+      <div class="flex items-center gap-2">
+        <input type="text" id="searchInput" placeholder="Pesquisar trader pelo nome"
+               class="bg-zinc-800 border border-zinc-700 text-white px-3 py-1 rounded focus:outline-none focus:ring focus:border-amber-500" />
+        <button class="bg-amber-600 hover:bg-amber-700 px-4 py-1 rounded">Pesquisar</button>
+        <button class="bg-zinc-700 px-4 py-1 rounded">📋 Meus Traders</button>
+        <button class="bg-zinc-700 px-4 py-1 rounded">📣 Minhas Comunidades</button>
+        <button class="bg-zinc-800 px-3 py-1 border border-zinc-700 rounded">☰</button>
+      </div>
+    </div>
+  </header>
+  
+  
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-2xl font-bold">Todos os Traders</h2>
+      <div class="flex gap-2">
+        <button class="px-3 py-1 bg-zinc-700 rounded text-sm" onclick="filterBy('all')">Todos</button>
+        <button class="px-3 py-1 bg-zinc-700 rounded text-sm" onclick="filterBy('tendencia')">Tendência</button>
+        <button class="px-3 py-1 bg-zinc-700 rounded text-sm" onclick="filterBy('conservadores')">Conservadores</button>
+        <button class="px-3 py-1 bg-zinc-700 rounded text-sm" onclick="filterBy('novatos')">Novatos</button>
+      </div>
+    </div>
+
+    <div id="ranking-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </main>
+
+  <script>
+    let allTraders = [];
+    let activeFilter = 'all';
+
+    async function loadRanking() {
+      const res = await fetch('demo-traders.json');
+      allTraders = await res.json();
+      renderTraders();
+    }
+
+    function filterBy(category) {
+      activeFilter = category;
+      renderTraders();
+    }
+
+    function renderTraders() {
+      const container = document.getElementById('ranking-list');
+      container.innerHTML = '';
+
+      let filtered = [...allTraders];
+      if (activeFilter === 'tendencia') filtered = allTraders.slice(0, 3);
+      if (activeFilter === 'conservadores') filtered = allTraders.slice(3, 6);
+      if (activeFilter === 'novatos') filtered = allTraders.slice(6, 9);
+
+      filtered.forEach(trader => {
+        const card = document.createElement('div');
+        card.className = 'bg-zinc-800 p-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300';
+
+        const img = trader.profile?.imagemPerfil || 'https://via.placeholder.com/64';
+        const nome = trader.profile?.nomeCompleto || trader.username;
+        const winrate = trader.winRate?.toFixed(1) || 0;
+        const lucro = trader.totalProfit?.toFixed(2) || 0;
+        const rr = trader.riskRewardRatio?.toFixed(2) || 0;
+        const seguidores = trader.followers || Math.floor(Math.random() * 1000);
+        const pnl = trader.pnlSeries || [];
+
+        let svg = '';
+        if (pnl.length > 1) {
+          const max = Math.max(...pnl);
+          const min = Math.min(...pnl);
+          const scale = 25 / (max - min || 1);
+
+          const points = pnl.map((val, i) => {
+            const x = i * 10;
+            const y = 30 - ((val - min) * scale);
+            return `${x},${y.toFixed(1)}`;
+          }).join(' ');
+
+          svg = `
+            <svg viewBox="0 0 100 30" class="w-full h-8 mt-2">
+              <polyline fill="none" stroke="#22c55e" stroke-width="2" points="${points}" />
+            </svg>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="flex items-center gap-4 mb-3">
+            <img src="${img}" alt="Foto" class="w-16 h-16 rounded-full object-cover border border-zinc-600">
+            <div>
+              <h3 class="text-lg font-semibold">${nome}</h3>
+              <p class="text-xs text-zinc-400">Futuros Perpétuos</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-sm text-zinc-300">
+            <div>
+              <p class="text-zinc-400">ROI 30D</p>
+              <p class="text-green-400 font-bold">+${winrate}%</p>
+            </div>
+            <div>
+              <p class="text-zinc-400">PnL</p>
+              <p class="font-bold">R$ ${lucro}</p>
+            </div>
+            <div>
+              <p class="text-zinc-400">R/R Médio</p>
+              <p>${rr}</p>
+            </div>
+            <div>
+              <p class="text-zinc-400">Seguidores</p>
+              <p>${seguidores}</p>
+            </div>
+          </div>
+          ${svg}
+          <div class="mt-4 flex justify-between items-center">
+            <a href="/trader/${trader._id}" class="text-blue-400 text-sm hover:underline">Ver detalhes</a>
+            <button class="bg-amber-600 hover:bg-amber-600 px-3 py-1 text-sm rounded">Contratar</button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+      const value = e.target.value.toLowerCase();
+      const filtered = allTraders.filter(t => (t.profile?.nomeCompleto || t.username).toLowerCase().includes(value));
+      const container = document.getElementById('ranking-list');
+      container.innerHTML = '';
+      filtered.forEach(trader => renderTraders([trader]));
+    });
+
+    loadRanking();
+  </script>
+</body>
+</html>

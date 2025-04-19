@@ -33,12 +33,19 @@ const operationService = {
       currentPage: Number(page)
     };
   },
-  
+  async getById(id, user) {
+    const operation = await Operation.findById(id);
+    if (!operation) throw new Error('Operação não encontrada');
+    return await this.getById(operation, user);
+  },
+  async getByUserId(userId) {
+    return await Operation.find({ userId }); 
+  },
 
   async getById(operation, user) {
     if (user.role === 'COMMUNITY') {
-      const { pair, signal, strategy, entry, targets } = operation;
-      return { pair, signal, strategy, entry, targets };
+      const { pair, signal, strategy } = operation;
+      return { pair, signal, strategy};//, entry, targets };
     }
     return operation;
   },

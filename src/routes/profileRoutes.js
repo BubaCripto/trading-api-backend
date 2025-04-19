@@ -25,39 +25,7 @@ const { canAccessOwnProfile, canEditOwnProfile } = require('../middleware/profil
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - nomeCompleto
- *             properties:
- *               nomeCompleto:
- *                 type: string
- *               dataNascimento:
- *                 type: string
- *                 format: date
- *               documento:
- *                 type: string
- *               telefone:
- *                 type: string
- *               endereco:
- *                 type: object
- *                 properties:
- *                   rua: { type: string }
- *                   numero: { type: string }
- *                   bairro: { type: string }
- *                   cidade: { type: string }
- *                   estado: { type: string }
- *                   cep: { type: string }
- *               imagemPerfil:
- *                 type: string
- *               bio:
- *                 type: string
- *               redesSociais:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     tipo: { type: string }
- *                     link: { type: string }
+ *             $ref: '#/components/schemas/Profile'
  *     responses:
  *       201:
  *         description: Perfil criado com sucesso
@@ -145,5 +113,53 @@ router.put('/:userId', auth, canEditOwnProfile, validateProfileUpdate, profileCo
  *         description: Perfil não encontrado
  */
 router.delete('/:userId', auth, canEditOwnProfile, profileController.deleteProfile);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Profile:
+ *       type: object
+ *       required:
+ *         - nomeCompleto
+ *       properties:
+ *         nomeCompleto:
+ *           type: string
+ *         dataNascimento:
+ *           type: string
+ *           format: date
+ *         documento:
+ *           type: string
+ *         telefone:
+ *           type: string
+ *         endereco:
+ *           type: object
+ *           properties:
+ *             rua:
+ *               type: string
+ *             numero:
+ *               type: string
+ *             bairro:
+ *               type: string
+ *             cidade:
+ *               type: string
+ *             estado:
+ *               type: string
+ *             cep:
+ *               type: string
+ *         imagemPerfil:
+ *           type: string
+ *         bio:
+ *           type: string
+ *         redesSociais:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               tipo:
+ *                 type: string
+ *               link:
+ *                 type: string
+ */
 
 module.exports = router;

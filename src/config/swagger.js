@@ -30,6 +30,10 @@ const options = {
         description: 'Gerenciamento de usuários e autenticação'
       },
       {
+        name: 'Profile',
+        description: 'Gerenciamento de profiles'
+      },
+      {
         name: 'Operations',
         description: 'Endpoints relacionados às operações de trading'
       },

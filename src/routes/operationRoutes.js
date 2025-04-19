@@ -1,10 +1,35 @@
 const express = require('express');
 const router = express.Router();
 const operationController = require('../controllers/operations/operationController');
+const rankingController = require('../controllers/operations/rankingController');
 
 const { 
-  auth 
+  auth,
+  authorize 
 } = require('../middleware/auth');
+
+/**
+ * @swagger
+ * /api/operations/ranking:
+ *   get:
+ *     summary: Obter ranking dos traders
+ *     tags: [Operations]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: period
+ *         schema:
+ *           type: string
+ *           enum: [all, day, week, month]
+ *         description: Período para calcular o ranking
+ *     responses:
+ *       200:
+ *         description: Ranking dos traders
+ *       400:
+ *         description: Período inválido
+ */
+router.get('/ranking', auth, rankingController.getTraderRanking);
 
 const {
   canCreateOperation,
@@ -264,5 +289,47 @@ router.delete('/:id',auth, canEditOperation, operationController.deleteOperation
  *         description: Não encontrada
  */
 router.patch('/:id/request-manual-close', auth, canEditOperation, operationController.requestManualClose);
+
+/**
+ * @swagger
+ * /api/operations/ranking:
+ *   get:
+ *     summary: Obter ranking dos traders por PNL
+ *     tags: [Operations]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: period
+ *         schema:
+ *           type: string
+ *           enum: [all, day, week, month]
+ *         description: Período para calcular o ranking
+ *     responses:
+ *       200:
+ *         description: Ranking dos traders
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   username:
+ *                     type: string
+ *                   totalOperations:
+ *                     type: number
+ *                   winningOperations:
+ *                     type: number
+ *                   winRate:
+ *                     type: number
+ *                   avgPnlPercentage:
+ *                     type: number
+ *                   totalPnlAmount:
+ *                     type: number
+ *                   avgRiskReward:
+ *                     type: number
+ */
+router.get('/ranking', auth, rankingController.getTraderRanking);
 
 module.exports = router;

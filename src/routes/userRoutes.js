@@ -4,6 +4,9 @@ const userController = require('../controllers/user/userController');
 const { auth, authorize } = require('../middleware/auth');
 const { canCreateUser, canUpdateUser } = require('../middleware/userPermissions');
 
+const { validateUserCreation, validateUserUpdate } = require('../middleware/userValidation');
+
+
 /**
  * @swagger
  * tags:
@@ -43,7 +46,7 @@ const { canCreateUser, canUpdateUser } = require('../middleware/userPermissions'
  *       400:
  *         description: Email ou username já existe
  */
-router.post('/',canCreateUser, userController.createUser);
+router.post('/',canCreateUser,validateUserCreation, userController.createUser);
 
 /**
  * @swagger
@@ -116,7 +119,7 @@ router.get('/:id', auth, userController.getUserById);
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id', auth, canUpdateUser, userController.updateUser);
+router.put('/:id', auth, canUpdateUser, validateUserUpdate, userController.updateUser);
 
 /**
  * @swagger

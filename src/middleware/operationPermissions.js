@@ -1,11 +1,14 @@
 const Operation = require('../models/Operation');
 const Community = require('../models/Community');
 
-// Apenas TRADER pode criar
+// Apenas TRADER ou ADMIN pode criar
 const canCreateOperation = (req, res, next) => {
-  if (req.user.role !== 'TRADER') {
-    return res.status(403).json({ message: 'Apenas traders podem criar operações' });
+  const { role } = req.user;
+
+  if (role !== 'TRADER' && role !== 'ADMIN') {
+    return res.status(403).json({ message: 'Apenas traders ou administradores podem criar operações' });
   }
+
   next();
 };
 
@@ -21,7 +24,7 @@ const canViewOperation = async (req, res, next) => {
   }
 
   if (req.user.role === 'COMMUNITY') {
-    const community = await Community.findById(req.user._id);
+    const community = await Community.findById(req.user._id).select('_id hiredTraders');
     const isHired = community?.hiredTraders?.some(tid => tid.equals(operation.userId));
     if (isHired) {
       req.operation = operation;
@@ -32,13 +35,16 @@ const canViewOperation = async (req, res, next) => {
   return res.status(403).json({ message: 'Você não tem permissão para ver esta operação' });
 };
 
-// Somente dono (TRADER) pode editar/excluir/fechar manualmente
+// TRADER dono ou ADMIN pode editar/excluir/fechar manualmente
 const canEditOperation = async (req, res, next) => {
   const { id } = req.params;
   const operation = await Operation.findById(id);
   if (!operation) return res.status(404).json({ message: 'Operação não encontrada' });
 
-  if (!operation.userId.equals(req.user._id)) {
+  const isOwner = operation.userId.equals(req.user._id);
+  const isAdmin = req.user.role === 'ADMIN';
+
+  if (!isOwner && !isAdmin) {
     return res.status(403).json({ message: 'Você não tem permissão para alterar esta operação' });
   }
 

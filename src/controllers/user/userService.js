@@ -2,26 +2,24 @@ const User = require('../../models/User');
 const { generateToken } = require('../../utils/jwt');
 
 const userService = {
-  async createUser({ username, email, password, role }) {
+  async createUser(data) {
     const existingUser = await User.findOne({
-      $or: [{ email }, { username }]
+      $or: [{ email: data.email }, { username: data.username }]
     });
 
-    if (existingUser) {
-      throw new Error('Username or email already exists');
-    }
+    if (existingUser) throw new Error('Username ou email já existe');
 
-    if (role && role === 'ADMIN') {
-      throw new Error('Não é permitido criar usuário com role ADMIN');
-    }
+    const user = new User({
+      username: data.username,
+      email: data.email,
+      password: data.password,
+      role: data.role || 'TRADER'
+    });
 
-    const user = new User({ username, email, password, role: role || 'TRADER' });
     await user.save();
-
-    const userResponse = user.toObject();
-    delete userResponse.password;
-
-    return userResponse;
+    const userObj = user.toObject();
+    delete userObj.password;
+    return userObj;
   },
 
   async getAllUsers({ page = 1, limit = 10, sort = '-createdAt' }) {
@@ -40,80 +38,53 @@ const userService = {
     };
   },
 
-  async getUserById(targetId) {
-    const user = await User.findById(targetId, '-password');
-    if (!user) {
-      throw new Error('Usuário não encontrado');
-    }
+  async getUserById(userId) {
+    const user = await User.findById(userId, '-password');
+    if (!user) throw new Error('Usuário não encontrado');
     return user;
   },
 
-  async updateUser({ userId, username, email, password, role, currentUserRole }) {
-    const existingUserCheck = await User.findById(userId);
-    if (!existingUserCheck) {
-      throw new Error('Usuário não encontrado');
-    }
+  async updateUser(userId, updates) {
+    const conflict = await User.findOne({
+      _id: { $ne: userId },
+      $or: [
+        { email: updates.email || '' },
+        { username: updates.username || '' }
+      ]
+    });
+    if (conflict) throw new Error('Username ou email já existe');
 
     const updateData = {};
-    if (username || email) {
-      const existingUser = await User.findOne({
-        _id: { $ne: userId },
-        $or: [
-          { email: email || '' },
-          { username: username || '' }
-        ]
-      });
+    if (updates.username) updateData.username = updates.username;
+    if (updates.email) updateData.email = updates.email;
+    if (updates.password) updateData.password = updates.password;
+    if (updates.role) updateData.role = updates.role;
 
-      if (existingUser) {
-        throw new Error('Username ou email já existe');
-      }
-
-      if (username) updateData.username = username;
-      if (email) updateData.email = email.toLowerCase();
-    }
-
-    if (password) {
-      updateData.password = password;
-    }
-
-    if (currentUserRole === 'ADMIN' && role) {
-      const validRoles = ['TRADER', 'USER', 'COMMUNITY'];
-      if (!validRoles.includes(role)) {
-        throw new Error('Role inválida');
-      }
-      updateData.role = role;
-    }
-
-    const user = await User.findByIdAndUpdate(
-      userId,
-      updateData,
-      { new: true, runValidators: true }
-    ).select('-password');
+    const user = await User.findByIdAndUpdate(userId, updateData, {
+      new: true,
+      runValidators: true
+    }).select('-password');
 
     return user;
   },
 
   async deleteUser(userId) {
     const user = await User.findByIdAndDelete(userId);
-    if (!user) {
-      throw new Error('User not found');
-    }
-    return user;
+    if (!user) throw new Error('User not found');
+    return true;
   },
 
   async loginUser({ email, password }) {
     const user = await User.findOne({ email });
-
     if (!user || !(await user.comparePassword(password))) {
-      throw new Error('Invalid email or password');
+      throw new Error('Email ou senha inválidos');
     }
 
     const token = generateToken({ userId: user._id, role: user.role });
+    const userObj = user.toObject();
+    delete userObj.password;
 
-    const userResponse = user.toObject();
-    delete userResponse.password;
-
-    return { user: userResponse, token };
+    return { user: userObj, token };
   }
 };
 

@@ -34,4 +34,11 @@ const authorize = (...roles) => {
   };
 };
 
-module.exports = { auth, authorize };
+function onlyAdmin(req, res, next) {
+  if (req.user.role !== 'ADMIN') {
+    return res.status(403).json({ message: 'Acesso negado' });
+  }
+  next();
+}
+
+module.exports = { auth, authorize, onlyAdmin };

@@ -43,7 +43,7 @@ const operationController = {
   async deleteOperation(req, res) {
     try {
       await operationService.delete(req.operation);
-      res.json({ message: 'Operation deleted successfully' });
+      res.json({ message: 'Operação removida com sucesso' });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -61,9 +61,9 @@ const operationController = {
   async requestManualClose(req, res) {
     try {
       const updated = await operationService.requestManualClose(req.operation);
-      res.json({ message: 'Manual close requested', operation: updated });
+      res.json({ message: 'Fechamento manual solicitado', operation: updated });
     } catch (error) {
-      res.status(500).json({ message: 'Error requesting manual close', error: error.message });
+      res.status(500).json({ message: 'Erro ao solicitar fechamento manual', error: error.message });
     }
   }
 };

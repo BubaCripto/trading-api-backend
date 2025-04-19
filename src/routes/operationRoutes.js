@@ -1,8 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const operationController = require('../controllers/operations/operationController');
-const { auth, authorize } = require('../middleware/auth');
-const checkOperationOwnership = require('../middleware/checkOperationOwnership');
+
+const { 
+  auth 
+} = require('../middleware/auth');
+
+const {
+  canCreateOperation,
+  canViewOperation,
+  canEditOperation
+} = require('../middleware/operationPermissions');
+
 
 /**
  * @swagger
@@ -70,11 +79,7 @@ const checkOperationOwnership = require('../middleware/checkOperationOwnership')
  *         description: Requisição inválida
  */
 
-router.post('/',
-  auth,
-  authorize('TRADER', 'ADMIN'),
-  operationController.createOperation
-);
+router.post('/', auth, canCreateOperation, operationController.createOperation);
 
 /**
  * @swagger
@@ -88,11 +93,7 @@ router.post('/',
  *       200:
  *         description: Lista de operações
  */
-router.get('/',
-  auth,
-  authorize('TRADER', 'ADMIN'),
-  operationController.getAllOperations
-);
+router.get('/', auth, operationController.getAllOperations);
 
 /**
  * @swagger
@@ -116,12 +117,7 @@ router.get('/',
  *       404:
  *         description: Não encontrada
  */
-router.get('/:id',
-  auth,
-  authorize('TRADER', 'ADMIN'),
-  checkOperationOwnership,
-  operationController.getOperationById
-);
+router.get('/:id', auth, canViewOperation, operationController.getOperationById);
 
 /**
  * @swagger
@@ -182,12 +178,7 @@ router.get('/:id',
  *       404:
  *         description: Não encontrada
  */
-router.put('/:id',
-  auth,
-  authorize('TRADER', 'ADMIN'),
-  checkOperationOwnership,
-  operationController.updateOperation
-);
+router.put('/:id', auth, canEditOperation, operationController.updateOperation);
 
 /**
  * @swagger
@@ -224,12 +215,7 @@ router.put('/:id',
  *       404:
  *         description: Não encontrada
  */
-router.patch('/:id/targets',
-  auth,
-  authorize('TRADER', 'ADMIN'),
-  checkOperationOwnership,
-  operationController.updateTargets
-);
+router.patch('/:id/targets', auth, canEditOperation, operationController.updateTargets);
 
 /**
  * @swagger
@@ -253,12 +239,7 @@ router.patch('/:id/targets',
  *       404:
  *         description: Não encontrada
  */
-router.delete('/:id',
-  auth,
-  authorize('TRADER', 'ADMIN'),
-  checkOperationOwnership,
-  operationController.deleteOperation
-);
+router.delete('/:id',auth, canEditOperation, operationController.deleteOperation);
 
 /**
  * @swagger
@@ -282,11 +263,6 @@ router.delete('/:id',
  *       404:
  *         description: Não encontrada
  */
-router.patch('/:id/request-manual-close',
-  auth,
-  authorize('TRADER', 'ADMIN'),
-  checkOperationOwnership,
-  operationController.requestManualClose
-);
+router.patch('/:id/request-manual-close', auth, canEditOperation, operationController.requestManualClose);
 
 module.exports = router;

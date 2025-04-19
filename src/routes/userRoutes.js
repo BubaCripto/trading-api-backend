@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
+const userController = require('../controllers/user/userController');
 const { auth, authorize } = require('../middleware/auth');
+const { canCreateUser, canUpdateUser } = require('../middleware/userPermissions');
 
 /**
  * @swagger
@@ -42,7 +43,7 @@ const { auth, authorize } = require('../middleware/auth');
  *       400:
  *         description: Email ou username já existe
  */
-router.post('/', userController.createUser);
+router.post('/',canCreateUser, userController.createUser);
 
 /**
  * @swagger
@@ -115,7 +116,7 @@ router.get('/:id', auth, userController.getUserById);
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id', auth, userController.updateUser);
+router.put('/:id', auth, canUpdateUser, userController.updateUser);
 
 /**
  * @swagger

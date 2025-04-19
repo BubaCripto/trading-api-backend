@@ -111,6 +111,7 @@ describe('Operações CRUD de Trading', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('message', 'Operation deleted successfully');
+    expect(res.body).toHaveProperty('message', 'Operação removida com sucesso');
   });
+  
 });

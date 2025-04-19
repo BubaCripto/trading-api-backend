@@ -94,4 +94,35 @@ describe('🔒 Segurança - Operações', () => {
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body.operations)).toBe(true);
   });
+
+  test('❌ COMMUNITY não pode criar operação', async () => {
+    // Criação manual
+    await User.create({
+      username: 'community1',
+      email: 'comm1@example.com',
+      password: '123456',
+      role: 'COMMUNITY'
+    });
+  
+    const login = await request(app).post('/api/users/login').send({
+      email: 'comm1@example.com',
+      password: '123456',
+    });
+  
+    const res = await request(app)
+      .post('/api/operations')
+      .set('Authorization', `Bearer ${login.body.token}`)
+      .send({
+        pair: 'BTCUSDT',
+        signal: 'LONG',
+        entry: 28000,
+        stop: 27500,
+        targets: [28200],
+        leverage: 2
+      });
+  
+    expect(res.statusCode).toBe(403);
+    expect(res.body.message).toMatch(/apenas traders/i);
+  });
+  
 });

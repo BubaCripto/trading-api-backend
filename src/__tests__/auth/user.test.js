@@ -76,7 +76,7 @@ describe('🛡️ Escalonamento de Privilégios', () => {
       .send({ role: 'ADMIN' });
 
       expect(res.statusCode).toBe(403);
-      expect(res.body.message).toMatch(/acesso negado|não autorizado/i);
+      expect(res.body.message).toMatch("Você não pode alterar a role do usuário");
       
   });
 
@@ -98,4 +98,30 @@ describe('🛡️ Escalonamento de Privilégios', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).not.toHaveProperty('password');
   });
+
+  test('❌ Qualquer usuário não pode criar outro com role ADMIN', async () => {
+    const res = await request(app)
+      .post('/api/users')
+      .send({
+        username: 'malicious',
+        email: 'malicious@example.com',
+        password: 'malicious123',
+        role: 'ADMIN',
+      });
+  
+    expect(res.statusCode).toBe(403);
+    expect(res.body.message).toMatch(/role ADMIN/);
+  });
+
+  test('✅ TRADER pode atualizar apenas seu username', async () => {
+    const res = await request(app)
+      .put(`/api/users/${traderId}`)
+      .set('Authorization', `Bearer ${traderToken}`)
+      .send({ username: 'updatedTrader' });
+  
+    expect(res.statusCode).toBe(200);
+    expect(res.body.username).toBe('updatedTrader');
+  });
+  
+  
 });

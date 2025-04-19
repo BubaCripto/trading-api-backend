@@ -49,7 +49,7 @@ describe('🔐 Segurança - Restrição de acesso entre traders', () => {
       .send({ strategy: 'Invasao', entry: 100 });
 
     expect(res.statusCode).toBe(403);
-    expect(res.body.message).toMatch(/not authorized|forbidden/i);
+    expect(res.body.message).toMatch("Você não tem permissão para alterar esta operação");
 
   });
 
@@ -59,7 +59,29 @@ describe('🔐 Segurança - Restrição de acesso entre traders', () => {
       .set('Authorization', `Bearer ${token2}`);
 
     expect(res.statusCode).toBe(403);
-    expect(res.body.message).toMatch(/not authorized|forbidden/i);
+    expect(res.body.message).toMatch("Você não tem permissão para alterar esta operação");
 
   });
+
+  test('✅ ADMIN pode ver operação de qualquer trader', async () => {
+    await User.create({
+      username: 'admin2',
+      email: 'admin2@example.com',
+      password: 'admin123',
+      role: 'ADMIN'
+    });
+  
+    const login = await request(app).post('/api/users/login').send({
+      email: 'admin2@example.com',
+      password: 'admin123',
+    });
+  
+    const res = await request(app)
+      .get(`/api/operations/${operationId}`)
+      .set('Authorization', `Bearer ${login.body.token}`);
+  
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('pair');
+  });
+  
 });

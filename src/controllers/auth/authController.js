@@ -3,16 +3,20 @@ const authService = require('../../controllers/auth/authService');
 
 exports.register = async (req, res) => {
   try {
-    const { username, email, password, roles } = req.body;
+    const { username, email, password, roles, profile } = req.body;
 
-    const user = await authService.registerUser({
+    const result = await authService.registerUser({
       username,
       email,
       password,
-      roleNames: roles || ['USER']
+      roleNames: roles || ['USER'],
+      profileData: profile
     });
 
-    res.status(201).json({ message: 'Usuário criado com sucesso', userId: user._id });
+    res.status(201).json({
+      message: 'Usuário criado com sucesso',
+      ...result
+    });
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

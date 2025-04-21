@@ -2,6 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth/authController');
+const { validateRegister, validateLogin } = require('../middleware/validations/authValidation');
+const handleValidation = require('../middleware/validations/handleValidation');
+
 
 /**
  * @swagger
@@ -86,7 +89,8 @@ const authController = require('../controllers/auth/authController');
  *         description: Erro de validação
  */
 
-router.post('/register', authController.register);
+router.post('/register', validateRegister, handleValidation, authController.register);
+
 
 /**
  * @swagger
@@ -117,6 +121,6 @@ router.post('/register', authController.register);
  *         description: Credenciais inválidas
  */
 
-router.post('/login', authController.login);
+router.post('/login', validateLogin, handleValidation, authController.login);
 
 module.exports = router;

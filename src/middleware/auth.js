@@ -1,44 +1,32 @@
-const jwt = require('jsonwebtoken');
+
+const jwt = require('../utils/jwt');
 const User = require('../models/User');
 
-const auth = async (req, res, next) => {
+exports.auth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Token não fornecido' });
+  }
+
+  const token = authHeader.split(' ')[1];
   try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-
-    if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.userId);
+    const decoded = jwt.verifyToken(token);
+    const user = await User.findById(decoded._id).populate({
+      path: 'roles',
+      populate: {
+        path: 'permissions',
+        model: 'Permission'
+      }
+    });
 
     if (!user) {
-      return res.status(401).json({ message: 'User not found' });
+      return res.status(401).json({ message: 'Usuário não encontrado' });
     }
 
     req.user = user;
     next();
-  } catch (error) {
-    res.status(401).json({ message: 'Invalid token' });
+  } catch (err) {
+    console.error('Erro no middleware de autenticação:', err);
+    return res.status(401).json({ message: 'Token inválido ou expirado' });
   }
 };
-
-const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({
-        message: 'You do not have permission to perform this action'
-      });
-    }
-    next();
-  };
-};
-
-function onlyAdmin(req, res, next) {
-  if (req.user.role !== 'ADMIN') {
-    return res.status(403).json({ message: 'Acesso negado' });
-  }
-  next();
-}
-
-module.exports = { auth, authorize, onlyAdmin };

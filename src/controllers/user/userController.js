@@ -1,70 +1,39 @@
+
 const userService = require('./userService');
+const authorization = require('../../services/authorizationService');
 
-const userController = {
-  async createUser(req, res) {
-    try {
-      const user = await userService.createUser(req.body);
-      res.status(201).json(user);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  },
-
-  async getAllUsers(req, res) {
-    try {
-      if (req.user.role !== 'ADMIN') {
-        return res.status(403).json({ message: 'Access denied' });
-      }
-      const result = await userService.getAllUsers(req.query);
-      res.json(result);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
-
-  async getUserById(req, res) {
-    try {
-      const targetId = req.params.id;
-      if (req.user.role !== 'ADMIN' && req.user._id.toString() !== targetId) {
-        return res.status(403).json({ message: 'Acesso negado' });
-      }
-      const user = await userService.getUserById(targetId);
-      res.json(user);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
-
-  async updateUser(req, res) {
-    try {
-      const userId = req.params.id;
-      const updated = await userService.updateUser(userId, req.body);
-      res.json(updated);
-    } catch (error) {
-      res.status(400).json({ message: error.message });
-    }
-  },
-
-  async deleteUser(req, res) {
-    try {
-      if (req.user.role !== 'ADMIN') {
-        return res.status(403).json({ message: 'Access denied' });
-      }
-      await userService.deleteUser(req.params.id);
-      res.json({ message: 'User deleted successfully' });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  },
-
-  async loginUser(req, res) {
-    try {
-      const result = await userService.loginUser(req.body);
-      res.json(result);
-    } catch (error) {
-      res.status(401).json({ message: error.message });
-    }
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-module.exports = userController;
+exports.updateUser = async (req, res) => {
+  try {
+    const userToEdit = await userService.getUserById(req.params.id);
+    if (!userToEdit) return res.status(404).json({ message: 'Usuário não encontrado' });
+
+    const isAllowed = authorization.canEditUser(req.user, userToEdit);
+    if (!isAllowed) return res.status(403).json({ message: 'Acesso negado' });
+
+    const updated = await userService.updateUser(req.params.id, req.body);
+    res.status(200).json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const isAllowed = authorization.canDeleteUser(req.user);
+    if (!isAllowed) return res.status(403).json({ message: 'Apenas administradores podem deletar usuários' });
+
+    await userService.deleteUser(req.params.id);
+    res.status(204).send();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

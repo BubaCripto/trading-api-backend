@@ -4,12 +4,13 @@ const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const specs = require('./config/swagger');
 const connectDB = require('./config/database');
-const operationRoutes = require('./routes/operationRoutes');
-const userRoutes = require('./routes/userRoutes');
-const communityRoutes = require('./routes/communityRoutes');
-const communicationRoutes = require('./routes/communicationRoutes');
 const tradingOperationsService = require('./services/tradingOperationsService');
-const profileRoutes = require('./routes/profileRoutes'); 
+
+//rotas
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+
 
 
 
@@ -27,16 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 // Swagger documentation route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Routes
-app.use('/api/operations', operationRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/profiles', profileRoutes);
-app.use('/api/communities', communityRoutes);
-app.use('/api/communications', communicationRoutes);
-
-// Protected admin routes (redundant?)
-app.use('/communities', communityRoutes);
-app.use('/communications', communicationRoutes);
+app.use('/api/profile', profileRoutes);
 
 // Start trading operations service (only if not testing)
 if (process.env.NODE_ENV !== 'test') {

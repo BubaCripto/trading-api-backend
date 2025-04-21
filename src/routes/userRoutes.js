@@ -1,105 +1,52 @@
+
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user/userController');
-const { auth, authorize } = require('../middleware/auth');
-const { canCreateUser, canUpdateUser } = require('../middleware/userPermissions');
-
-const { validateUserCreation, validateUserUpdate } = require('../middleware/userValidation');
-
+const { auth } = require('../middleware/auth');
+const checkPermission = require('../middleware/checkPermission');
 
 /**
  * @swagger
  * tags:
- *   - name: Users
- *     description: Gerenciamento de usuários e autenticação
+ *   name: Users
+ *   description: Gerenciamento de usuários
  */
 
 /**
  * @swagger
  * /api/users:
- *   post:
- *     tags: [Users]
- *     summary: Cria um novo usuário
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - username
- *               - email
- *               - password
- *             properties:
- *               username:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               role:
- *                 type: string
- *                 enum: [ADMIN, TRADER, COMMUNITY]
- *     responses:
- *       201:
- *         description: Usuário criado
- *       400:
- *         description: Email ou username já existe
- */
-router.post('/',canCreateUser,validateUserCreation, userController.createUser);
-
-/**
- * @swagger
- * /api/users:
  *   get:
+ *     summary: Lista todos os usuários
  *     tags: [Users]
- *     summary: Lista todos os usuários (requer ADMIN)
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Lista de usuários
+ *         description: Lista de usuários retornada com sucesso
+ *       401:
+ *         description: Token ausente ou inválido
+ *       403:
+ *         description: Permissão negada
  */
-router.get('/', auth, authorize('ADMIN'), userController.getAllUsers);
-
-/**
- * @swagger
- * /api/users/{id}:
- *   get:
- *     tags: [Users]
- *     summary: Busca um usuário pelo ID
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - name: id
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Usuário encontrado
- *       404:
- *         description: Usuário não encontrado
- */
-router.get('/:id', auth, userController.getUserById);
+router.get('/', auth, checkPermission('VIEW_USER'), userController.getAllUsers);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   put:
- *     tags: [Users]
  *     summary: Atualiza um usuário
+ *     tags: [Users]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         description: ID do usuário a ser atualizado
  *         schema:
  *           type: string
  *     requestBody:
- *       required: false
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
@@ -107,68 +54,47 @@ router.get('/:id', auth, userController.getUserById);
  *             properties:
  *               username:
  *                 type: string
+ *                 example: "novoNome"
  *               email:
  *                 type: string
- *               password:
- *                 type: string
- *               role:
- *                 type: string
+ *                 example: "novo@email.com"
  *     responses:
  *       200:
- *         description: Usuário atualizado
- *       400:
- *         description: Dados inválidos
+ *         description: Usuário atualizado com sucesso
+ *       401:
+ *         description: Token ausente ou inválido
+ *       403:
+ *         description: Acesso negado
+ *       404:
+ *         description: Usuário não encontrado
  */
-router.put('/:id', auth, canUpdateUser, validateUserUpdate, userController.updateUser);
+
+router.put('/:id', auth, checkPermission('UPDATE_USER'), userController.updateUser);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   delete:
+ *     summary: Remove um usuário
  *     tags: [Users]
- *     summary: Deleta um usuário (requer ADMIN)
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
+ *         description: ID do usuário a ser removido
  *         schema:
  *           type: string
  *     responses:
- *       200:
- *         description: Usuário deletado
- *       404:
- *         description: Usuário não encontrado
- */
-router.delete('/:id', auth, authorize('ADMIN'), userController.deleteUser);
-
-/**
- * @swagger
- * /api/users/login:
- *   post:
- *     tags: [Users]
- *     summary: Realiza login e retorna um token JWT
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *     responses:
- *       200:
- *         description: Token retornado com sucesso
+ *       204:
+ *         description: Usuário removido com sucesso
  *       401:
- *         description: Credenciais inválidas
+ *         description: Token ausente ou inválido
+ *       403:
+ *         description: Acesso negado
  */
-router.post('/login', userController.loginUser);
+
+router.delete('/:id', auth, checkPermission('DELETE_USER'), userController.deleteUser);
 
 module.exports = router;

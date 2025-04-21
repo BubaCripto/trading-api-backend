@@ -24,28 +24,6 @@ const options = {
         },
       },
     },
-    tags: [
-      {
-        name: 'Users',
-        description: 'Gerenciamento de usuários e autenticação'
-      },
-      {
-        name: 'Profile',
-        description: 'Gerenciamento de profiles'
-      },
-      {
-        name: 'Operations',
-        description: 'Endpoints relacionados às operações de trading'
-      },
-      {
-        name: 'Communities',
-        description: 'Endpoints relacionados às comunidades'
-      },
-      {
-        name: 'Communications',
-        description: 'Gerenciamento de comunicações das comunidades'
-      }
-    ]
   },
   apis: ['./src/routes/*.js'], // Path to the API routes
 };

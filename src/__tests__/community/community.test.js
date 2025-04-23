@@ -47,7 +47,7 @@ describe('📘 CRUD básico de Comunidade', () => {
   it('✅ Deve retornar todas comunidades públicas', async () => {
     const res = await request(app).get('/api/communities');
     expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+    expect(Array.isArray(res.body.data)).toBe(true);
   });
 
   it('✅ Deve buscar uma comunidade por ID', async () => {

@@ -1,5 +1,6 @@
 const contractMessageService = require('./contractMessageService');
 
+
 async function sendMessage(req, res) {
   try {
     const contractId = req.params.id;

@@ -1,4 +1,7 @@
 const service = require('./communityService');
+const paginateQuery = require('../../utils/paginateQuery');
+const Community = require('../../models/Community');
+
 
 exports.createCommunity = async (req, res, next) => {
   try {
@@ -11,12 +14,20 @@ exports.createCommunity = async (req, res, next) => {
 
 exports.getAll = async (req, res, next) => {
   try {
-    const communities = await service.getAll();
-    res.json(communities);
+    const communities = await paginateQuery(Community, req, {
+      baseFilter: { active: true },
+      select: '-__v',
+      populate: 'createdBy',
+      defaultSort: '-createdAt'
+    });
+
+    res.status(200).json(communities);
   } catch (err) {
     next(err);
   }
 };
+
+
 
 exports.getById = async (req, res, next) => {
   try {

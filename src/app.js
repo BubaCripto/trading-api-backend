@@ -17,14 +17,6 @@ const contractRoutes = require('./routes/contractRoutes');
 const contractMessageRoutes = require('./routes/contractMessageRoutes');
 const communicationRoutes = require('./routes/communicationRoutes');
 
-
-
-
-
-
-
-
-
 // Initialize express app
 const app = express();
 
@@ -47,7 +39,6 @@ app.use('/api/communities', communityRoutes);
 app.use('/contracts', contractRoutes);
 app.use('/contracts', contractMessageRoutes);
 app.use('/communications', communicationRoutes); // ✅ Prefixo confere com os testes
-
 
 
 // Start trading operations service (only if not testing)

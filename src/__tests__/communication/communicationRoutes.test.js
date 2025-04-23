@@ -112,7 +112,10 @@ describe('📡 Communication Routes', () => {
       .set('Authorization', `Bearer ${tokenOwner}`);
 
     expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+    expect(Array.isArray(res.body.data)).toBe(true);
+    expect(res.body.meta).toHaveProperty('total');
+    expect(res.body.meta).toHaveProperty('page');
+
   });
 
   it('✅ deve permitir toggle como admin', async () => {

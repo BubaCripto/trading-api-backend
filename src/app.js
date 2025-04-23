@@ -6,13 +6,16 @@ const specs = require('./config/swagger');
 const connectDB = require('./config/database');
 const tradingOperationsService = require('./services/tradingOperationsService');
 
+
 //rotas
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const operationRoutes = require('./routes/operationRoutes');
 const communityRoutes = require('./routes/communityRoutes');
-//const contractRoutes = require('./routes/contractRoutes');
+const contractRoutes = require('./routes/contractRoutes');
+
+
 
 
 
@@ -38,7 +41,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/operations', operationRoutes);
 app.use('/api/communities', communityRoutes);
-//app.use('/api/contracts', contractRoutes);
+app.use('/contracts', contractRoutes);
 
 
 // Start trading operations service (only if not testing)

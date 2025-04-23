@@ -4,6 +4,14 @@ const contractController = require('../controllers/contract/contractController')
 const { auth } = require('../middleware/auth');
 const checkPermission = require('../middleware/checkPermission');
 
+
+const {
+  validateCreateContract,
+  validateContractIdParam,
+  validateGetContractsQuery
+} = require('../middleware/validations/contractValidation');
+
+
 /**
  * @swagger
  * tags:
@@ -46,7 +54,7 @@ const checkPermission = require('../middleware/checkPermission');
  *       409:
  *         description: Contrato já existente
  */
-router.post('/request', auth, checkPermission('HIRE_TRADER'), contractController.requestContract);
+router.post('/request', auth, checkPermission('HIRE_TRADER'), validateCreateContract, contractController.requestContract);
 
 /**
  * @swagger
@@ -71,7 +79,7 @@ router.post('/request', auth, checkPermission('HIRE_TRADER'), contractController
  *       400:
  *         description: Contrato já processado
  */
-router.post('/:id/accept', auth, contractController.acceptContract);
+router.post('/:id/accept', auth, validateContractIdParam, contractController.acceptContract);
 
 /**
  * @swagger
@@ -93,7 +101,7 @@ router.post('/:id/accept', auth, contractController.acceptContract);
  *       403:
  *         description: Apenas o trader convidado pode rejeitar
  */
-router.post('/:id/reject', auth, contractController.rejectContract);
+router.post('/:id/reject', auth, validateContractIdParam, contractController.rejectContract);
 
 /**
  * @swagger
@@ -115,7 +123,7 @@ router.post('/:id/reject', auth, contractController.rejectContract);
  *       403:
  *         description: Apenas envolvidos no contrato podem revogar
  */
-router.post('/:id/revoke', auth, contractController.revokeContract);
+router.post('/:id/revoke', auth,validateContractIdParam, contractController.revokeContract);
 
 /**
  * @swagger
@@ -145,6 +153,6 @@ router.post('/:id/revoke', auth, contractController.revokeContract);
  *       200:
  *         description: Lista de contratos
  */
-router.get('/', auth, contractController.getContracts);
+router.get('/', auth, validateGetContractsQuery,  contractController.getContracts);
 
 module.exports = router;

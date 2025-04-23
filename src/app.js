@@ -14,6 +14,9 @@ const profileRoutes = require('./routes/profileRoutes');
 const operationRoutes = require('./routes/operationRoutes');
 const communityRoutes = require('./routes/communityRoutes');
 const contractRoutes = require('./routes/contractRoutes');
+const contractMessageRoutes = require('./routes/contractMessageRoutes');
+
+
 
 
 
@@ -42,6 +45,7 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/operations', operationRoutes);
 app.use('/api/communities', communityRoutes);
 app.use('/contracts', contractRoutes);
+app.use('/contracts', contractMessageRoutes);
 
 
 // Start trading operations service (only if not testing)

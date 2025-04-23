@@ -24,6 +24,37 @@ const options = {
         },
       },
     },
+    tags: [
+      {
+        name: 'Auth',
+        description: 'Login e registro de usuários com JWT'
+      },
+      {
+        name: 'Profile',
+        description: 'Gestão do profile do user'
+      },
+      {
+        name: 'Users',
+        description: 'Gestão de usuários, permissões e perfis'
+      },
+      {
+        name: 'Operations',
+        description: 'Gestão de operações de trading (sinais)'
+      },
+
+      {
+        name: 'Communities',
+        description: 'Criação e gerenciamento de comunidades'
+      },
+      {
+        name: 'Contracts',
+        description: 'Contratação de traders pelas comunidades'
+      },
+      {
+        name: 'ContractMessages',
+        description: 'Mensagens entre traders e comunidades em contratos'
+      }
+    ]
   },
   apis: ['./src/routes/*.js'], // Path to the API routes
 };

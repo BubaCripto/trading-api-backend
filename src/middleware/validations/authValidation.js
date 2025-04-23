@@ -3,25 +3,25 @@ const { body } = require('express-validator');
 
 exports.validateRegister = [
   body('username')
-    .notEmpty().withMessage('Username é obrigatório')
-    .isLength({ min: 3 }).withMessage('Username deve ter pelo menos 3 caracteres'),
+    .notEmpty().withMessage('Username is required')
+    .isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
   body('email')
-    .isEmail().withMessage('Email inválido'),
+    .isEmail().withMessage('Invalid email'),
   body('password')
-    .isLength({ min: 6 }).withMessage('A senha deve ter no mínimo 6 caracteres'),
+    .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
   body('roles')
-    .isArray().withMessage('Roles deve ser um array'),
-  body('profile.nomeCompleto')
-    .notEmpty().withMessage('Nome completo é obrigatório'),
-  body('profile.telefone')
-    .optional().isString().withMessage('Telefone deve ser uma string'),
-  body('profile.documento')
-    .optional().isString().withMessage('Documento deve ser uma string')
+    .isArray().withMessage('Roles must be an array'),
+  body('profile.fullName')
+    .notEmpty().withMessage('Full name is required'),
+  body('profile.phone')
+    .optional().isString().withMessage('Phone must be a string'),
+  body('profile.documentId')
+    .optional().isString().withMessage('Document ID must be a string')
 ];
 
 exports.validateLogin = [
   body('email')
-    .isEmail().withMessage('Email inválido'),
+    .isEmail().withMessage('Invalid email'),
   body('password')
-    .notEmpty().withMessage('Senha é obrigatória')
+    .notEmpty().withMessage('Password is required')
 ];

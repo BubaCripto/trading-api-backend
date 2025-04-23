@@ -25,6 +25,10 @@ const Role = require('../models/Role');
     INVITE_MEMBER: 'Convidar membro para comunidade',
     HIRE_TRADER: 'Contratar trader',
     REMOVE_TRADER: 'Remover trader',
+    ADMIN_INVITE_MEMBER: 'Convidar membro para comunidade',
+    ADMIN_HIRE_TRADER: 'Contratar trader',
+    ADMIN_REMOVE_TRADER: 'Remover trader',
+    // Criptomoedas
 
     // Operações
     CREATE_OPERATION: 'Criar operação',
@@ -66,10 +70,10 @@ const Role = require('../models/Role');
   const rolesMap = {
     ADMIN: Object.keys(permissionsMap),
     TRADER: [
-      'CREATE_OPERATION', 'UPDATE_OPERATION', 'DELETE_OPERATION', 'VIEW_COMMUNITY','VIEW_OPERATION', 'CLOSE_OPERATION_MANUALLY'
+      'CREATE_OPERATION', 'UPDATE_OPERATION', 'DELETE_OPERATION', 'VIEW_COMMUNITY','VIEW_OPERATION', 'CLOSE_OPERATION_MANUALLY','ADMIN_INVITE_MEMBER','ADMIN_HIRE_TRADER','ADMIN_REMOVE_TRADER'
     ],
     COMMUNITY: [
-      'CREATE_COMMUNITY', 'UPDATE_COMMUNITY', 'HIRE_TRADER', 'REMOVE_TRADER', 'VIEW_OPERATION', 'INVITE_MEMBER'
+      'CREATE_COMMUNITY', 'UPDATE_COMMUNITY', 'HIRE_TRADER', 'REMOVE_TRADER', 'VIEW_OPERATION', 'INVITE_MEMBER','DELETE_COMMUNITY'
     ],
     MODERATOR: [
       'VIEW_USER', 'VIEW_OPERATION', 'SEND_ALERT'

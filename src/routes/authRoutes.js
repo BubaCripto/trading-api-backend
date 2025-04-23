@@ -17,7 +17,7 @@ const handleValidation = require('../middleware/validations/handleValidation');
  * @swagger
  * /api/auth/register:
  *   post:
- *     summary: Cria um novo usuário com dados de perfil
+ *     summary: Register a new user with profile
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -29,6 +29,7 @@ const handleValidation = require('../middleware/validations/handleValidation');
  *               - username
  *               - email
  *               - password
+ *               - profile
  *             properties:
  *               username:
  *                 type: string
@@ -46,48 +47,51 @@ const handleValidation = require('../middleware/validations/handleValidation');
  *                   example: "USER"
  *               profile:
  *                 type: object
+ *                 required:
+ *                   - fullName
  *                 properties:
- *                   nomeCompleto:
+ *                   fullName:
  *                     type: string
  *                     example: "Inara Silva"
- *                   dataNascimento:
+ *                   birthDate:
  *                     type: string
  *                     format: date
  *                     example: "1990-08-12"
- *                   documento:
+ *                   documentId:
  *                     type: string
  *                     example: "123.456.789-00"
- *                   telefone:
+ *                   phone:
  *                     type: string
  *                     example: "(11) 91234-5678"
- *                   imagemPerfil:
+ *                   profileImage:
  *                     type: string
  *                     example: "https://example.com/inara.png"
  *                   bio:
  *                     type: string
- *                     example: "Trader desde 2020"
- *                   endereco:
+ *                     example: "Trader since 2020"
+ *                   address:
  *                     type: object
  *                     properties:
- *                       rua: { type: string, example: "Rua das Rosas" }
- *                       numero: { type: string, example: "123" }
- *                       bairro: { type: string, example: "Jardim das Flores" }
- *                       cidade: { type: string, example: "São Paulo" }
- *                       estado: { type: string, example: "SP" }
- *                       cep: { type: string, example: "01234-567" }
- *                   redesSociais:
+ *                       street: { type: string, example: "Rose Street" }
+ *                       number: { type: string, example: "123" }
+ *                       district: { type: string, example: "Flower District" }
+ *                       city: { type: string, example: "São Paulo" }
+ *                       state: { type: string, example: "SP" }
+ *                       zip: { type: string, example: "01234-567" }
+ *                   socialLinks:
  *                     type: array
  *                     items:
  *                       type: object
  *                       properties:
- *                         tipo: { type: string, example: "Instagram" }
+ *                         type: { type: string, example: "Instagram" }
  *                         link: { type: string, example: "https://instagram.com/inara" }
  *     responses:
  *       201:
- *         description: Usuário criado com sucesso
+ *         description: User successfully registered
  *       400:
- *         description: Erro de validação
+ *         description: Validation error
  */
+
 
 router.post('/register', validateRegister, handleValidation, authController.register);
 

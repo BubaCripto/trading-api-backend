@@ -2,11 +2,24 @@
 const User = require('../../models/User');
 
 exports.getAllUsers = async () => {
-  return User.find().select('-password').populate('roles');
+    return User.find().select('-password').populate({
+  path: 'roles',
+  populate: {
+    path: 'permissions',
+    model: 'Permission'
+  }
+});
 };
 
 exports.getUserById = async (id) => {
-  return User.findById(id).populate('roles');
+  return User.find().select('-password').populate({
+  path: 'roles',
+  populate: {
+    path: 'permissions',
+    model: 'Permission'
+  }
+});
+
 };
 
 exports.updateUser = async (id, data) => {

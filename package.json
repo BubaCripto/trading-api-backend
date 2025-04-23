@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --config jest.config.js --detectOpenHandles --forceExit",
+    "test": "jest --verbose --config jest.config.js --detectOpenHandles --forceExit",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "dev": "nodemon src/server.js"
@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
     "express-validator": "^7.2.1",
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",

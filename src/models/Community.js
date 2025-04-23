@@ -10,20 +10,38 @@ const communitySchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
-  userId: {
+
+  // Campos obrigatórios do seu sistema atual
+  userId: {                            // Dono da comunidade
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
+  createdBy: {                         // Redundante mas mantido por legado
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+
+  // Traders contratados
   hiredTraders: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
-  createdBy: {
+
+  // Novos campos opcionais para expansão
+  members: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }
+    ref: 'User'
+  }],
+  isPrivate: {
+    type: Boolean,
+    default: false
+  },
+  bannerImage: String,
+  telegramLink: String,
+  discordLink: String,
+  category: String // Ex: 'Swing Trade', 'Scalping', 'Educacional'
 }, {
   timestamps: true
 });

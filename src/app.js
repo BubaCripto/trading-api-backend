@@ -10,6 +10,11 @@ const tradingOperationsService = require('./services/tradingOperationsService');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const operationRoutes = require('./routes/operationRoutes');
+const communityRoutes = require('./routes/communityRoutes');
+//const contractRoutes = require('./routes/contractRoutes');
+
+
 
 
 
@@ -31,6 +36,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/operations', operationRoutes);
+app.use('/api/communities', communityRoutes);
+//app.use('/api/contracts', contractRoutes);
+
 
 // Start trading operations service (only if not testing)
 if (process.env.NODE_ENV !== 'test') {
@@ -39,9 +48,17 @@ if (process.env.NODE_ENV !== 'test') {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  if (!err.status || err.status >= 500) {
+    console.error(err); // Loga apenas se for erro crítico (500+)
+  }
+
+  if (err.status) {
+    return res.status(err.status).json({ message: err.message });
+  }
+
   res.status(500).json({ message: 'Something went wrong!' });
 });
+
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

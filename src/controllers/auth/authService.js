@@ -7,7 +7,17 @@ const bcrypt = require('bcryptjs');
 const Permission = require('../../models/Permission');
 
 exports.registerUser = async ({ username, email, password, roleNames, profileData }) => {
-  const roles = await Role.find({ name: { $in: roleNames } });
+  let finalRoles = roleNames;
+
+  const isDev = process.env.NODE_ENV === 'development' || process.env.ALLOW_ADMIN_REGISTER === 'true';
+
+  // 🔐 Bloquear role ADMIN em produção
+  if (!isDev && roleNames.includes('ADMIN')) {
+    finalRoles = ['USER']; // fallback seguro
+  }
+
+  const roles = await Role.find({ name: { $in: finalRoles } });
+
   if (roles.length === 0) {
     throw new Error('Nenhuma role válida encontrada.');
   }
@@ -54,6 +64,7 @@ exports.registerUser = async ({ username, email, password, roleNames, profileDat
     }
   };
 };
+
 
 exports.loginUser = async ({ email, password }) => {
   const user = await User.findOne({ email }).populate([

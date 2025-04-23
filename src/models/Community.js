@@ -38,6 +38,11 @@ const communitySchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+    plan: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Plan',
+    required: false
+  },
   bannerImage: String,
   telegramLink: String,
   discordLink: String,

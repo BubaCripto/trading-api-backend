@@ -21,12 +21,30 @@ exports.createOperation = async (req, res) => {
  */
 exports.getAllOperations = async (req, res) => {
   try {
-    const operations = await operationService.getAllOperations(req.user);
-    res.json(operations);
+    const allOperations = await operationService.getAllOperations(req.user);
+
+    // Captura os parâmetros da URL
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Pagina manualmente o array
+    const paginatedData = allOperations.slice(skip, skip + limit);
+
+    res.json({
+      data: paginatedData,
+      meta: {
+        total: allOperations.length,
+        page,
+        limit,
+        totalPages: Math.ceil(allOperations.length / limit)
+      }
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 
 /**

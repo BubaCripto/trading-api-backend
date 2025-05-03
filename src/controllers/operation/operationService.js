@@ -2,6 +2,15 @@
 const Operation = require('../../models/Operation');
 const { ForbiddenError, NotFoundError } = require('../../utils/errors');
 
+function hasRole(user, roleName) {
+  return user.roles?.some(role => {
+    if (typeof role === 'string') return role === roleName;
+    if (typeof role === 'object' && role.name) return role.name === roleName;
+    return false;
+  });
+}
+
+
 /**
  * Cria uma nova operação
  */
@@ -22,9 +31,14 @@ exports.createOperation = async (data, currentUser) => {
 /**
  * Lista todas as operações (com filtros futuros opcionais)
  */
-exports.getAllOperations = async () => {
-  return await Operation.find().sort({ createdAt: -1 });
+exports.getAllOperations = async (currentUser) => {
+  const isAdmin = hasRole(currentUser, 'ADMIN');
+  const filter = isAdmin ? {} : { userId: currentUser._id };
+
+  return await Operation.find(filter).sort({ createdAt: -1 });
 };
+
+
 
 /**
  * Retorna operação por ID

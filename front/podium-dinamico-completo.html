@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ranking Dinâmico de Traders</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-900 text-white min-h-screen">
+  <main class="max-w-7xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-semibold mb-8 flex items-center gap-2"><span>🏆</span> Classificação</h2>
+    <div id="podium" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10"></div>
+    <div id="ranking-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <div class="flex justify-center items-center mt-10 gap-2 text-sm text-zinc-400">
+      <button class="px-2 py-1 rounded bg-zinc-800 text-white border border-zinc-600">&lt;</button>
+      <button class="px-3 py-1 rounded bg-amber-600 font-semibold">1</button>
+      <button class="px-3 py-1 rounded bg-zinc-700">2</button>
+      <button class="px-3 py-1 rounded bg-zinc-700">3</button>
+      <span class="px-2">...</span>
+      <button class="px-3 py-1 rounded bg-zinc-700">10</button>
+      <button class="px-2 py-1 rounded bg-zinc-800 text-white border border-zinc-600">&gt;</button>
+    </div>
+    <p class="text-center text-xs text-zinc-500 mt-2">Atualizado em 21-04 20:23:10</p>
+  </main>
+
+  <script>
+    async function loadRanking() {
+      const res = await fetch('demo-traders.json');
+      const traders = await res.json();
+
+      // Ordenar por ROI
+      const sorted = traders.sort((a, b) => b.winRate - a.winRate);
+      const top3 = sorted.slice(0, 3);
+      const others = sorted.slice(3);
+
+      const podiumContainer = document.getElementById("podium");
+      top3.forEach((trader, index) => {
+        const medalColors = [
+          "from-yellow-400 to-yellow-100 border-yellow-400",
+          "from-slate-400 to-slate-100 border-gray-400",
+          "from-orange-400 to-orange-100 border-orange-400"
+        ];
+        const bg = medalColors[index];
+        const card = document.createElement("div");
+        card.className = `bg-gradient-to-b from-white/10 to-zinc-800 rounded-xl p-6 text-center shadow-md`;
+        card.innerHTML = `
+          <div class="bg-gradient-to-r ${bg.split(' ')[0]} ${bg.split(' ')[1]} h-2 rounded-t"></div>
+          <img src="${trader.profile.imagemPerfil}" alt="Trader" class="w-20 h-20 mx-auto rounded-full mt-4 border-2 ${bg.split(' ')[2]}" />
+          <h3 class="mt-4 text-lg font-semibold">${trader.profile.nomeCompleto}</h3>
+          <p class="text-green-400 text-xl font-bold mt-2">${trader.winRate.toFixed(2)}%</p>
+          <p class="text-sm text-zinc-400">ROI 7D</p>
+          <div class="flex justify-center mt-4 gap-4 text-sm">
+            <div>
+              <p class="text-white font-bold">${trader.totalProfit.toFixed(2)}</p>
+              <p class="text-zinc-400">PnL Cumulativo</p>
+            </div>
+            <div>
+              <span class="inline-block bg-amber-500 text-black text-xs px-2 py-1 rounded">⚠️ Risco</span>
+            </div>
+          </div>
+          <button class="mt-6 bg-amber-600 hover:bg-amber-700 px-6 py-2 rounded font-semibold">Copiar</button>
+        `;
+        podiumContainer.appendChild(card);
+      });
+
+      const listContainer = document.getElementById("ranking-list");
+      others.forEach(trader => {
+        const card = document.createElement("div");
+        card.className = "bg-zinc-800 p-5 rounded-xl shadow-md hover:shadow-lg transition-all duration-300";
+        const img = trader.profile?.imagemPerfil || 'https://via.placeholder.com/64';
+        const nome = trader.profile?.nomeCompleto || trader.username;
+        const winrate = trader.winRate?.toFixed(1) || 0;
+        const lucro = trader.totalProfit?.toFixed(2) || 0;
+        const rr = trader.riskRewardRatio?.toFixed(2) || 0;
+        const seguidores = trader.followers || Math.floor(Math.random() * 1000);
+
+        card.innerHTML = `
+          <div class="flex items-center gap-4 mb-3">
+            <img src="${img}" alt="Foto" class="w-16 h-16 rounded-full object-cover border border-amber-600">
+            <div>
+              <h3 class="text-lg font-semibold">${nome}</h3>
+              <p class="text-xs text-zinc-400">Futuros Perpétuos</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-sm text-zinc-300">
+            <div>
+              <p class="text-zinc-400">ROI 30D</p>
+              <p class="text-green-400 font-bold">+${winrate}%</p>
+            </div>
+            <div>
+              <p class="text-zinc-400">PnL</p>
+              <p class="font-bold">R$ ${lucro}</p>
+            </div>
+            <div>
+              <p class="text-zinc-400">R/R Médio</p>
+              <p>${rr}</p>
+            </div>
+            <div>
+              <p class="text-zinc-400">Seguidores</p>
+              <p>${seguidores}</p>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-between items-center">
+            <a href="/trader/${trader._id}" class="text-amber-400 text-sm hover:underline">Ver detalhes</a>
+            <button class="bg-amber-600 hover:bg-amber-700 px-3 py-1 text-sm rounded">Contratar</button>
+          </div>
+        `;
+        listContainer.appendChild(card);
+      });
+    }
+
+    loadRanking();
+  </script>
+</body>
+</html>

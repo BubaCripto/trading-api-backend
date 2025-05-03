@@ -7,6 +7,7 @@ const connectDB = require('./config/database');
 const tradingOperationsService = require('./services/tradingOperationsService');
 
 
+
 //rotas
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -38,7 +39,7 @@ app.use('/api/operations', operationRoutes);
 app.use('/api/communities', communityRoutes);
 app.use('/contracts', contractRoutes);
 app.use('/contracts', contractMessageRoutes);
-app.use('/communications', communicationRoutes); // ✅ Prefixo confere com os testes
+app.use('/communications', communicationRoutes); 
 
 
 // Start trading operations service (only if not testing)

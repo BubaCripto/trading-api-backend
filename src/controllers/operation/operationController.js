@@ -21,24 +21,8 @@ exports.createOperation = async (req, res) => {
  */
 exports.getAllOperations = async (req, res) => {
   try {
-    const operations = await operationService.getAllOperations();
+    const operations = await operationService.getAllOperations(req.user);
     res.json(operations);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-/**
- * GET /api/operations
- */
-exports.getAllOperations = async (req, res) => {
-  try {
-    const result = await paginateQuery(Operation, req, {
-      populate: 'createdBy',
-      select: '-__v',
-      baseFilter: req.user.roles.includes('ADMIN') ? {} : { createdBy: req.user._id }
-    });
-
-    res.status(200).json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

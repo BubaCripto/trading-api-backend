@@ -13,6 +13,7 @@ const {
   queryOperationLimiter
 } = require('../middleware/rateLimiter');
 
+const routeLogger = require('../middleware/routeLogger');
 
 /**
  * @swagger
@@ -197,13 +198,14 @@ const {
  */
 
 // Rotas de consulta (mais permissivas)
-router.get('/ranking', auth, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getRanking);
-router.get('/', auth, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getAllOperations);
-router.get('/:id', auth, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getOperationById);
+router.get('/ranking', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getRanking);
+router.get('/', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getAllOperations);
+router.get('/:id', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getOperationById);
 
 // Rota de criação (mais restritiva)
 router.post('/',
   auth,
+  routeLogger,
   createOperationLimiter,
   checkPermission('CREATE_OPERATION'),
   validateCreateOperation,
@@ -215,6 +217,7 @@ router.post('/',
 // Rotas de atualização (limite intermediário)
 router.put('/:id',
   auth,
+  routeLogger,
   updateOperationLimiter,
   checkPermission('UPDATE_OPERATION'),
   validateUpdateOperation,
@@ -224,6 +227,7 @@ router.put('/:id',
 
 router.patch('/:id/targets',
   auth,
+  routeLogger,
   updateOperationLimiter,
   checkPermission('UPDATE_OPERATION'),
   controller.updateTargets
@@ -231,6 +235,7 @@ router.patch('/:id/targets',
 
 router.patch('/:id/request-manual-close',
   auth,
+  routeLogger,
   updateOperationLimiter,
   checkPermission('UPDATE_OPERATION'),
   controller.requestManualClose
@@ -239,6 +244,7 @@ router.patch('/:id/request-manual-close',
 // Rota de deleção (limite intermediário)
 router.delete('/:id',
   auth,
+  routeLogger,
   updateOperationLimiter,
   checkPermission('DELETE_OPERATION'),
   controller.deleteOperation

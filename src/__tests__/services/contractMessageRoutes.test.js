@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const User = require('../../../src/models/User');
 const Role = require('../../../src/models/Role');
 const Community = require('../../../src/models/Community');
-const Contract = require('../../../src/models/contract');
+const Contract = require('../../../src/models/Contract');
 const ContractMessage = require('../../../src/models/ContractMessage');
 const jwt = require('../../../src/utils/jwt');
 

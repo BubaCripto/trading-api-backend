@@ -6,7 +6,7 @@ const contractService = require('../../controllers/contract/contractService');
 const User = require('../../../src/models/User');
 const Role = require('../../../src/models/Role');
 const Community = require('../../../src/models/Community');
-const Contract = require('../../../src/models/contract');
+const Contract = require('../../../src/models/Contract');
 
 describe('📦 Service: contractService (complementares)', () => {
   let owner, trader, outsider, inactiveCommunity, community;

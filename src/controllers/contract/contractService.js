@@ -1,4 +1,4 @@
-const Contract = require('../../models/contract');
+const Contract = require('../../models/Contract');
 const Community = require('../../models/Community');
 const User = require('../../models/User');
 

@@ -6,7 +6,12 @@
     "test": "jest --verbose --config jest.config.js --detectOpenHandles --forceExit",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "seed:roles": "node src/scripts/initRolesPermissions.js",
+    "seed:users": "node src/scripts/createDefaultUsers.js",
+    "seed:plans": "node src/scripts/seedPlans.js",
+    "seed:all": "npm run seed:roles && npm run seed:users && npm run seed:plans"
   },
   "keywords": [],
   "author": "",

@@ -1,4 +1,4 @@
-const Contract = require('../../models/contract');
+const Contract = require('../../models/Contract');
 const ContractMessage = require('../../models/ContractMessage');
 
 async function sendMessage({ contractId, message }, sender) {

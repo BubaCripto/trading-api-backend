@@ -2,7 +2,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const contractMessageService = require('../../controllers/contract/contractMessageService');
-const Contract = require('../../models/contract');
+const Contract = require('../../models/Contract');
 const ContractMessage = require('../../models/ContractMessage');
 const User = require('../../models/User');
 const Role = require('../../models/Role');

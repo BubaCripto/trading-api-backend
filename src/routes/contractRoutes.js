@@ -129,30 +129,62 @@ router.post('/:id/revoke', auth,validateContractIdParam, contractController.revo
  * @swagger
  * /contracts:
  *   get:
- *     summary: Lista contratos filtrando por comunidade, trader ou status
+ *     summary: Lista todos os contratos do usuário (como trader ou criador)
  *     tags: [Contracts]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - name: community
- *         in: query
- *         schema:
- *           type: string
- *         example: "660fff3d4f33e81a3d3dcf92"
- *       - name: trader
- *         in: query
- *         schema:
- *           type: string
- *         example: "660fef1a0fbb150f95dc9289"
- *       - name: status
- *         in: query
- *         schema:
- *           type: string
- *           enum: [PENDING, ACCEPTED, REJECTED, REVOKED]
  *     responses:
  *       200:
  *         description: Lista de contratos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       community:
+ *                         type: object
+ *                         properties:
+ *                           name:
+ *                             type: string
+ *                           description:
+ *                             type: string
+ *                       trader:
+ *                         type: object
+ *                         properties:
+ *                           username:
+ *                             type: string
+ *                           email:
+ *                             type: string
+ *                       createdBy:
+ *                         type: object
+ *                         properties:
+ *                           username:
+ *                             type: string
+ *                           email:
+ *                             type: string
+ *                       status:
+ *                         type: string
+ *                         enum: [PENDING, ACCEPTED, REJECTED, REVOKED]
+ *                       terms:
+ *                         type: string
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *       401:
+ *         description: Não autorizado
+ *       500:
+ *         description: Erro interno do servidor
  */
-router.get('/', auth, validateGetContractsQuery,  contractController.getContracts);
+router.get('/', auth, validateGetContractsQuery, contractController.getContracts);
 
 module.exports = router;

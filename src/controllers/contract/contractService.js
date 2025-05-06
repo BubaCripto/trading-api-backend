@@ -104,30 +104,16 @@ async function revokeContract(contractId, user) {
   return contract;
 }
 
-async function getContracts(query, user) {
-  const filter = {};
-
-  if (query.community) {
-    filter.community = query.community;
-  }
-
-  if (query.trader) {
-    filter.trader = query.trader;
-  }
-
-  if (query.status) {
-    filter.status = query.status;
-  }
-
-  // Apenas contratos que envolvam o usuário (admin fica para depois)
-  filter.$or = [
-    { trader: user._id },
-    { createdBy: user._id }
-  ];
-
-  const contracts = await Contract.find(filter)
-    .populate('community')
-    .populate('trader')
+async function getContracts(user) {
+  const contracts = await Contract.find({
+    $or: [
+      { trader: user._id },
+      { createdBy: user._id }
+    ]
+  })
+    .populate('community', 'name description')
+    .populate('trader', 'username email')
+    .populate('createdBy', 'username email')
     .sort({ createdAt: -1 });
 
   return contracts;

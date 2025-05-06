@@ -40,21 +40,11 @@ async function revokeContract(req, res) {
 
 async function getContracts(req, res) {
   try {
-    const baseFilter = {
-      $or: [
-        { trader: req.user._id },
-        { createdBy: req.user._id }
-      ]
-    };
-
-    const contracts = await paginateQuery(Contract, req, {
-      baseFilter,
-      populate: ['community', 'trader'],
-      select: '-__v',
-      defaultSort: '-createdAt'
+    const contracts = await contractService.getContracts(req.user);
+    return res.status(200).json({
+      success: true,
+      data: contracts
     });
-
-    return res.status(200).json(contracts);
   } catch (err) {
     return res.status(err.status || 500).json({ error: err.message });
   }

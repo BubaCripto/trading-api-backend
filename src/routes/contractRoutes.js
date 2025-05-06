@@ -184,6 +184,7 @@ router.post('/:id/revoke', auth,validateContractIdParam, contractController.revo
  *         description: Não autorizado
  *       500:
  *         description: Erro interno do servidor
+ * 
  */
 router.get('/', auth, validateGetContractsQuery, contractController.getContracts);
 

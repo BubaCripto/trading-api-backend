@@ -112,9 +112,20 @@ exports.deleteOperation = async (req, res) => {
  */
 exports.getRanking = async (req, res) => {
   try {
-    const ranking = await operationService.getRanking();
+    const ranking = await operationService.getTraderRankingWithKpis();
     res.json(ranking);
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getTraderStats = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const stats = await operationService.getTraderStats(userId);
+    res.status(200).json({ success: true, data: stats });
+  } catch (err) {
+    console.error("Erro ao gerar KPIs do trader:", err);
+    res.status(500).json({ success: false, message: "Erro ao obter estatísticas" });
   }
 };

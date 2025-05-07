@@ -95,7 +95,7 @@ describe('📦 Service: contractService', () => {
   });
 
   it('✅ deve buscar contratos do usuário', async () => {
-    const result = await contractService.getContracts({ community: community._id }, owner);
+    const result = await contractService.getContracts( owner);
     expect(Array.isArray(result)).toBe(true);
     expect(result[0]).toHaveProperty('status');
   });

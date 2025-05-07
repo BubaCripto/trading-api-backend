@@ -9,6 +9,37 @@ class TradingOperationsService {
     this.interval = null;
   }
 
+  isTargetHit(operation, currentPrice, target) {
+    const isLong = operation.signal === 'LONG';
+    const targetHit = isLong ? currentPrice >= target : currentPrice <= target;
+
+    if (targetHit) {
+      console.log(`Target hit for ${operation.pair}:
+        Current=${currentPrice},
+        Target=${target},
+        Direction=${operation.signal}`
+      );
+    }
+
+    return targetHit;
+  }
+
+  // Add this method after isTargetHit
+isStopHit(operation, currentPrice) {
+  const isLong = operation.signal === 'LONG';
+  const stopHit = isLong ? currentPrice <= operation.stop : currentPrice >= operation.stop;
+
+  if (stopHit) {
+    console.log(`Stop hit for ${operation.pair}:
+      Current=${currentPrice},
+      Stop=${operation.stop},
+      Direction=${operation.signal}`
+    );
+  }
+
+  return stopHit;
+}
+
   calculateTradeMetrics(operation, exitPrice) {
     const isLong = operation.signal === 'LONG';
     const entryPrice = operation.history.entry || operation.entry;
@@ -41,45 +72,42 @@ class TradingOperationsService {
     };
   }
 
+  // Primeiro, vamos ajustar o isPriceInEntryRange
   isPriceInEntryRange(operation, currentPrice) {
     if (operation.history.isOpen || operation.history.isClosed) {
       return false;
     }
-
-    const entryMultiplier = operation.signal === 'LONG' ? 1 : -1;
-    const upperEntryBound = operation.entry + entryMultiplier * operation.entry * this.PRICE_THRESHOLD;
-    const lowerEntryBound = operation.entry + entryMultiplier * operation.entry * (-this.PRICE_THRESHOLD);
-
-    const isInRange = (
-      entryMultiplier * currentPrice >= entryMultiplier * lowerEntryBound &&
-      entryMultiplier * currentPrice <= entryMultiplier * upperEntryBound
-    );
-
-    console.log(`Verificação de preço para ${operation.pair}:
-      Atual=${currentPrice},
-      Entrada=${operation.entry},
-      Faixa=[${lowerEntryBound}-${upperEntryBound}]`
-    );
-    return isInRange;
-  }
-
-  isTargetHit(operation, currentPrice, target) {
-    return operation.signal === 'LONG' ? currentPrice >= target : currentPrice <= target;
-  }
-
-  isStopHit(operation, currentPrice) {
+  
     const isLong = operation.signal === 'LONG';
-    const stopHit = isLong ? currentPrice <= operation.stop : currentPrice >= operation.stop;
-
-    if (stopHit) {
-      console.log(`Stop hit for ${operation.pair}:
+    const entryPrice = operation.entry;
+    const threshold = entryPrice * this.PRICE_THRESHOLD;
+  
+    // Ajuste da lógica para SHORT e LONG
+    if (isLong) {
+      const upperBound = entryPrice + threshold;
+      const lowerBound = entryPrice - threshold;
+      const isInRange = currentPrice >= lowerBound && currentPrice <= upperBound;
+      
+      console.log(`LONG Entry Check - ${operation.pair}:
         Current=${currentPrice},
-        Stop=${operation.stop},
-        Direction=${operation.signal}`
-      );
+        Entry=${entryPrice},
+        Range=[${lowerBound}-${upperBound}]
+        InRange=${isInRange}`);
+      
+      return isInRange;
+    } else {
+      const upperBound = entryPrice + threshold;
+      const lowerBound = entryPrice - threshold;
+      const isInRange = currentPrice >= lowerBound && currentPrice <= upperBound;
+      
+      console.log(`SHORT Entry Check - ${operation.pair}:
+        Current=${currentPrice},
+        Entry=${entryPrice},
+        Range=[${lowerBound}-${upperBound}]
+        InRange=${isInRange}`);
+      
+      return isInRange;
     }
-
-    return stopHit;
   }
 
   async processEntry(operation, currentPrice) {
@@ -91,8 +119,7 @@ class TradingOperationsService {
         ...operation.history,
         isOpen: true,
         entry: currentPrice,
-        inNew:false,
-        isOpen: true,
+        isNew: false,  // Corrigido o nome da propriedade
         entryDate: new Date(),
         events: [
           ...(operation.history.events || []),
@@ -100,13 +127,21 @@ class TradingOperationsService {
             event: 'Entry',
             price: currentPrice,
             timestamp: new Date(),
-            details: `${operation.signal} position opened at ${currentPrice}`
+            details: `${operation.signal} position opened at ${currentPrice}`,
+            direction: operation.signal  // Adicionado para melhor rastreamento
           }
         ]
       }
     };
 
-    const updatedOperation = await Operation.findByIdAndUpdate(operation._id, updates, { new: true });
+    console.log(`Processing ${operation.signal} entry at ${currentPrice} for ${operation.pair}`);
+
+    const updatedOperation = await Operation.findByIdAndUpdate(
+      operation._id, 
+      updates, 
+      { new: true, runValidators: true }  // Adicionado runValidators
+    );
+
     await notificationService.notify('ENTRY', updatedOperation);
     return true;
   }
@@ -326,7 +361,8 @@ class TradingOperationsService {
           continue;
         }
 
-        const results = await Promise.all([
+        // Fix: Match array elements with destructuring
+        const [newResult, entryResult, targetsResult, stopLossResult, cancellationResult] = await Promise.all([
           this.processNew(operation),
           this.processEntry(operation, currentPrice),
           this.processTargets(operation, currentPrice),
@@ -334,10 +370,13 @@ class TradingOperationsService {
           this.processCancellation(operation, currentPrice)
         ]);
 
-        const [entry, targets, stopLoss, cancelled] = results;
-        if (entry || targets || stopLoss || cancelled) {
+        if (newResult || entryResult || targetsResult || stopLossResult || cancellationResult) {
           console.log(`Operation ${operation._id} updated:`, {
-            entry, targets, stopLoss, cancelled
+            new: newResult,
+            entry: entryResult,
+            targets: targetsResult,
+            stopLoss: stopLossResult,
+            cancelled: cancellationResult
           });
         }
       }
@@ -394,4 +433,11 @@ class TradingOperationsService {
   }
 }
 
+
+
   module.exports = new TradingOperationsService();
+
+
+
+
+ 

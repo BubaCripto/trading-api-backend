@@ -1,4 +1,5 @@
 const Community = require('../../models/Community');
+const Plan = require('../../models/Plan'); // Add this import
 const { ForbiddenError, NotFoundError } = require('../../utils/errors');
 
 function hasAdminRole(user) {
@@ -97,4 +98,26 @@ exports.inviteMember = async (id, userId, currentUser) => {
   }
   return community;
 };
+
+// Add after other exports
+exports.subscribeToPlan = async (communityId, planId, currentUser) => {
+  const community = await Community.findById(communityId);
+  if (!community) throw new NotFoundError('Comunidade não encontrada');
+
+  const plan = await Plan.findById(planId);
+  if (!plan) throw new NotFoundError('Plano não encontrado');
+
+  const isAdmin = hasAdminRole(currentUser);
+  const isOwner = community.userId.toString() === currentUser._id.toString();
+
+  if (!isAdmin && !isOwner) {
+    throw new ForbiddenError('Apenas administradores ou o criador da comunidade podem assinar um plano');
+  }
+
+  community.plan = planId;
+  await community.save();
+
+  return await community.populate('plan');
+};
+
 

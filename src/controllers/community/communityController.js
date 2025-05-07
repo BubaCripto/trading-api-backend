@@ -88,3 +88,17 @@ exports.inviteMember = async (req, res, next) => {
   }
 };
 
+// Add after other exports
+exports.subscribeToPlan = async (req, res, next) => {
+  try {
+    const community = await service.subscribeToPlan(
+      req.params.id,
+      req.params.planId,
+      req.user
+    );
+    res.json(community);
+  } catch (err) {
+    next(err);
+  }
+};
+

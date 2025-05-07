@@ -189,7 +189,7 @@ const routeLogger = require('../middleware/routeLogger');
  * /api/operations/ranking:
  *   get:
  *     summary: Obter ranking de traders por PnL
- *     tags: [Operations]
+ *     tags: [Trader]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -197,8 +197,135 @@ const routeLogger = require('../middleware/routeLogger');
  *         description: Lista de traders ranqueados por lucro
  */
 
+/**
+ * @swagger
+ * /api/operations/ranking/{userId}/stats:
+ *   get:
+ *     summary: Retorna estatísticas completas de um trader (KPIs de performance)
+ *     tags:
+ *       - Trader
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: userId
+ *         in: path
+ *         required: true
+ *         description: ID do usuário (trader) para buscar as estatísticas
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Estatísticas do trader retornadas com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     totalPnL:
+ *                       type: number
+ *                       example: 2432.12
+ *                     avgPnL:
+ *                       type: number
+ *                       example: 30.41
+ *                     maxPnL:
+ *                       type: number
+ *                       example: 300.0
+ *                     minPnL:
+ *                       type: number
+ *                       example: -120.5
+ *                     totalTrades:
+ *                       type: integer
+ *                       example: 80
+ *                     positiveTrades:
+ *                       type: integer
+ *                       example: 49
+ *                     winRate:
+ *                       type: number
+ *                       example: 61.25
+ *                     avgRiskReward:
+ *                       type: number
+ *                       example: 1.7
+ *                     volumeOperadoTotal:
+ *                       type: number
+ *                       example: 850000
+ *                     mediaAlavancagem:
+ *                       type: number
+ *                       example: 5.3
+ *                     avgDurationMinutos:
+ *                       type: number
+ *                       example: 82.6
+ *                     lastTradeDate:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2025-05-06T23:14:00.000Z"
+ *                     porPar:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "BTCUSDT"
+ *                           count:
+ *                             type: integer
+ *                             example: 45
+ *                     porSinal:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "LONG"
+ *                           count:
+ *                             type: integer
+ *                             example: 65
+ *                     porEstrategia:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: "Swing"
+ *                           count:
+ *                             type: integer
+ *                             example: 40
+ *       401:
+ *         description: Token não fornecido ou inválido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Token não fornecido
+ *       500:
+ *         description: Erro ao buscar estatísticas do trader
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Erro ao obter estatísticas
+ */
+
+
 // Rotas de consulta (mais permissivas)
 router.get('/ranking', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getRanking);
+router.get("/ranking/:userId/stats",auth,checkPermission('VIEW_OPERATION'), controller.getTraderStats);
 router.get('/', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getAllOperations);
 router.get('/:id', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getOperationById);
 
@@ -249,5 +376,7 @@ router.delete('/:id',
   checkPermission('DELETE_OPERATION'),
   controller.deleteOperation
 );
+
+
 
 module.exports = router;

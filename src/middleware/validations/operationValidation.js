@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const Operation = require('../../models/Operation');
 
 const MAX_LEVERAGE = 125;
-const MAX_CONCURRENT_OPERATIONS = 5;
+const MAX_CONCURRENT_OPERATIONS = 9999999999999999;
 
 exports.validateCreateOperation = [
   body('signal')

@@ -223,4 +223,32 @@ router.patch('/:id/remove/:traderId', auth, checkPermission('ADMIN_REMOVE_TRADER
  */
 router.patch('/:id/invite/:userId', auth, checkPermission('ADMIN_INVITE_MEMBER'), controller.inviteMember);
 
+// Add before module.exports = router;
+
+/**
+ * @swagger
+ * /api/communities/{id}/subscribe/{planId}:
+ *   patch:
+ *     summary: Subscribe community to a plan
+ *     tags: [Communities]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema: { type: string }
+ *       - name: planId
+ *         in: path
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Community subscribed to plan
+ *       403:
+ *         description: Permission denied
+ */
+router.patch('/:id/subscribe/:planId',auth, checkPermission('MANAGE_SUBSCRIPTIONS'), controller.subscribeToPlan
+);
+
 module.exports = router;

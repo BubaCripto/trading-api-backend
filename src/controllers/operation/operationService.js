@@ -1,6 +1,8 @@
 
 const Operation = require('../../models/Operation');
 const { ForbiddenError, NotFoundError } = require('../../utils/errors');
+const Contract = require('../../models/Contract');
+const mongoose = require('mongoose');
 
 function hasRole(user, roleName) {
   return user.roles?.some(role => {
@@ -187,10 +189,58 @@ exports.getTraderRankingWithKpis = async () => {
 };
 
 exports.getTraderStats = async (userId) => {
+  let objectId;
+  try {
+    objectId = new mongoose.Types.ObjectId(userId);
+  } catch (err) {
+    throw new Error("ID de usuário inválido.");
+  }
+
+  const now = new Date();
+  const ninetyDaysAgo = new Date(now.getTime() - 1000 * 60 * 60 * 24 * 90);
+
+  // contratos finalizados
+  const contractsEnded = await Contract.countDocuments({
+    traderId: objectId,
+    status: 'ENDED'
+  });
+
+  // comunidades únicas que contrataram
+  const communitiesAgg = await Contract.aggregate([
+    { $match: { traderId: objectId, status: { $in: ['ACCEPTED', 'ENDED'] } } },
+    { $group: { _id: "$communityId" } },
+    { $count: "communitiesCount" }
+  ]);
+  const communitiesCount = communitiesAgg[0]?.communitiesCount || 0;
+
+  // operações nos últimos 90 dias
+  const recentOps = await Operation.find({
+    userId: objectId,
+    createdAt: { $gte: ninetyDaysAgo }
+  });
+
+  const avgOpsPerWeek = Number((recentOps.length / (90 / 7)).toFixed(1));
+
+  // dias consecutivos
+  const uniqueDates = [...new Set(recentOps.map(op => op.createdAt.toISOString().split("T")[0]))].sort();
+  let maxStreak = 0;
+  let currentStreak = 1;
+  for (let i = 1; i < uniqueDates.length; i++) {
+    const prev = new Date(uniqueDates[i - 1]);
+    const curr = new Date(uniqueDates[i]);
+    const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+    if (diff === 1) {
+      currentStreak++;
+      maxStreak = Math.max(maxStreak, currentStreak);
+    } else {
+      currentStreak = 1;
+    }
+  }
+
   const [stats] = await Operation.aggregate([
     {
       $match: {
-        userId: userId,
+        userId: objectId,
         "history.isClosed": true,
         "history.pnlAmount": { $ne: null }
       }
@@ -236,7 +286,12 @@ exports.getTraderStats = async (userId) => {
               positiveTrades: 1,
               winRate: {
                 $round: [
-                  { $multiply: [{ $divide: ["$positiveTrades", "$totalTrades"] }, 100] },
+                  {
+                    $multiply: [
+                      { $divide: ["$positiveTrades", "$totalTrades"] },
+                      100
+                    ]
+                  },
                   2
                 ]
               },
@@ -249,40 +304,61 @@ exports.getTraderStats = async (userId) => {
           }
         ],
         porPar: [
-          {
-            $group: {
-              _id: "$pair",
-              count: { $sum: 1 }
-            }
-          },
+          { $group: { _id: "$pair", count: { $sum: 1 } } },
           { $sort: { count: -1 } }
         ],
         porSinal: [
-          {
-            $group: {
-              _id: "$signal",
-              count: { $sum: 1 }
-            }
-          }
+          { $group: { _id: "$signal", count: { $sum: 1 } } }
         ],
         porEstrategia: [
+          { $group: { _id: "$strategy", count: { $sum: 1 } } }
+        ],
+        ultimasOperacoes: [
           {
-            $group: {
-              _id: "$strategy",
-              count: { $sum: 1 }
+            $match: {
+              userId: objectId,
+              "history.exitDate": { $gte: ninetyDaysAgo },
+              "history.isClosed": true,
+              "history.pnlAmount": { $ne: null }
             }
-          }
+          },
+          {
+            $project: {
+              _id: 0,
+              createdAt: 1,
+              pair: 1,
+              signal: 1,
+              pnl: "$history.pnlAmount"
+            }
+          },
+          { $sort: { createdAt: -1 } }
         ]
       }
     }
   ]);
 
+  const geral = stats?.geral?.[0] || {};
+  const minutos = Math.round(geral.avgDurationMinutos || 0);
+  const avgDurationFormatted = `${Math.floor(minutos / 60)}h ${minutos % 60}m`;
+
   return {
-    ...stats.geral[0],
-    porPar: stats.porPar,
-    porSinal: stats.porSinal,
-    porEstrategia: stats.porEstrategia
+    ...geral,
+    porPar: stats?.porPar || [],
+    porSinal: stats?.porSinal || [],
+    porEstrategia: stats?.porEstrategia || [],
+    ultimasOperacoes: stats?.ultimasOperacoes || [],
+    contractsEnded,
+    communitiesCount,
+    avgOpsPerWeek,
+    consecutiveDays: maxStreak || 1,
+    avgDurationFormatted
   };
 };
+
+
+
+
+
+
 
 

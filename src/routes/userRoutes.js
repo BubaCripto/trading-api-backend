@@ -17,7 +17,7 @@ const checkPermission = require('../middleware/checkPermission');
  * /api/users:
  *   get:
  *     summary: Lista todos os usuários
- *     tags: [Users]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -28,14 +28,14 @@ const checkPermission = require('../middleware/checkPermission');
  *       403:
  *         description: Permissão negada
  */
-router.get('/', auth, checkPermission('VIEW_USER'), userController.getAllUsers);
+router.get('/', auth, userController.getAllUsers);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   put:
  *     summary: Atualiza um usuário
- *     tags: [Users]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -69,14 +69,14 @@ router.get('/', auth, checkPermission('VIEW_USER'), userController.getAllUsers);
  *         description: Usuário não encontrado
  */
 
-router.put('/:id', auth, checkPermission('UPDATE_USER'), userController.updateUser);
+router.put('/:id', auth, userController.updateUser);
 
 /**
  * @swagger
  * /api/users/{id}:
  *   delete:
  *     summary: Remove um usuário
- *     tags: [Users]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -96,5 +96,21 @@ router.put('/:id', auth, checkPermission('UPDATE_USER'), userController.updateUs
  */
 
 router.delete('/:id', auth, checkPermission('DELETE_USER'), userController.deleteUser);
+
+/**
+ * @swagger
+ * /api/users/me:
+ *   get:
+ *     summary: Retorna o perfil do usuário logado
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do perfil retornados com sucesso
+ *       401:
+ *         description: Token ausente ou inválido
+ */
+router.get('/me', auth, userController.getProfile);
 
 module.exports = router;

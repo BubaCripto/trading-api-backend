@@ -1,5 +1,6 @@
 const Communication = require('../../models/Communication');
 const Community = require('../../models/Community');
+const paginateQuery = require('../../utils/paginateQuery');
 
 function isAdminUser(user) {
   return user.roles?.some(r => r.name === 'ADMIN' || r === 'ADMIN');
@@ -45,14 +46,45 @@ async function createCommunication(data, user) {
   return communication;
 }
 
-async function getCommunications(query, user) {
-  const { communityId } = query;
-  const filter = {};
+async function getCommunications(req, user) {
+  const baseFilter = {};
 
-  if (communityId) filter.communityId = communityId;
-  if (!isAdminUser(user)) filter.createdBy = user._id;
+  // Optional filter by communityId
+  if (req.query.communityId) {
+    baseFilter.communityId = req.query.communityId;
+  }
 
-  return Communication.find(filter).sort({ createdAt: -1 });
+  // If not admin, only show user's communications
+  if (!isAdminUser(user)) {
+    // If communityId is provided, check if user is owner of that community
+    if (req.query.communityId) {
+      const community = await Community.findById(req.query.communityId);
+      const isOwner = community?.createdBy.toString() === user._id.toString();
+      
+      if (!isOwner) {
+        throw { status: 403, message: 'Você não tem permissão para ver as comunicações desta comunidade' };
+      }
+    } else {
+      // If no communityId, show only communications created by the user
+      baseFilter.createdBy = user._id;
+    }
+  }
+
+  return await paginateQuery(Communication, req, {
+    baseFilter,
+    populate: [
+      {
+        path: 'communityId',
+        select: 'name description'
+      },
+      {
+        path: 'createdBy',
+        select: 'username email -_id'
+      }
+    ],
+    select: '-__v',
+    defaultSort: '-createdAt'
+  });
 }
 
 async function toggleCommunication(id, user) {

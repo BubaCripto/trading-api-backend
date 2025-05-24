@@ -17,6 +17,7 @@ const communityRoutes = require('./routes/communityRoutes');
 const contractRoutes = require('./routes/contractRoutes');
 const contractMessageRoutes = require('./routes/contractMessageRoutes');
 const communicationRoutes = require('./routes/communicationRoutes');
+const logRoutes = require('./routes/logRoutes');
 
 // Initialize express app
 const app = express();
@@ -40,6 +41,7 @@ app.use('/api/communities', communityRoutes);
 app.use('/contracts', contractRoutes);
 app.use('/contracts', contractMessageRoutes);
 app.use('/communications', communicationRoutes); 
+app.use('/api/logs', logRoutes);  // Added log routes
 
 
 // Start trading operations service (only if not testing)

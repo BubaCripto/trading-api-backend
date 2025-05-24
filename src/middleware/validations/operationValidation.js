@@ -3,7 +3,6 @@ const { body } = require('express-validator');
 const Operation = require('../../models/Operation');
 
 const MAX_LEVERAGE = 125;
-const MAX_CONCURRENT_OPERATIONS = 9999999999999999;
 
 exports.validateCreateOperation = [
   body('signal')
@@ -23,24 +22,9 @@ exports.validateCreateOperation = [
     .custom(value => value.every(t => t > 0)).withMessage('Todos os targets devem ser positivos'),
   body('strategy').optional().isString(),
   body('risk').optional().isIn(['Baixo', 'Moderado', 'Alto']),
-  body('description').optional().isString(),
-
- 
-
-  // Custom validation for concurrent operations limit
-  body().custom(async (value, { req }) => {
-    const activeOperations = await Operation.countDocuments({
-      userId: req.user._id,
-      status: { $nin: ['CLOSED', 'CANCELLED'] }
-    });
-    if (activeOperations >= MAX_CONCURRENT_OPERATIONS) {
-      throw new Error('Limite máximo de operações simultâneas atingido');
-    }
-    return true;
-  })
+  body('description').optional().isString()
 ];
 
-// Update validation remains the same
 exports.validateUpdateOperation = [
   body('entry').optional().isNumeric(),
   body('stop').optional().isNumeric(),

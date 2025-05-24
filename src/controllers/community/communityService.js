@@ -1,5 +1,6 @@
 const Community = require('../../models/Community');
-const Plan = require('../../models/Plan'); // Add this import
+const Plan = require('../../models/Plan');
+const paginateQuery = require('../../utils/paginateQuery');
 const { ForbiddenError, NotFoundError } = require('../../utils/errors');
 
 function hasAdminRole(user) {
@@ -19,8 +20,27 @@ exports.createCommunity = async (data, currentUser) => {
   return await community.save();
 };
 
-exports.getAll = async () => {
-  return await Community.find({ active: true }).populate('hiredTraders userId');
+exports.getAll = async (req) => {
+  return await paginateQuery(Community, req, {
+    baseFilter: { active: true },
+    select: '-__v',
+    populate: [
+      {
+        path: 'createdBy',
+        select: '-password -__v',
+        populate: {
+          path: 'roles',
+          select: 'name description'
+        }
+      },
+      {
+        path: 'hiredTraders',
+        select: '-password -__v'
+      },
+      'plan'
+    ],
+    defaultSort: '-createdAt'
+  });
 };
 
 exports.getById = async (id) => {

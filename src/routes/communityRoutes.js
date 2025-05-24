@@ -159,7 +159,7 @@ router.delete('/:id', auth, checkPermission('DELETE_COMMUNITY'), controller.dele
  * /api/communities/{id}/hire/{traderId}:
  *   patch:
  *     summary: Contratar um trader
- *     tags: [Communities]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -182,7 +182,7 @@ router.patch('/:id/hire/:traderId', auth, checkPermission('ADMIN_HIRE_TRADER'), 
  * /api/communities/{id}/remove/{traderId}:
  *   patch:
  *     summary: Remover um trader contratado
- *     tags: [Communities]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -205,7 +205,7 @@ router.patch('/:id/remove/:traderId', auth, checkPermission('ADMIN_REMOVE_TRADER
  * /api/communities/{id}/invite/{userId}:
  *   patch:
  *     summary: Convidar um membro
- *     tags: [Communities]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -230,7 +230,7 @@ router.patch('/:id/invite/:userId', auth, checkPermission('ADMIN_INVITE_MEMBER')
  * /api/communities/{id}/subscribe/{planId}:
  *   patch:
  *     summary: Subscribe community to a plan
- *     tags: [Communities]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:

@@ -1,6 +1,5 @@
 
 const operationService = require('./operationService');
-const paginateQuery = require('../../utils/paginateQuery');
 
 
 /**
@@ -125,7 +124,6 @@ exports.getTraderStats = async (req, res) => {
     const stats = await operationService.getTraderStats(userId);
     res.status(200).json({ success: true, data: stats });
   } catch (err) {
-    console.error("Erro ao gerar KPIs do trader:", err);
-    res.status(500).json({ success: false, message: "Erro ao obter estatísticas" });
+    res.status(500).json({ success: false, message: err.message });
   }
 };

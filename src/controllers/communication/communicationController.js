@@ -1,7 +1,6 @@
 
 const communicationService = require('./communicationService');
-const paginateQuery = require('../../utils/paginateQuery');
-const Communication = require('../../models/Communication');
+
 
 
 async function createCommunication(req, res, next) {
@@ -17,24 +16,7 @@ async function createCommunication(req, res, next) {
 
 async function getCommunications(req, res, next) {
   try {
-    const baseFilter = {};
-
-    if (req.query.communityId) {
-      baseFilter.communityId = req.query.communityId;
-    }
-
-    // Se não for ADMIN, só vê os que ele criou
-    if (!req.user.roles?.includes('ADMIN')) {
-      baseFilter.createdBy = req.user._id;
-    }
-
-    const result = await paginateQuery(Communication, req, {
-      baseFilter,
-      populate: 'communityId',
-      select: '-__v',
-      defaultSort: '-createdAt'
-    });
-
+    const result = await communicationService.getCommunications(req, req.user);
     res.status(200).json(result);
   } catch (error) {
     next(error);

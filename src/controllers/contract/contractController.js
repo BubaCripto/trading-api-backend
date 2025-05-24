@@ -1,5 +1,4 @@
 const contractService = require('./contractService');
-const paginateQuery = require('../../utils/paginateQuery');
 
 
 async function requestContract(req, res) {

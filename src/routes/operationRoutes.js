@@ -122,7 +122,7 @@ const routeLogger = require('../middleware/routeLogger');
  *         description: Operação não encontrada
  *   delete:
  *     summary: Excluir operação
- *     tags: [Operations]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -189,7 +189,7 @@ const routeLogger = require('../middleware/routeLogger');
  * /api/operations/ranking:
  *   get:
  *     summary: Obter ranking de traders por PnL
- *     tags: [Trader]
+ *     tags: [Dashdoard Trader]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -203,7 +203,7 @@ const routeLogger = require('../middleware/routeLogger');
  *   get:
  *     summary: Retorna estatísticas completas de um trader (KPIs de performance)
  *     tags:
- *       - Trader
+ *       - Dashdoard Trader
  *     security:
  *       - bearerAuth: []
  *     parameters:

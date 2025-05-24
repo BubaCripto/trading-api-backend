@@ -124,7 +124,7 @@ router.patch(
  * /communications/{id}:
  *   delete:
  *     summary: Deletar uma comunicação existente
- *     tags: [Communications]
+ *     tags: [Admin]
  *     security:
  *       - bearerAuth: []
  *     parameters:

@@ -1,6 +1,7 @@
 const Operation = require('../models/Operation');
 const cryptoApiService = require('./cryptoApiService');
 const notificationService = require('./notificationService');
+const logger = require('../utils/logger'); // Adicione esta linha
 
 class TradingOperationsService {
   constructor() {
@@ -333,55 +334,94 @@ isStopHit(operation, currentPrice) {
         ]
       });
 
-      console.log(`Found ${operations.length} active operations to monitor`);
+      logger.info(`Monitorando operações ativas`, { count: operations.length });
       if (operations.length === 0) return;
 
+      // Extrair pares únicos para consulta em lote
       const pairs = [...new Set(operations.map(op => {
         return op.pair.replace('USDT', '').replace('USD', '').replace('/', '');
       }))];
-      console.log(`Monitoring prices for pairs: ${pairs.join(', ')}`);
+      
+      logger.debug(`Consultando preços`, { pairs });
+      
+      // Tratamento de erro mais robusto
+      let prices;
+      try {
+        prices = await cryptoApiService.getPrices(pairs);
+      } catch (error) {
+        logger.error(`Falha ao obter preços`, { 
+          error: error.message, 
+          pairs 
+        });
+        return; // Encerra a execução atual e tentará novamente no próximo ciclo
+      }
 
-      const prices = await cryptoApiService.getPrices(pairs);
-      console.log('Price check summary:');
+      // Processamento em paralelo com limite de concorrência
+      const concurrencyLimit = 5; // Processa 5 operações por vez
+      const chunks = [];
+      
+      // Divide as operações em chunks para processamento paralelo limitado
+      for (let i = 0; i < operations.length; i += concurrencyLimit) {
+        chunks.push(operations.slice(i, i + concurrencyLimit));
+      }
+      
+      // Processa cada chunk sequencialmente, mas operações dentro do chunk em paralelo
+      for (const chunk of chunks) {
+        await Promise.all(chunk.map(async operation => {
+          const formattedPair = operation.pair.replace('USDT', '').replace('USD', '').replace('/', '');
+          const currentPrice = prices[formattedPair]?.USD?.PRICE;
 
-      for (const operation of operations) {
-        const formattedPair = operation.pair.replace('USDT', '').replace('USD', '').replace('/', '');
-        const currentPrice = prices[formattedPair]?.USD?.PRICE;
-
-        if (!currentPrice) {
-          console.error(`❌ No price found for ${operation.pair} (${formattedPair})`);
-          continue;
-        }
-        console.log(`✓ ${operation.pair}: $${currentPrice} | Status: ${operation.status}`);
-
-        // Substituir verificação de status_signal pela nova flag
-        if (operation.history.isManualCloseRequested) {
-          console.log(`Processing manual close for ${operation.pair}`);
-          await this.processManualClose(operation, currentPrice);
-          continue;
-        }
-
-        // Fix: Match array elements with destructuring
-        const [newResult, entryResult, targetsResult, stopLossResult, cancellationResult] = await Promise.all([
-          this.processNew(operation),
-          this.processEntry(operation, currentPrice),
-          this.processTargets(operation, currentPrice),
-          this.processStopLoss(operation, currentPrice),
-          this.processCancellation(operation, currentPrice)
-        ]);
-
-        if (newResult || entryResult || targetsResult || stopLossResult || cancellationResult) {
-          console.log(`Operation ${operation._id} updated:`, {
-            new: newResult,
-            entry: entryResult,
-            targets: targetsResult,
-            stopLoss: stopLossResult,
-            cancelled: cancellationResult
+          if (!currentPrice) {
+            logger.warn(`Preço não encontrado`, { 
+              pair: operation.pair, 
+              formattedPair 
+            });
+            return;
+          }
+          
+          logger.debug(`Processando operação`, { 
+            pair: operation.pair, 
+            price: currentPrice, 
+            status: operation.status,
+            id: operation._id
           });
-        }
+
+          // Processamento de fechamento manual
+          if (operation.history.isManualCloseRequested) {
+            logger.info(`Processando fechamento manual`, { id: operation._id });
+            await this.processManualClose(operation, currentPrice);
+            return;
+          }
+
+          // Processamento paralelo de todas as ações possíveis
+          const [newResult, entryResult, targetsResult, stopLossResult, cancellationResult] = 
+            await Promise.all([
+              this.processNew(operation),
+              this.processEntry(operation, currentPrice),
+              this.processTargets(operation, currentPrice),
+              this.processStopLoss(operation, currentPrice),
+              this.processCancellation(operation, currentPrice)
+            ]);
+
+          if (newResult || entryResult || targetsResult || stopLossResult || cancellationResult) {
+            logger.info(`Operação atualizada`, { 
+              id: operation._id,
+              updates: {
+                new: newResult,
+                entry: entryResult,
+                targets: targetsResult,
+                stopLoss: stopLossResult,
+                cancelled: cancellationResult
+              }
+            });
+          }
+        }));
       }
     } catch (error) {
-      console.error('Trading operations monitoring error:', error);
+      logger.error(`Erro no monitoramento de operações`, { 
+        error: error.message,
+        stack: error.stack 
+      });
     }
   }
 

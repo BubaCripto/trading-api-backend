@@ -5,12 +5,12 @@ const { auth } = require('../middleware/auth');
 const checkPermission = require('../middleware/checkPermission');
 const { validateCreatePermission, validateUpdatePermission } = require('../middleware/validations/permissionValidation');
 const handleValidation = require('../middleware/validations/handleValidation');
-const { createOperationLimiter } = require('../middleware/rateLimiter');
+
 
 /**
  * @swagger
  * tags:
- *   name: Permissions
+ *   name: Admin Permissions
  *   description: Gerenciamento de permissões do sistema
  */
 
@@ -48,7 +48,7 @@ const { createOperationLimiter } = require('../middleware/rateLimiter');
  * /api/permissions:
  *   get:
  *     summary: Lista todas as permissões
- *     tags: [Permissions]
+ *     tags: [Admin Permissions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -103,7 +103,7 @@ router.get('/',
  * /api/permissions/{id}:
  *   get:
  *     summary: Obtém uma permissão pelo ID
- *     tags: [Permissions]
+ *     tags: [Admin Permissions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -145,7 +145,7 @@ router.get('/:id',
  * /api/permissions:
  *   post:
  *     summary: Cria uma nova permissão
- *     tags: [Permissions]
+ *     tags: [Admin Permissions]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -209,7 +209,7 @@ router.post('/',
  * /api/permissions/{id}:
  *   put:
  *     summary: Atualiza uma permissão existente
- *     tags: [Permissions]
+ *     tags: [Admin Permissions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -266,7 +266,7 @@ router.put('/:id',
  * /api/permissions/{id}:
  *   delete:
  *     summary: Remove uma permissão
- *     tags: [Permissions]
+ *     tags: [Admin Permissions]
  *     security:
  *       - bearerAuth: []
  *     parameters:

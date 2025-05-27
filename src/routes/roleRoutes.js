@@ -10,7 +10,7 @@ const handleValidation = require('../middleware/validations/handleValidation');
 /**
  * @swagger
  * tags:
- *   name: Roles
+ *   name: Admin Roles
  *   description: Gerenciamento de roles e permissões
  */
 
@@ -54,7 +54,7 @@ const handleValidation = require('../middleware/validations/handleValidation');
  * /api/roles:
  *   get:
  *     summary: Lista todas as roles
- *     tags: [Roles]
+ *     tags: [Admin Roles]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -115,7 +115,7 @@ router.get('/', auth,   checkPermission('MANAGE_PERMISSIONS'),  roleController.g
  * /api/roles/{id}:
  *   get:
  *     summary: Obtém uma role pelo ID
- *     tags: [Roles]
+ *     tags: [Admin Roles]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -155,7 +155,7 @@ router.get('/:id', auth,   checkPermission('MANAGE_PERMISSIONS'),  roleControlle
  * /api/roles:
  *   post:
  *     summary: Cria uma nova role
- *     tags: [Roles]
+ *     tags: [Admin Roles]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -221,7 +221,7 @@ router.post('/',
  * /api/roles/{id}:
  *   put:
  *     summary: Atualiza uma role existente
- *     tags: [Roles]
+ *     tags: [Admin Roles]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -285,7 +285,7 @@ router.put('/:id',
  * /api/roles/{id}:
  *   delete:
  *     summary: Remove uma role
- *     tags: [Roles]
+ *     tags: [Admin Roles]
  *     security:
  *       - bearerAuth: []
  *     parameters:

@@ -17,7 +17,7 @@ const checkPermission = require('../middleware/checkPermission');
  * /api/users:
  *   get:
  *     summary: Lista todos os usuários
- *     tags: [Admin]
+ *     tags: [Admin User]
  *     security:
  *       - bearerAuth: []
  *     responses:
@@ -35,7 +35,7 @@ router.get('/', auth, userController.getAllUsers);
  * /api/users/{id}:
  *   put:
  *     summary: Atualiza um usuário
- *     tags: [Admin]
+ *     tags: [Admin User]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -76,7 +76,7 @@ router.put('/:id', auth, userController.updateUser);
  * /api/users/{id}:
  *   delete:
  *     summary: Remove um usuário
- *     tags: [Admin]
+ *     tags: [Admin User]
  *     security:
  *       - bearerAuth: []
  *     parameters:

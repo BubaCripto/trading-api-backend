@@ -31,29 +31,45 @@ const options = {
       },
       {
         name: 'Profile',
-        description: 'Gestão do profile do user'
+        description: 'Gestão do profile do user (todos)'
       },
       {
         name: 'Users',
-        description: 'Gestão de usuários, permissões e perfis'
+        description: 'Gestão de usuários, permissões e perfis (todos)'
       },
       {
         name: 'Operations',
-        description: 'Gestão de operações de trading (sinais)'
+        description: 'Gestão de operações de trading (sinais) (apenas traders)'
       },
 
       {
         name: 'Communities',
-        description: 'Criação e gerenciamento de comunidades'
+        description: 'Criação e gerenciamento de comunidades (apenas comunidades)'
+      },
+      {
+        name: 'Communications',
+        description: 'Criação e gerenciamento de comunnicação de Discord, Whats e  telegram (apenas comunidades)'
       },
       {
         name: 'Contracts',
-        description: 'Contratação de traders pelas comunidades'
+        description: 'Contratação de traders pelas comunidades (apenas comunidades e traders)'
       },
       {
         name: 'ContractMessages',
-        description: 'Mensagens entre traders e comunidades em contratos'
-      }
+        description: 'Mensagens entre traders e comunidades em contratos (apenas comunidades  e traders)'
+      },
+      {
+        name: 'Dashdoard Trader',
+        description: 'gestão de dashboard do trader (todos)'
+      },
+      {
+        name: 'Admin',
+        description: 'Gestão de usuários, permissões Admin'
+      }, 
+      {
+        name: 'Admin User',
+        description: 'Gestão de usuários, permissões Admin'
+      },
     ]
   },
   apis: ['./src/routes/*.js'], // Path to the API routes

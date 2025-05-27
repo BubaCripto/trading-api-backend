@@ -9,7 +9,7 @@ const handleValidation = require('../middleware/validations/handleValidation');
 /**
  * @swagger
  * tags:
- *   name: Plans
+ *   name: Admin Plans
  *   description: Gerenciamento de planos
  */
 
@@ -62,7 +62,7 @@ const handleValidation = require('../middleware/validations/handleValidation');
  * /api/plans:
  *   get:
  *     summary: Lista todos os planos
- *     tags: [Plans]
+ *     tags: [Admin Plans]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -128,7 +128,7 @@ router.get('/', planController.getAllPlans);
  * /api/plans/{id}:
  *   get:
  *     summary: Obtém um plano pelo ID
- *     tags: [Plans]
+ *     tags: [Admin Plans]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -168,7 +168,7 @@ router.get('/:id', planController.getPlanById);
  * /api/plans:
  *   post:
  *     summary: Cria um novo plano
- *     tags: [Plans]
+ *     tags: [Admin Plans]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -243,7 +243,7 @@ router.post('/',
  * /api/plans/{id}:
  *   put:
  *     summary: Atualiza um plano existente
- *     tags: [Plans]
+ *     tags: [Admin Plans]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -316,7 +316,7 @@ router.put('/:id',
  * /api/plans/{id}:
  *   delete:
  *     summary: Remove um plano
- *     tags: [Plans]
+ *     tags: [Admin Plans]
  *     security:
  *       - bearerAuth: []
  *     parameters:

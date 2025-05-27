@@ -5,6 +5,7 @@ const permissionSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
+    // Adicione 'MANAGE_PLANS' ao enum de permissões
     enum: [
       // Usuários
       'CREATE_USER', 'VIEW_USER', 'UPDATE_USER', 'DELETE_USER', 'MANAGE_USERS',
@@ -22,7 +23,7 @@ const permissionSchema = new mongoose.Schema({
 
       // Permissões e sistema
       'VIEW_PERMISSION', 'EDIT_PERMISSION', 'DELETE_PERMISSION',
-      'MANAGE_PERMISSIONS', 'ACCESS_ADMIN_PANEL', 'RESET_PASSWORDS'
+      'MANAGE_PERMISSIONS', 'ACCESS_ADMIN_PANEL', 'RESET_PASSWORDS','MANAGE_PLANS'
     ],
   },
   description: String,

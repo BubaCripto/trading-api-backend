@@ -18,6 +18,9 @@ const contractRoutes = require('./routes/contractRoutes');
 const contractMessageRoutes = require('./routes/contractMessageRoutes');
 const communicationRoutes = require('./routes/communicationRoutes');
 const logRoutes = require('./routes/logRoutes');
+const planRoutes = require('./routes/planRoutes');
+// Importar as novas rotas
+const roleRoutes = require('./routes/roleRoutes');
 
 // Initialize express app
 const app = express();
@@ -38,16 +41,23 @@ app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/operations', operationRoutes);
 app.use('/api/communities', communityRoutes);
+app.use('/api/plans', planRoutes);
+app.use('/api/logs', logRoutes); 
+app.use('/api/roles', roleRoutes);
+
 app.use('/contracts', contractRoutes);
 app.use('/contracts', contractMessageRoutes);
 app.use('/communications', communicationRoutes); 
-app.use('/api/logs', logRoutes);  // Added log routes
+
+
 
 
 // Start trading operations service (only if not testing)
 if (process.env.NODE_ENV !== 'test') {
   tradingOperationsService.start();
 }
+
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {

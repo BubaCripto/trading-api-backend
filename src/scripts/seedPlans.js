@@ -14,22 +14,22 @@ async function seedPlans() {
       name: 'BASIC',
       description: 'Plano básico com 1 canal de comunicação ativo',
       maxCommunications: 1,
-      priceMonthly: 0,
+      priceMonthly: 500.90,
       features: ['1 canal ativo', 'Suporte limitado']
     },
     {
       name: 'STANDARD',
       description: 'Plano intermediário com até 3 canais de comunicação ativos',
       maxCommunications: 3,
-      priceMonthly: 49.90,
+      priceMonthly: 990.90,
       features: ['Até 3 canais', 'Suporte padrão', 'Prioridade em fila']
     },
     {
       name: 'PREMIUM',
-      description: 'Plano avançado com até 10 canais de comunicação ativos',
-      maxCommunications: 10,
-      priceMonthly: 149.90,
-      features: ['Até 10 canais', 'Suporte prioritário', 'Acesso a recursos beta']
+      description: 'Plano avançado com até 5 canais de comunicação ativos',
+      maxCommunications: 5,
+      priceMonthly: 1149.90,
+      features: ['Até 5 canais', 'Suporte prioritário', 'Acesso a recursos beta']
     }
   ];
 

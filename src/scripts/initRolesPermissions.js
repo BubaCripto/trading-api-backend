@@ -56,10 +56,9 @@ const Role = require('../models/Role');
     VIEW_SYSTEM_LOGS: 'Visualizar logs do sistema',
     MANAGE_SETTINGS: 'Gerenciar configurações',
     RESET_PASSWORDS: 'Resetar senhas de usuários',
-    
+
     MANAGE_SUBSCRIPTIONS: 'Gerenciar assinaturas',
-    MANAGE_PLANS: 'Gerenciar planos',
-    MANAGE_PERMISSIONS: 'Gerenciar permissões'   
+    MANAGE_PLANS: 'Gerenciar planos', 
   };
 
   const permissionDocs = {};

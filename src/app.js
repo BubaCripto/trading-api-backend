@@ -21,6 +21,7 @@ const logRoutes = require('./routes/logRoutes');
 const planRoutes = require('./routes/planRoutes');
 // Importar as novas rotas
 const roleRoutes = require('./routes/roleRoutes');
+const permissionRoutes = require('./routes/permissionRoutes');
 
 // Initialize express app
 const app = express();
@@ -44,10 +45,14 @@ app.use('/api/communities', communityRoutes);
 app.use('/api/plans', planRoutes);
 app.use('/api/logs', logRoutes); 
 app.use('/api/roles', roleRoutes);
+app.use('/api/permissions', permissionRoutes);
 
 app.use('/contracts', contractRoutes);
 app.use('/contracts', contractMessageRoutes);
 app.use('/communications', communicationRoutes); 
+
+
+
 
 
 

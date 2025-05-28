@@ -19,7 +19,7 @@ const {
 
 /**
  * @swagger
- * /contracts/{id}/messages:
+ * /api/contracts/{id}/messages:
  *   post:
  *     summary: Enviar uma nova mensagem em um contrato
  *     tags: [ContractMessages]
@@ -93,7 +93,7 @@ router.post(
 
 /**
  * @swagger
- * /contracts/{id}/messages:
+ * /api/contracts/{id}/messages:
  *   get:
  *     summary: Listar todas as mensagens de um contrato
  *     tags: [ContractMessages]
@@ -145,7 +145,7 @@ router.get(
 
 /**
  * @swagger
- * /contracts/messages/{messageId}/read:
+ * /api/contracts/messages/{messageId}/read:
  *   patch:
  *     summary: Marcar uma mensagem como lida
  *     tags: [ContractMessages]

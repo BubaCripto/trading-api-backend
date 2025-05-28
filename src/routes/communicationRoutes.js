@@ -18,7 +18,7 @@ const {
 
 /**
  * @swagger
- * /communications:
+ * /api/communications:
  *   post:
  *     summary: Criar nova conexão de comunicação para a comunidade
  *     tags: [Communications]
@@ -68,7 +68,7 @@ router.post(
 
 /**
  * @swagger
- * /communications:
+ * /api/communications:
  *   get:
  *     summary: Listar conexões de comunicação da comunidade
  *     tags: [Communications]
@@ -93,7 +93,7 @@ router.get(
 
 /**
  * @swagger
- * /communications/{id}/toggle:
+ * /api/communications/{id}/toggle:
  *   patch:
  *     summary: Ativar ou desativar comunicação
  *     tags: [Communications]
@@ -121,7 +121,7 @@ router.patch(
 
 /**
  * @swagger
- * /communications/{id}:
+ * /api/communications/{id}:
  *   delete:
  *     summary: Deletar uma comunicação existente
  *     tags: [Communications]

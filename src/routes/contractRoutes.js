@@ -21,7 +21,7 @@ const {
 
 /**
  * @swagger
- * /contracts/request:
+ * /api/contracts/request:
  *   post:
  *     summary: Comunidade solicita contrato com um trader
  *     tags: [Contracts]
@@ -58,7 +58,7 @@ router.post('/request', auth, checkPermission('HIRE_TRADER'), validateCreateCont
 
 /**
  * @swagger
- * /contracts/{id}/accept:
+ * /api/contracts/{id}/accept:
  *   post:
  *     summary: Trader aceita o contrato
  *     tags: [Contracts]
@@ -83,7 +83,7 @@ router.post('/:id/accept', auth, validateContractIdParam, contractController.acc
 
 /**
  * @swagger
- * /contracts/{id}/reject:
+ * /api/contracts/{id}/reject:
  *   post:
  *     summary: Trader rejeita o contrato
  *     tags: [Contracts]
@@ -105,7 +105,7 @@ router.post('/:id/reject', auth, validateContractIdParam, contractController.rej
 
 /**
  * @swagger
- * /contracts/{id}/revoke:
+ * /api/contracts/{id}/revoke:
  *   post:
  *     summary: Comunidade ou trader revoga contrato
  *     tags: [Contracts]

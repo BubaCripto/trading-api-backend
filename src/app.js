@@ -49,9 +49,9 @@ app.use('/api/plans', planRoutes);
 app.use('/api/logs', logRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/permissions', permissionRoutes);
-app.use('/contracts', contractRoutes);
-app.use('/contracts', contractMessageRoutes);
-app.use('/communications', communicationRoutes);
+app.use('/api/contracts', contractRoutes);
+app.use('/api/contracts', contractMessageRoutes);
+app.use('/api/communications', communicationRoutes);
 
 // Middleware de rota não encontrada
 app.use(notFound);

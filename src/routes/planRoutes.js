@@ -155,7 +155,7 @@ router.get('/', planController.getAllPlans);
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Plano não encontrado
  *       401:
@@ -222,7 +222,7 @@ router.get('/:id', planController.getPlanById);
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Já existe um plano com este nome
  *       401:

@@ -65,7 +65,7 @@ const {
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: A mensagem é obrigatória
  *       403:
@@ -75,7 +75,7 @@ const {
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Você não tem permissão para enviar mensagens neste contrato
  *       404:
@@ -128,7 +128,7 @@ router.post(
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Acesso negado ao histórico de mensagens
  *       404:
@@ -175,7 +175,7 @@ router.get(
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Você não pode marcar esta mensagem como lida
  *       404:

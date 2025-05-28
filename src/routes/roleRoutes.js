@@ -142,7 +142,7 @@ router.get('/', auth,   checkPermission('MANAGE_PERMISSIONS'),  roleController.g
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Role não encontrada
  *       401:
@@ -200,7 +200,7 @@ router.get('/:id', auth,   checkPermission('MANAGE_PERMISSIONS'),  roleControlle
  *             schema:
  *               type: object
  *               properties:
- *                 error:
+ *                 message:
  *                   type: string
  *                   example: Já existe uma role com este nome
  *       401:

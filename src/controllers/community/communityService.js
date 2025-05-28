@@ -122,7 +122,7 @@ exports.inviteMember = async (id, userId, currentUser) => {
 
 // Add after other exports
 exports.subscribeToPlan = async (communityId, planId, currentUser) => {
-  const community = await Community.findById(communityId);
+  const community = await Community.findById(communityId).populate('plan');
   if (!community) throw new NotFoundError('Comunidade não encontrada');
 
   const plan = await Plan.findById(planId);
@@ -135,11 +135,36 @@ exports.subscribeToPlan = async (communityId, planId, currentUser) => {
     throw new ForbiddenError('Apenas administradores ou o criador da comunidade podem assinar um plano');
   }
 
+  const currentMax = community.plan?.maxCommunications || 0;
+  const newMax = plan.maxCommunications;
+
+  const activeCount = await Communication.countDocuments({
+    communityId: community._id,
+    active: true
+  });
+
+  // 🔥 Verificar se é downgrade e se pode
+  if (newMax < currentMax) {
+    if (activeCount > newMax) {
+      throw new ForbiddenError(
+        `Este plano (${plan.name}) permite no máximo ${newMax} comunicações ativas. Sua comunidade possui atualmente ${activeCount}. Desative ou exclua comunicações para prosseguir com o downgrade.`
+      );
+    }
+  }
+
+  // 🔥 Mesmo upgrade ou mudança lateral, se desejar proteger sempre:
+  if (activeCount > newMax) {
+    throw new ForbiddenError(
+      `Este plano (${plan.name}) permite no máximo ${newMax} comunicações ativas. Sua comunidade possui atualmente ${activeCount}. Desative ou exclua comunicações para prosseguir.`
+    );
+  }
+
   community.plan = planId;
   await community.save();
 
   return await community.populate('plan');
 };
+
 
 // Adicionar este novo método
 exports.getMyCommunities = async (req, currentUser) => {

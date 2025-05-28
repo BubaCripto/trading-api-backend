@@ -1,5 +1,6 @@
 const Community = require('../../models/Community');
 const Plan = require('../../models/Plan');
+const Communication = require('../../models/Communication'); // Adicionar importação
 const paginateQuery = require('../../utils/paginateQuery');
 const { ForbiddenError, NotFoundError } = require('../../utils/errors');
 
@@ -143,7 +144,7 @@ exports.subscribeToPlan = async (communityId, planId, currentUser) => {
 // Adicionar este novo método
 exports.getMyCommunities = async (req, currentUser) => {
   // Busca comunidades onde o usuário é o dono
-  return await paginateQuery(Community, req, {
+  const result = await paginateQuery(Community, req, {
     baseFilter: { userId: currentUser._id },
     select: '-__v',
     populate: [
@@ -163,6 +164,30 @@ exports.getMyCommunities = async (req, currentUser) => {
     ],
     defaultSort: '-createdAt'
   });
+
+  // Para cada comunidade, contar quantas comunicações ativas existem
+  const communitiesWithCommunicationCount = await Promise.all(
+    result.data.map(async (community) => {
+      const communicationCount = await Communication.countDocuments({
+        communityId: community._id,
+        active: true
+      });
+
+      // Converter para objeto para poder adicionar propriedades
+      const communityObj = community.toObject();
+      
+      // Adicionar o campo inUseCommunications
+      communityObj.plan.inUseCommunications = communicationCount;
+      
+      return communityObj;
+    })
+  );
+
+  // Retornar o resultado com as comunidades atualizadas
+  return {
+    data: communitiesWithCommunicationCount,
+    meta: result.meta
+  };
 };
 
 

@@ -7,7 +7,7 @@ function isAdminUser(user) {
   return user.roles?.some(r => r.name === 'ADMIN' || r === 'ADMIN');
 }
 
-// 🔥 Validação centralizada de limite de conexões
+// 🔥 Função centralizada para validar limite de conexões
 async function checkMaxCommunications(communityId) {
   const community = await Community.findById(communityId).populate('plan');
 
@@ -19,26 +19,26 @@ async function checkMaxCommunications(communityId) {
     throw { status: 400, message: 'A comunidade não possui um plano ativo' };
   }
 
-  const count = await Communication.countDocuments({
+  const activeCount = await Communication.countDocuments({
     communityId,
     active: true
   });
 
   const maxAllowed = community.plan.maxCommunications;
 
-  if (count >= maxAllowed) {
+  if (activeCount >= maxAllowed) {
     throw {
       status: 403,
-      message: `Este plano (${community.plan.name}) permite no máximo ${maxAllowed} canais ativos.`
+      message: `Este plano (${community.plan.name}) permite no máximo ${maxAllowed} conexões ativas.`
     };
   }
 
   return community;
 }
 
-// 🔥 Validação para downgrade
+// 🔥 Função para verificar downgrade antes de alterar o plano
 async function checkBeforeDowngrade(communityId, newPlanId) {
-  const community = await Community.findById(communityId);
+  const community = await Community.findById(communityId).populate('plan');
   const newPlan = await Plan.findById(newPlanId);
 
   if (!community) {
@@ -49,16 +49,21 @@ async function checkBeforeDowngrade(communityId, newPlanId) {
     throw { status: 404, message: 'Plano não encontrado' };
   }
 
-  const activeCount = await Communication.countDocuments({
-    communityId,
-    active: true
-  });
+  const currentMax = community.plan?.maxCommunications || 0;
+  const newMax = newPlan.maxCommunications;
 
-  if (activeCount > newPlan.maxCommunications) {
-    throw {
-      status: 403,
-      message: `Este plano (${newPlan.name}) permite no máximo ${newPlan.maxCommunications} conexões ativas. Sua comunidade possui atualmente ${activeCount} comunicações ativas. Desative ou exclua comunicações para prosseguir com o downgrade.`
-    };
+  if (newMax < currentMax) {
+    const activeCount = await Communication.countDocuments({
+      communityId,
+      active: true
+    });
+
+    if (activeCount > newMax) {
+      throw {
+        status: 403,
+        message: `Este plano (${newPlan.name}) permite no máximo ${newMax} conexões ativas. Sua comunidade possui atualmente ${activeCount}. Desative ou exclua comunicações para prosseguir com o downgrade.`
+      };
+    }
   }
 
   return newPlan;
@@ -127,7 +132,7 @@ async function getCommunications(req, user) {
   });
 }
 
-// ✅ Ativar/Desativar comunicação
+// ✅ Ativar/Desativar comunicação (com proteção contra burlar limite)
 async function toggleCommunication(id, user) {
   const communication = await Communication.findById(id).populate({
     path: 'communityId',
@@ -148,19 +153,19 @@ async function toggleCommunication(id, user) {
     };
   }
 
-  // 🔥 Verificar limite apenas ao ativar
+  // 🔥 Verificar limite APENAS ao ativar
   if (!communication.active) {
-    const count = await Communication.countDocuments({
+    const activeCount = await Communication.countDocuments({
       communityId: communication.communityId._id,
       active: true
     });
 
     const maxAllowed = communication.communityId.plan?.maxCommunications || 0;
 
-    if (count >= maxAllowed) {
+    if (activeCount >= maxAllowed) {
       throw {
         status: 403,
-        message: `Este plano (${communication.communityId.plan.name}) permite no máximo ${maxAllowed} canais ativos.`
+        message: `Este plano (${communication.communityId.plan.name}) permite no máximo ${maxAllowed} conexões ativas.`
       };
     }
   }
@@ -194,7 +199,7 @@ async function deleteCommunication(id, user) {
   return { success: true, message: 'Comunicação removida com sucesso' };
 }
 
-// ✅ Alterar plano com validação de downgrade
+// ✅ Alterar plano (com proteção de downgrade)
 async function changeCommunityPlan(communityId, newPlanId, user) {
   const community = await Community.findById(communityId).populate('plan');
 
@@ -212,36 +217,13 @@ async function changeCommunityPlan(communityId, newPlanId, user) {
     };
   }
 
-  const newPlan = await Plan.findById(newPlanId);
-
-  if (!newPlan) {
-    throw { status: 404, message: 'Plano não encontrado' };
-  }
-
-  const currentMax = community.plan?.maxCommunications || 0;
-  const newMax = newPlan.maxCommunications;
-
-  // 🔥 Se o novo plano tem um limite menor que o atual, fazer a validação
-  if (newMax < currentMax) {
-    const activeCount = await Communication.countDocuments({
-      communityId,
-      active: true
-    });
-
-    if (activeCount > newMax) {
-      throw {
-        status: 403,
-        message: `Este plano (${newPlan.name}) permite no máximo ${newMax} conexões ativas. Sua comunidade possui atualmente ${activeCount} comunicações ativas. Desative ou exclua comunicações para prosseguir com o downgrade.`
-      };
-    }
-  }
+  const newPlan = await checkBeforeDowngrade(communityId, newPlanId);
 
   community.plan = newPlan._id;
   await community.save();
 
   return community;
 }
-
 
 module.exports = {
   createCommunication,

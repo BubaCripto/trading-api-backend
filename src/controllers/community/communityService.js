@@ -172,12 +172,19 @@ exports.getMyCommunities = async (req, currentUser) => {
         communityId: community._id,
         active: true
       });
-
+  
       // Converter para objeto para poder adicionar propriedades
       const communityObj = community.toObject();
       
-      // Adicionar o campo inUseCommunications
-      communityObj.plan.inUseCommunications = communicationCount;
+      // Verificar se o plano existe antes de adicionar a propriedade
+      if (communityObj.plan) {
+        communityObj.plan.inUseCommunications = communicationCount;
+      } else {
+        // Se não existir plano, criar um objeto com apenas a contagem
+        communityObj.plan = {
+          inUseCommunications: communicationCount
+        };
+      }
       
       return communityObj;
     })

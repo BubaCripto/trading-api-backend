@@ -89,7 +89,51 @@ router.get('/', controller.getAll);
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Community'
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: "6641b95d56d0fba3d6ef08e2"
+ *                       name:
+ *                         type: string
+ *                         example: "Comunidade de Trading"
+ *                       description:
+ *                         type: string
+ *                         example: "Uma comunidade focada em estratégias de trading"
+ *                       active:
+ *                         type: boolean
+ *                         example: true
+ *                       userId:
+ *                         type: string
+ *                         example: "6641b95d56d0fba3d6ef08a4"
+ *                       createdBy:
+ *                         type: string
+ *                         example: "6641b95d56d0fba3d6ef08a4"
+ *                       hiredTraders:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                           example: "6641b95d56d0fba3d6ef08a5"
+ *                       isPrivate:
+ *                         type: boolean
+ *                         example: false
+ *                       telegramLink:
+ *                         type: string
+ *                         example: "https://t.me/comunidadetrading"
+ *                       discordLink:
+ *                         type: string
+ *                         example: "https://discord.gg/comunidadetrading"
+ *                       category:
+ *                         type: string
+ *                         example: "Swing Trade"
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2023-01-01T00:00:00.000Z"
+ *                       updatedAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2023-01-01T00:00:00.000Z"
  *                 meta:
  *                   type: object
  *                   properties:

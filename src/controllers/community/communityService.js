@@ -140,4 +140,29 @@ exports.subscribeToPlan = async (communityId, planId, currentUser) => {
   return await community.populate('plan');
 };
 
+// Adicionar este novo método
+exports.getMyCommunities = async (req, currentUser) => {
+  // Busca comunidades onde o usuário é o dono
+  return await paginateQuery(Community, req, {
+    baseFilter: { userId: currentUser._id },
+    select: '-__v',
+    populate: [
+      {
+        path: 'createdBy',
+        select: '-password -__v',
+        populate: {
+          path: 'roles',
+          select: 'name description'
+        }
+      },
+      {
+        path: 'hiredTraders',
+        select: '-password -__v'
+      },
+      'plan'
+    ],
+    defaultSort: '-createdAt'
+  });
+};
+
 

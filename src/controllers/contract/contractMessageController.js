@@ -1,39 +1,53 @@
 const contractMessageService = require('./contractMessageService');
 
-
-async function sendMessage(req, res) {
+async function sendMessage(req, res, next) {
   try {
     const contractId = req.params.id;
     const { message } = req.body;
-    const newMessage = await contractMessageService.sendMessage({ contractId, message }, req.user);
+
+    const newMessage = await contractMessageService.sendMessage(
+      { contractId, message },
+      req.user
+    );
+
     return res.status(201).json(newMessage);
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
 
-async function getMessagesByContract(req, res) {
+async function getMessagesByContract(req, res, next) {
   try {
     const contractId = req.params.id;
-    const messages = await contractMessageService.getMessagesByContract(contractId, req.user);
+
+    const messages = await contractMessageService.getMessagesByContract(
+      contractId,
+      req.user
+    );
+
     return res.status(200).json(messages);
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
 
-async function markMessageAsRead(req, res) {
+async function markMessageAsRead(req, res, next) {
   try {
     const messageId = req.params.messageId;
-    const updated = await contractMessageService.markMessageAsRead(messageId, req.user);
+
+    const updated = await contractMessageService.markMessageAsRead(
+      messageId,
+      req.user
+    );
+
     return res.status(200).json(updated);
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
 
 module.exports = {
   sendMessage,
   getMessagesByContract,
-  markMessageAsRead
+  markMessageAsRead,
 };

@@ -1,43 +1,42 @@
 const contractService = require('./contractService');
 
-
-async function requestContract(req, res) {
+async function requestContract(req, res, next) {
   try {
     const contract = await contractService.requestContract(req.body, req.user);
     return res.status(201).json(contract);
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
 
-async function acceptContract(req, res) {
+async function acceptContract(req, res, next) {
   try {
     const contract = await contractService.acceptContract(req.params.id, req.user);
     return res.status(200).json(contract);
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
 
-async function rejectContract(req, res) {
+async function rejectContract(req, res, next) {
   try {
     const contract = await contractService.rejectContract(req.params.id, req.user);
     return res.status(200).json(contract);
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
 
-async function revokeContract(req, res) {
+async function revokeContract(req, res, next) {
   try {
     const contract = await contractService.revokeContract(req.params.id, req.user);
     return res.status(200).json(contract);
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
 
-async function getContracts(req, res) {
+async function getContracts(req, res, next) {
   try {
     const contracts = await contractService.getContracts(req.user);
     return res.status(200).json({
@@ -45,10 +44,9 @@ async function getContracts(req, res) {
       data: contracts
     });
   } catch (err) {
-    return res.status(err.status || 500).json({ error: err.message });
+    next(err);
   }
 }
-
 
 module.exports = {
   requestContract,

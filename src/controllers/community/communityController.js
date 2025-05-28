@@ -95,3 +95,13 @@ exports.subscribeToPlan = async (req, res, next) => {
   }
 };
 
+// Adicionar este novo método
+exports.getMyCommunities = async (req, res, next) => {
+  try {
+    const communities = await service.getMyCommunities(req, req.user);
+    res.status(200).json(communities);
+  } catch (err) {
+    next(err);
+  }
+};
+

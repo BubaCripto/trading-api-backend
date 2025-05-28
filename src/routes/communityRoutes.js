@@ -72,6 +72,46 @@ router.get('/', controller.getAll);
 
 /**
  * @swagger
+ * /api/communities/me:
+ *   get:
+ *     summary: Obter comunidades do usuário logado
+ *     tags: [Communities]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de comunidades do usuário
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Community'
+ *                 meta:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                       example: 10
+ *                     limit:
+ *                       type: integer
+ *                       example: 10
+ *                     page:
+ *                       type: integer
+ *                       example: 1
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 1
+ *       401:
+ *         description: Não autorizado
+ */
+router.get('/me', auth, controller.getMyCommunities);
+
+/**
+ * @swagger
  * /api/communities/{id}:
  *   get:
  *     summary: Obter detalhes de uma comunidade

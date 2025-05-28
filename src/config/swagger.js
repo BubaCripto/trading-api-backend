@@ -63,6 +63,10 @@ const options = {
         description: 'gestão de dashboard do trader (todos)'
       },
       {
+        name: 'Dashdoard Comunidade',
+        description: 'gestão de dashboard do trader (todos)'
+      },
+      {
         name: 'Admin',
         description: 'Gestão de usuários, permissões Admin'
       }, 

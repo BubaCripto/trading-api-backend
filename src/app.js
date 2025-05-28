@@ -2,13 +2,16 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
+
 const specs = require('./config/swagger');
 const connectDB = require('./config/database');
 const tradingOperationsService = require('./services/tradingOperationsService');
 
+// Middlewares
+const errorHandler = require('./middleware/errorHandler');
+const notFound = require('./middleware/notFound');
 
-
-//rotas
+// Rotas
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const profileRoutes = require('./routes/profileRoutes');
@@ -19,64 +22,47 @@ const contractMessageRoutes = require('./routes/contractMessageRoutes');
 const communicationRoutes = require('./routes/communicationRoutes');
 const logRoutes = require('./routes/logRoutes');
 const planRoutes = require('./routes/planRoutes');
-// Importar as novas rotas
 const roleRoutes = require('./routes/roleRoutes');
 const permissionRoutes = require('./routes/permissionRoutes');
 
-// Initialize express app
+// Inicializa app
 const app = express();
 
-// Connect to MongoDB
+// Conecta ao MongoDB
 connectDB();
 
-// Middleware
+// Middlewares globais
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Swagger documentation route
+// Documentação Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
+// Rotas
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/operations', operationRoutes);
 app.use('/api/communities', communityRoutes);
 app.use('/api/plans', planRoutes);
-app.use('/api/logs', logRoutes); 
+app.use('/api/logs', logRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/permissions', permissionRoutes);
-
 app.use('/contracts', contractRoutes);
 app.use('/contracts', contractMessageRoutes);
-app.use('/communications', communicationRoutes); 
+app.use('/communications', communicationRoutes);
 
+// Middleware de rota não encontrada
+app.use(notFound);
 
+// Middleware de tratamento global de erros
+app.use(errorHandler);
 
-
-
-
-
-// Start trading operations service (only if not testing)
+// Serviço de operações de trading (não roda em teste)
 if (process.env.NODE_ENV !== 'test') {
   tradingOperationsService.start();
 }
-
-
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  if (!err.status || err.status >= 500) {
-    console.error(err); // Loga apenas se for erro crítico (500+)
-  }
-
-  if (err.status) {
-    return res.status(err.status).json({ message: err.message });
-  }
-
-  res.status(500).json({ message: 'Something went wrong!' });
-});
-
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
@@ -84,4 +70,4 @@ process.on('SIGTERM', () => {
   process.exit(0);
 });
 
-module.exports = app; // Export app for testing and server
+module.exports = app;

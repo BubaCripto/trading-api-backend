@@ -32,15 +32,20 @@ const app = express();
 // Conecta ao MongoDB
 connectDB();
 
-// Middlewares globais
+// Configuração CORS
 app.use(cors());
+
+// IMPORTANTE: Registrar a rota de webhook ANTES do middleware express.json()
+app.use('/api/webhook', webhookRoutes);
+
+// Middlewares globais para as demais rotas
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Documentação Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Rotas
+// Demais rotas
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
@@ -53,7 +58,6 @@ app.use('/api/permissions', permissionRoutes);
 app.use('/api/contracts', contractRoutes);
 app.use('/api/contracts', contractMessageRoutes);
 app.use('/api/communications', communicationRoutes);
-app.use('/api/webhook',webhookRoutes);
 
 // Middleware de rota não encontrada
 app.use(notFound);

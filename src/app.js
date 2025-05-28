@@ -24,6 +24,7 @@ const logRoutes = require('./routes/logRoutes');
 const planRoutes = require('./routes/planRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const permissionRoutes = require('./routes/permissionRoutes');
+const webhookRoutes = require('./routes/webhook');
 
 // Inicializa app
 const app = express();
@@ -52,6 +53,7 @@ app.use('/api/permissions', permissionRoutes);
 app.use('/api/contracts', contractRoutes);
 app.use('/api/contracts', contractMessageRoutes);
 app.use('/api/communications', communicationRoutes);
+app.use('/api/webhook',webhookRoutes);
 
 // Middleware de rota não encontrada
 app.use(notFound);

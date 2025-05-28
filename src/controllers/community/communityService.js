@@ -121,6 +121,9 @@ exports.inviteMember = async (id, userId, currentUser) => {
 };
 
 // Add after other exports
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
 exports.subscribeToPlan = async (communityId, planId, currentUser) => {
   const community = await Community.findById(communityId).populate('plan');
   if (!community) throw new NotFoundError('Comunidade não encontrada');
@@ -143,27 +146,44 @@ exports.subscribeToPlan = async (communityId, planId, currentUser) => {
     active: true
   });
 
-  // 🔥 Verificar se é downgrade e se pode
-  if (newMax < currentMax) {
-    if (activeCount > newMax) {
-      throw new ForbiddenError(
-        `Este plano (${plan.name}) permite no máximo ${newMax} comunicações ativas. Sua comunidade possui atualmente ${activeCount}. Desative ou exclua comunicações para prosseguir com o downgrade.`
-      );
-    }
-  }
-
-  // 🔥 Mesmo upgrade ou mudança lateral, se desejar proteger sempre:
-  if (activeCount > newMax) {
+  // 🔥 Validação para downgrade
+  if (newMax < currentMax && activeCount > newMax) {
     throw new ForbiddenError(
-      `Este plano (${plan.name}) permite no máximo ${newMax} comunicações ativas. Sua comunidade possui atualmente ${activeCount}. Desative ou exclua comunicações para prosseguir.`
+      `Este plano (${plan.name}) permite no máximo ${newMax} comunicações ativas. Sua comunidade possui atualmente ${activeCount}.`
     );
   }
 
-  community.plan = planId;
-  await community.save();
+  if (activeCount > newMax) {
+    throw new ForbiddenError(
+      `Este plano (${plan.name}) permite no máximo ${newMax} comunicações ativas. Sua comunidade possui atualmente ${activeCount}.`
+    );
+  }
 
-  return await community.populate('plan');
+  // 🔥 Criar sessão de checkout no Stripe
+  const session = await stripe.checkout.sessions.create({
+    mode: 'subscription',
+    payment_method_types: ['card'],
+    line_items: [
+      {
+        price: plan.stripePriceId, // 🔥 Stripe Price ID salvo no banco
+        quantity: 1
+      }
+    ],
+    customer_email: currentUser.email, // ou customerId se você quiser mapear clientes no Stripe
+    metadata: {
+      communityId: communityId,
+      planId: planId,
+      userId: currentUser._id.toString()
+    },
+    success_url: `${process.env.FRONTEND_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.FRONTEND_URL}/checkout/cancel`
+  });
+
+  return {
+    checkoutUrl: session.url
+  };
 };
+
 
 
 // Adicionar este novo método

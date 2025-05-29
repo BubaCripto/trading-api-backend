@@ -3,8 +3,7 @@ const { body } = require('express-validator');
 exports.validateCreateRole = [
   body('name')
     .isString().withMessage('Nome deve ser uma string')
-    .isIn(['ADMIN', 'TRADER', 'COMMUNITY', 'MODERATOR', 'USER', 'GUEST'])
-    .withMessage('Nome deve ser um dos valores permitidos: ADMIN, TRADER, COMMUNITY, MODERATOR, USER, GUEST'),
+    .notEmpty().withMessage('Nome não pode estar vazio'),
   body('permissions')
     .isArray().withMessage('Permissões devem ser um array')
     .notEmpty().withMessage('Permissões não podem estar vazias'),
@@ -17,8 +16,7 @@ exports.validateUpdateRole = [
   body('name')
     .optional()
     .isString().withMessage('Nome deve ser uma string')
-    .isIn(['ADMIN', 'TRADER', 'COMMUNITY', 'MODERATOR', 'USER', 'GUEST'])
-    .withMessage('Nome deve ser um dos valores permitidos: ADMIN, TRADER, COMMUNITY, MODERATOR, USER, GUEST'),
+    .notEmpty().withMessage('Nome não pode estar vazio'),
   body('permissions')
     .optional()
     .isArray().withMessage('Permissões devem ser um array')

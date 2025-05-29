@@ -5,7 +5,7 @@ const roleSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    enum: ['SUPERADMIN','ADMIN', 'TRADER','COMMUNITY', 'MODERATOR', 'USER', 'GUEST'],
+    // enum removido
   },
   permissions: [{
     type: mongoose.Schema.Types.ObjectId,

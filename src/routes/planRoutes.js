@@ -28,7 +28,6 @@ const handleValidation = require('../middleware/validations/handleValidation');
  *           description: ID único do plano
  *         name:
  *           type: string
- *           enum: [BASIC, STANDARD, PREMIUM]
  *           description: Nome do plano
  *         description:
  *           type: string

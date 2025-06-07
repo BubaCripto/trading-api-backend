@@ -12,6 +12,7 @@ const {
   updateOperationLimiter,
   queryOperationLimiter
 } = require('../middleware/rateLimiter');
+const { apiKeyAuth } = require('../middleware/apiKeyAuth');
 
 const routeLogger = require('../middleware/routeLogger');
 

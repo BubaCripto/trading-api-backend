@@ -25,6 +25,7 @@ const planRoutes = require('./routes/planRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const permissionRoutes = require('./routes/permissionRoutes');
 const webhookRoutes = require('./routes/webhook');
+const operationWebhookRoutes = require('./routes/operationWebhook'); // Nova importação
 
 // Inicializa app
 const app = express();
@@ -35,8 +36,9 @@ connectDB();
 // Configuração CORS
 app.use(cors());
 
-// IMPORTANTE: Registrar a rota de webhook ANTES do middleware express.json()
+// IMPORTANTE: Registrar as rotas de webhook ANTES dos middlewares express.json()
 app.use('/api/webhook', webhookRoutes);
+app.use('/api/operations/webhook', operationWebhookRoutes); // Nova rota de webhook
 
 // Middlewares globais para as demais rotas
 app.use(express.json());

@@ -356,6 +356,31 @@ exports.getTraderStats = async (userId) => {
 };
 
 
+/**
+ * Lista todas as operações para webhook (sem verificação de usuário)
+ */
+exports.getOperationsForWebhook = async (filters = {}) => {
+  // Aqui você pode aplicar filtros específicos para o webhook
+  // Por exemplo, talvez queira limitar quais operações são expostas
+  
+  // Exemplo de filtro: apenas operações fechadas ou apenas dos últimos 30 dias
+  const defaultFilters = {
+    // Exemplo: 'status': 'Closed',
+    // Exemplo: createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }
+  };
+  
+  const combinedFilters = { ...defaultFilters, ...filters };
+  
+  // Buscar operações e popular os dados do usuário
+  return await Operation.find(combinedFilters)
+    .populate({
+      path: 'userId',
+      select: 'username',
+    })
+    .sort({ createdAt: -1 });
+};
+
+
 
 
 

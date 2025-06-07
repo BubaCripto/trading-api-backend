@@ -127,3 +127,44 @@ exports.getTraderStats = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+
+/**
+ * GET /api/operations/webhook
+ */
+exports.getOperationsWebhook = async (req, res) => {
+  try {
+    // Extrair parâmetros de consulta para filtros e paginação
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    
+    // Extrair outros filtros da query string
+    const { pair, signal, status } = req.query;
+    const filters = {};
+    
+    if (pair) filters.pair = pair;
+    if (signal) filters.signal = signal;
+    if (status) filters.status = status;
+    
+    // Buscar operações com os filtros aplicados
+    const allOperations = await operationService.getOperationsForWebhook(filters);
+    
+    // Aplicar paginação manualmente
+    const skip = (page - 1) * limit;
+    const paginatedData = allOperations.slice(skip, skip + limit);
+    
+    // Retornar no mesmo formato que a rota normal
+    res.json({
+      data: paginatedData,
+      meta: {
+        total: allOperations.length,
+        page,
+        limit,
+        totalPages: Math.ceil(allOperations.length / limit)
+      }
+    });
+  } catch (err) {
+    console.error('Erro no webhook de operações:', err);
+    res.status(500).json({ error: err.message });
+  }
+};

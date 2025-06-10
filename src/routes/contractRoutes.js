@@ -127,7 +127,7 @@ router.post('/:id/revoke', auth,validateContractIdParam, contractController.revo
 
 /**
  * @swagger
- * /contracts:
+ * /api/contracts:
  *   get:
  *     summary: Lista todos os contratos do usuário (como trader ou criador)
  *     tags: [Contracts]

@@ -1,6 +1,7 @@
 
 const User = require('../../models/User');
 const { ForbiddenError, NotFoundError } = require('../../utils/errors');
+const paginateQuery = require('../../utils/paginateQuery');
 
 function hasRole(user, roleName) {
   return user.roles?.some(role => {
@@ -10,15 +11,17 @@ function hasRole(user, roleName) {
   });
 }
 
-exports.getAllUsers = async (currentUser) => { 
+exports.getAllUsers = async (currentUser, req) => { 
   if (!hasRole(currentUser, 'ADMIN')) { 
     throw new ForbiddenError('Apenas administradores podem listar todos os usuários'); 
   } 
 
-  return User.find() 
-    .select('-password') 
-    .populate('roles')
-    .populate('profile');
+  return await paginateQuery(User, req, {
+    baseFilter: {}, 
+    select: '-password',
+    populate: ['roles', 'profile'],
+    defaultSort: '-createdAt'
+  });
 }; 
 
 exports.getUserById = async (id) => {

@@ -143,30 +143,43 @@ async function toggleCommunication(id, user) {
     throw { status: 404, message: 'Comunicação não encontrada' };
   }
 
-  const isOwner = communication.communityId.createdBy.toString() === user._id.toString();
   const isAdmin = isAdminUser(user);
-
-  if (!isOwner && !isAdmin) {
-    throw {
-      status: 403,
-      message: 'Você não tem permissão para alterar essa comunicação'
-    };
-  }
-
-  // 🔥 Verificar limite APENAS ao ativar
-  if (!communication.active) {
-    const activeCount = await Communication.countDocuments({
-      communityId: communication.communityId._id,
-      active: true
-    });
-
-    const maxAllowed = communication.communityId.plan?.maxCommunications || 0;
-
-    if (activeCount >= maxAllowed) {
+  
+  // Se não houver comunidade associada, apenas administradores podem alterar
+  if (!communication.communityId) {
+    if (!isAdmin) {
       throw {
         status: 403,
-        message: `Este plano (${communication.communityId.plan.name}) permite no máximo ${maxAllowed} conexões ativas.`
+        message: 'Apenas administradores podem alterar comunicações sem comunidade'
       };
+    }
+    // Não há verificação de limite para comunicações sem comunidade
+  } else {
+    // Se houver comunidade, verifica se o usuário é o proprietário ou admin
+    const isOwner = communication.communityId.createdBy.toString() === user._id.toString();
+    
+    if (!isOwner && !isAdmin) {
+      throw {
+        status: 403,
+        message: 'Você não tem permissão para alterar essa comunicação'
+      };
+    }
+    
+    // 🔥 Verificar limite APENAS ao ativar e apenas para comunicações com comunidade
+    if (!communication.active) {
+      const activeCount = await Communication.countDocuments({
+        communityId: communication.communityId._id,
+        active: true
+      });
+
+      const maxAllowed = communication.communityId.plan?.maxCommunications || 0;
+
+      if (activeCount >= maxAllowed) {
+        throw {
+          status: 403,
+          message: `Este plano (${communication.communityId.plan.name}) permite no máximo ${maxAllowed} conexões ativas.`
+        };
+      }
     }
   }
 
@@ -184,14 +197,26 @@ async function deleteCommunication(id, user) {
     throw { status: 404, message: 'Comunicação não encontrada' };
   }
 
-  const isOwner = communication.communityId.createdBy.toString() === user._id.toString();
   const isAdmin = isAdminUser(user);
-
-  if (!isOwner && !isAdmin) {
-    throw {
-      status: 403,
-      message: 'Você não tem permissão para excluir essa comunicação'
-    };
+  
+  // Se não houver comunidade associada, apenas administradores podem excluir
+  if (!communication.communityId) {
+    if (!isAdmin) {
+      throw {
+        status: 403,
+        message: 'Apenas administradores podem excluir comunicações sem comunidade'
+      };
+    }
+  } else {
+    // Se houver comunidade, verifica se o usuário é o proprietário ou admin
+    const isOwner = communication.communityId.createdBy.toString() === user._id.toString();
+    
+    if (!isOwner && !isAdmin) {
+      throw {
+        status: 403,
+        message: 'Você não tem permissão para excluir essa comunicação'
+      };
+    }
   }
 
   await communication.deleteOne();

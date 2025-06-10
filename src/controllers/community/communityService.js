@@ -23,7 +23,6 @@ exports.createCommunity = async (data, currentUser) => {
 
 exports.getAll = async (req) => {
   return await paginateQuery(Community, req, {
-    baseFilter: { active: true },
     select: '-__v',
     populate: [
       {

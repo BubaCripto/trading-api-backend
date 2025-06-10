@@ -105,12 +105,21 @@ async function revokeContract(contractId, user) {
 }
 
 async function getContracts(user) {
-  const contracts = await Contract.find({
-    $or: [
-      { trader: user._id },
-      { createdBy: user._id }
-    ]
-  })
+  // Verificar se o usuário é administrador
+  const isAdmin = hasAdminRole(user);
+  
+  // Se for admin, retorna todos os contratos
+  // Caso contrário, retorna apenas os contratos do usuário
+  const query = isAdmin 
+    ? {} 
+    : {
+        $or: [
+          { trader: user._id },
+          { createdBy: user._id }
+        ]
+      };
+  
+  const contracts = await Contract.find(query)
     .populate('community', 'name description')
     .populate('trader', 'username email')
     .populate('createdBy', 'username email')
@@ -119,10 +128,20 @@ async function getContracts(user) {
   return contracts;
 }
 
+// Função para verificar se o usuário tem role de ADMIN
+function hasAdminRole(user) { 
+  return user.roles?.some(role => { 
+    if (typeof role === 'string') return role === 'ADMIN'; 
+    if (typeof role === 'object' && role.name) return role.name === 'ADMIN'; 
+    return false; 
+  }); 
+}
+
 module.exports = {
   requestContract,
   acceptContract,
   rejectContract,
   revokeContract,
-  getContracts
+  getContracts,
+  hasAdminRole // Exportando a função para uso em outros lugares se necessário
 };

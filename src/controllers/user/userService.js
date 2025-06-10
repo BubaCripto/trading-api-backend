@@ -10,21 +10,16 @@ function hasRole(user, roleName) {
   });
 }
 
-exports.getAllUsers = async (currentUser) => {
-  if (!hasRole(currentUser, 'ADMIN')) {
-    throw new ForbiddenError('Apenas administradores podem listar todos os usuários');
-  }
+exports.getAllUsers = async (currentUser) => { 
+  if (!hasRole(currentUser, 'ADMIN')) { 
+    throw new ForbiddenError('Apenas administradores podem listar todos os usuários'); 
+  } 
 
-  return User.find()
-    .select('-password')
-    .populate({
-      path: 'roles',
-      populate: {
-        path: 'permissions',
-        model: 'Permission'
-      }
-    });
-};
+  return User.find() 
+    .select('-password') 
+    .populate('roles')
+    .populate('profile');
+}; 
 
 exports.getUserById = async (id) => {
   const user = await User.findById(id)

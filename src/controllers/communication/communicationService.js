@@ -250,10 +250,38 @@ async function changeCommunityPlan(communityId, newPlanId, user) {
   return community;
 }
 
+// ✅ Criar comunicação como administrador (sem verificação de plano)
+async function createCommunicationAsAdmin(data, user) {
+  // Verificar se o usuário é admin
+  if (!isAdminUser(user)) {
+    throw {
+      status: 403,
+      message: 'Apenas administradores podem usar esta funcionalidade'
+    };
+  }
+
+  // Buscar a comunidade sem verificar plano
+  const community = await Community.findById(data.communityId);
+
+  if (!community) {
+    throw { status: 404, message: 'Comunidade não encontrada' };
+  }
+
+  // Criar a comunicação diretamente
+  const communication = await Communication.create({
+    ...data,
+    createdBy: user._id
+  });
+
+  return communication;
+}
+
+// Adicionar a nova função ao módulo de exportação
 module.exports = {
   createCommunication,
   getCommunications,
   toggleCommunication,
   deleteCommunication,
+  createCommunicationAsAdmin, // Nova função
   changeCommunityPlan
 };

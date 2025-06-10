@@ -6,7 +6,8 @@ const checkPermission = require('../middleware/checkPermission');
 const handleValidation = require('../middleware/validations/handleValidation');
 const {
   validateCreateCommunication,
-  validateToggleCommunication
+  validateToggleCommunication,
+  validateAdminCommunication
 } = require('../middleware/validations/validateCommunication');
 
 /**
@@ -145,6 +146,56 @@ router.delete(
   checkPermission('DELETE_COMMUNICATION'),
   handleValidation,
   controller.deleteCommunication
+);
+
+/**
+ * @swagger
+ * /api/communications/admin:
+ *   post:
+ *     summary: Criar comunicação como administrador (ignora verificação de plano)
+ *     tags: [Communications]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [communityId, type, credentials]
+ *             properties:
+ *               communityId:
+ *                 type: string
+ *                 example: "660fff3d4f33e81a3d3dcf92"
+ *               type:
+ *                 type: string
+ *                 enum: [Telegram, Discord, WhatsApp]
+ *                 example: "Telegram"
+ *               credentials:
+ *                 oneOf:
+ *                   - properties:
+ *                       botToken: { type: string, example: "123456:ABC-DEF" }
+ *                       chatId: { type: string, example: "-1001234567890" }
+ *                   - properties:
+ *                       webhookUrl: { type: string, example: "https://discord.com/api/webhooks/..." }
+ *                   - properties:
+ *                       accountSid: { type: string, example: "AC..." }
+ *                       authToken: { type: string, example: "your_auth_token" }
+ *                       fromNumber: { type: string, example: "+14155238886" }
+ *                       toNumber: { type: string, example: "+5511999999999" }
+ *     responses:
+ *       201:
+ *         description: Comunicação criada pelo administrador
+ *       403:
+ *         description: Permissão negada - apenas administradores podem usar esta rota
+ */
+router.post(
+  '/admin',
+  auth,
+  validateAdminCommunication,
+  checkPermission('ADMIN_CREATE_COMMUNICATION'), // Exige permissão de administrador
+  handleValidation,
+  controller.createCommunicationAsAdmin
 );
 
 module.exports = router;

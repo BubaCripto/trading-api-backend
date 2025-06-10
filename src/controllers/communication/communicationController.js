@@ -41,9 +41,28 @@ async function deleteCommunication(req, res, next) {
   }
 }
 
+async function createCommunicationAsAdmin(req, res, next) {
+  try {
+    const data = {
+      ...req.body,
+      communityId: req.body.communityId,
+    };
+
+    const communication = await communicationService.createCommunicationAsAdmin(data, req.user);
+    res.status(201).json({
+      message: 'Comunicação criada com sucesso pelo administrador',
+      data: communication
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+// Adicionar a nova função ao módulo de exportação
 module.exports = {
   createCommunication,
   getCommunications,
   toggleCommunication,
   deleteCommunication,
+  createCommunicationAsAdmin // Nova função
 };

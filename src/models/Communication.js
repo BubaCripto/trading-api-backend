@@ -24,6 +24,7 @@ const communicationSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  disabled: { type: Boolean, default: false },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

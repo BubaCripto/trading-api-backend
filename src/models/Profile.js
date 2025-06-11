@@ -25,6 +25,7 @@ const ProfileSchema = new mongoose.Schema({
   profileImage: { type: String },
   bio: { type: String },
   socialLinks: [SocialSchema],
+  disabled: { type: Boolean, default: false },
 }, {
   timestamps: true
 });

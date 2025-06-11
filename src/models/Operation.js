@@ -90,6 +90,7 @@ const operationSchema = new mongoose.Schema({
       details: String
     }]
   },
+  disabled: { type: Boolean, default: false },
   status_signal: String,
   created_at: { type: Date, default: Date.now }
 });

@@ -43,6 +43,7 @@ const communitySchema = new mongoose.Schema({
     ref: 'Plan',
     required: false
   },
+  disabled: { type: Boolean, default: false },
   bannerImage: String,
   telegramLink: String,
   discordLink: String,

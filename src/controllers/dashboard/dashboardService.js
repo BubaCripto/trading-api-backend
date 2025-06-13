@@ -129,8 +129,8 @@ exports.getAdminDashboardStats = async () => {
     // Estatísticas de canais de comunicação
     const [totalChannels, activeChannels, inactiveChannels, disabledChannels, telegramChannels, discordChannels, whatsappChannels] = await Promise.all([
       Communication.countDocuments(),
-      Communication.countDocuments({ active: true, disabled: false }),  // Canais realmente ativos
-      Communication.countDocuments({ active: false, disabled: false }),  // Inativos mas não desabilitados
+      Communication.countDocuments({ active: true }),  // Canais realmente ativos
+      Communication.countDocuments({ active: false }),  // Inativos mas não desabilitados
       Communication.countDocuments({ disabled: true }),  // Desabilitados
       Communication.countDocuments({ type: 'Telegram' }),
       Communication.countDocuments({ type: 'Discord' }),

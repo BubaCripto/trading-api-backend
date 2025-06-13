@@ -39,7 +39,6 @@
 - CryptoApiService → Busca e mantém preços de mercado atualizados com cache e failover.
 - NotificationService → Notificações automáticas para todas as comunidades via Discord, Telegram, WhatsApp.
 
-
 ## 🏗️ Padrão de Rotas
 
 - Sempre RESTful e no plural.
@@ -82,6 +81,39 @@ Exemplos:
 {
   "error": "Descrição clara do erro"
 }
+
+## 🧩 Padronização de Controladores e Serviços
+
+### Controladores
+
+- Todos os controladores devem seguir o mesmo padrão de implementação:
+  - Usar `next(err)` para passar erros ao middleware de erro, nunca tratar erros diretamente.
+  - Retornar respostas estruturadas conforme o padrão de resposta definido acima.
+  - Nunca implementar paginação no controlador, sempre usar o serviço para isso.
+
+### Serviços
+
+- Todos os serviços de listagem devem usar o utilitário `paginateQuery` para implementar paginação.
+- Estrutura padrão para serviços de listagem:
+
+```javascript
+exports.getAll = async (req) => {
+  // Definir filtros base conforme necessário
+  const baseFilter = {};
+  
+  // Aplicar filtros específicos por usuário se necessário
+  if (!isAdmin(req.user)) {
+    baseFilter.createdBy = req.user._id;
+  }
+  
+  return await paginateQuery(Model, req, {
+    baseFilter,
+    select: '-__v',
+    defaultSort: '-createdAt',
+    populate: 'relacionamentos'
+  });
+};
+```
 
 ## 📚 Swagger — Documentação obrigatória
 

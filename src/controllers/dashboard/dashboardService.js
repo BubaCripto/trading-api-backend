@@ -17,7 +17,7 @@ exports.getAdminDashboardStats = async () => {
     // Estatísticas de usuários
     const [users, activeUsers, admins, traders, communities] = await Promise.all([
       User.countDocuments(),
-      User.countDocuments({ disabled: false }),
+      User.countDocuments({ disabled: false }),  // Já está correto, contando usuários não desativados
       User.countDocuments({ roles: { $in: await Role.find({ name: 'ADMIN' }).distinct('_id') } }),
       User.countDocuments({ roles: { $in: await Role.find({ name: 'TRADER' }).distinct('_id') } }),
       Community.countDocuments()
@@ -105,11 +105,12 @@ exports.getAdminDashboardStats = async () => {
       })));
 
     // Estatísticas de contratos
-    const [totalContracts, pendingContracts, activeContracts, rejectedContracts] = await Promise.all([
+    const [totalContracts, pendingContracts, activeContracts, rejectedContracts, revokedContracts] = await Promise.all([
       Contract.countDocuments(),
       Contract.countDocuments({ status: 'PENDING' }),
       Contract.countDocuments({ status: 'ACCEPTED' }),
-      Contract.countDocuments({ status: 'REJECTED' })
+      Contract.countDocuments({ status: 'REJECTED' }),
+      Contract.countDocuments({ status: 'REVOKED' })
     ]);
 
     // Estatísticas de comunidades
@@ -126,21 +127,39 @@ exports.getAdminDashboardStats = async () => {
     ]).then(result => result[0]?.total || 0);
 
     // Estatísticas de canais de comunicação
-    const [totalChannels, activeChannels, inactiveChannels, telegramChannels] = await Promise.all([
+    const [totalChannels, activeChannels, inactiveChannels, disabledChannels, telegramChannels, discordChannels, whatsappChannels] = await Promise.all([
       Communication.countDocuments(),
-      Communication.countDocuments({ active: true, disabled: false }),
-      Communication.countDocuments({ $or: [{ active: false }, { disabled: true }] }),
-      Communication.countDocuments({ type: 'Telegram' })
+      Communication.countDocuments({ active: true, disabled: false }),  // Canais realmente ativos
+      Communication.countDocuments({ active: false, disabled: false }),  // Inativos mas não desabilitados
+      Communication.countDocuments({ disabled: true }),  // Desabilitados
+      Communication.countDocuments({ type: 'Telegram' }),
+      Communication.countDocuments({ type: 'Discord' }),
+      Communication.countDocuments({ type: 'WhatsApp' })
     ]);
 
     // Estatísticas de operações
-    const [totalOperations, openOperations, closedOperations, longOperations, shortOperations] = await Promise.all([
+    const [totalOperations, openOperations, closedOperations, longOperations, shortOperations, profitableOperations, unprofitableOperations] = await Promise.all([
       Operation.countDocuments(),
       Operation.countDocuments({ 'history.isOpen': true, 'history.isClosed': false }),
       Operation.countDocuments({ 'history.isClosed': true }),
       Operation.countDocuments({ signal: 'LONG' }),
-      Operation.countDocuments({ signal: 'SHORT' })
+      Operation.countDocuments({ signal: 'SHORT' }),
+      Operation.countDocuments({ 'history.isClosed': true, 'history.pnlPercentage': { $gt: 0 } }),  // Operações lucrativas
+      Operation.countDocuments({ 'history.isClosed': true, 'history.pnlPercentage': { $lte: 0 } })  // Operações não lucrativas
     ]);
+
+    // Calcular estatísticas adicionais
+    const totalPnl = await Operation.aggregate([
+      { $match: { 'history.isClosed': true, 'history.pnlPercentage': { $exists: true } } },
+      { $group: { _id: null, total: { $sum: '$history.pnlPercentage' } } }
+    ]).then(result => result[0]?.total || 0);
+
+    const avgPnl = await Operation.aggregate([
+      { $match: { 'history.isClosed': true, 'history.pnlPercentage': { $exists: true } } },
+      { $group: { _id: null, avg: { $avg: '$history.pnlPercentage' } } }
+    ]).then(result => result[0]?.avg || 0);
+
+    const winRate = closedOperations > 0 ? (profitableOperations / closedOperations) * 100 : 0;
 
     // Melhores operações por período
     const now = new Date();
@@ -239,7 +258,9 @@ exports.getAdminDashboardStats = async () => {
           total: totalContracts,
           pending: pendingContracts,
           active: activeContracts,
-          rejected: rejectedContracts
+          rejected: rejectedContracts,
+          revoked: revokedContracts,
+          rejected_total: rejectedContracts + revokedContracts  // Total de contratos rejeitados e revogados
         },
         communities: {
           total: totalCommunities,
@@ -251,7 +272,10 @@ exports.getAdminDashboardStats = async () => {
           total: totalChannels,
           active: activeChannels,
           inactive: inactiveChannels,
-          telegram: telegramChannels
+          disabled: disabledChannels,
+          telegram: telegramChannels,
+          discord: discordChannels,
+          whatsapp: whatsappChannels
         },
         operations: {
           total: totalOperations,
@@ -259,6 +283,11 @@ exports.getAdminDashboardStats = async () => {
           closed: closedOperations,
           long: longOperations,
           short: shortOperations,
+          profitable: profitableOperations,
+          unprofitable: unprofitableOperations,
+          win_rate: parseFloat(winRate.toFixed(2)),
+          total_pnl: parseFloat(totalPnl.toFixed(2)),
+          avg_pnl: parseFloat(avgPnl.toFixed(2)),
           top_operations: {
             weekly: weeklyTopOp.length > 0 ? [formatTopOperation(weeklyTopOp)] : [],
             monthly: monthlyTopOp.length > 0 ? [formatTopOperation(monthlyTopOp)] : [],

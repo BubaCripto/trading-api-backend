@@ -325,7 +325,7 @@ const routeLogger = require('../middleware/routeLogger');
 
 
 // Rotas de consulta (mais permissivas)
-router.get('/ranking', queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getRanking);
+router.get('/ranking', queryOperationLimiter, controller.getRanking);
 router.get("/ranking/:userId/stats", controller.getTraderStats);
 router.get('/', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getAllOperations);
 router.get('/:id', auth,routeLogger, queryOperationLimiter, checkPermission('VIEW_OPERATION'), controller.getOperationById);

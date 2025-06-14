@@ -36,6 +36,15 @@ async function revokeContract(req, res, next) {
   }
 }
 
+async function closeContract(req, res, next) {
+  try {
+    const contract = await contractService.closeContract(req.params.id, req.user);
+    return res.status(200).json(contract);
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getContracts(req, res, next) {
   try {
     const contracts = await contractService.getContracts(req.user);
@@ -53,5 +62,6 @@ module.exports = {
   acceptContract,
   rejectContract,
   revokeContract,
+  closeContract,
   getContracts
 };

@@ -137,11 +137,40 @@ function hasAdminRole(user) {
   }); 
 }
 
+async function closeContract(contractId, user) {
+  const contract = await Contract.findById(contractId);
+
+  if (!contract) throw { status: 404, message: 'Contrato não encontrado' };
+  const isCommunityOwner = contract.createdBy.toString() === user._id.toString();
+  const isTrader = contract.trader.toString() === user._id.toString();
+  const isAdmin = hasAdminRole(user);
+
+  if (!isCommunityOwner && !isTrader && !isAdmin) {
+    throw { status: 403, message: 'Apenas o trader, a comunidade ou um administrador pode fechar este contrato' };
+  }
+
+  if (contract.status !== 'ACCEPTED') {
+    throw { status: 400, message: 'Apenas contratos aceitos podem ser fechados' };
+  }
+
+  contract.status = 'CLOSED';
+  await contract.save();
+
+  // Remover o trader da lista de contratados da comunidade
+  await Community.updateOne(
+    { _id: contract.community },
+    { $pull: { hiredTraders: contract.trader } }
+  );
+
+  return contract;
+}
+
 module.exports = {
   requestContract,
   acceptContract,
   rejectContract,
   revokeContract,
+  closeContract,
   getContracts,
-  hasAdminRole // Exportando a função para uso em outros lugares se necessário
+  hasAdminRole
 };

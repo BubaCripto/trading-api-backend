@@ -174,7 +174,7 @@ router.post('/:id/revoke', auth,validateContractIdParam, contractController.revo
  *                             type: string
  *                       status:
  *                         type: string
- *                         enum: [PENDING, ACCEPTED, REJECTED, REVOKED]
+ *                         enum: [PENDING, ACCEPTED, REJECTED, REVOKED, CLOSED]
  *                       terms:
  *                         type: string
  *                       createdAt:
@@ -187,5 +187,29 @@ router.post('/:id/revoke', auth,validateContractIdParam, contractController.revo
  * 
  */
 router.get('/', auth, validateGetContractsQuery, contractController.getContracts);
+
+/**
+ * @swagger
+ * /api/contracts/{id}/close:
+ *   post:
+ *     summary: Fecha um contrato aceito
+ *     tags: [Contracts]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contrato fechado com sucesso
+ *       400:
+ *         description: Apenas contratos aceitos podem ser fechados
+ *       403:
+ *         description: Apenas envolvidos no contrato ou administradores podem fechar
+ */
+router.post('/:id/close', auth, validateContractIdParam, contractController.closeContract);
 
 module.exports = router;

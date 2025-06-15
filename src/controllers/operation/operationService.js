@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Operation = require('../../models/Operation');
 const Contract = require('../../models/Contract');
 const { ForbiddenError, NotFoundError } = require('../../utils/errors');
+const Feedback = require('../../models/Feedback');
 
 
 function hasRole(user, roleName) {
@@ -341,6 +342,53 @@ exports.getTraderStats = async (userId) => {
   const minutos = Math.round(geral.avgDurationMinutos || 0);
   const avgDurationFormatted = `${Math.floor(minutos / 60)}h ${minutos % 60}m`;
 
+  // Buscar feedbacks do trader
+  const feedbacks = await Feedback.find({ 
+    reviewedId: objectId,
+    reviewedType: 'TRADER'
+  });
+
+  // Calcular estatísticas de feedback
+  const feedbackCount = feedbacks.length;
+  
+  // Inicializar objeto para somar as pontuações
+  const scoreSum = {
+    sinais_claros: 0,
+    qtd_operacoes: 0,
+    estrategias_explicadas: 0,
+    resposta_duvidas: 0
+  };
+  
+  // Somar todas as pontuações
+  feedbacks.forEach(feedback => {
+    if (feedback.scores) {
+      scoreSum.sinais_claros += feedback.scores.sinais_claros || 0;
+      scoreSum.qtd_operacoes += feedback.scores.qtd_operacoes || 0;
+      scoreSum.estrategias_explicadas += feedback.scores.estrategias_explicadas || 0;
+      scoreSum.resposta_duvidas += feedback.scores.resposta_duvidas || 0;
+    }
+  });
+  
+  // Calcular médias se houver feedbacks
+  const feedbackScores = feedbackCount > 0 ? {
+    sinais_claros: Number((scoreSum.sinais_claros / feedbackCount).toFixed(1)),
+    qtd_operacoes: Number((scoreSum.qtd_operacoes / feedbackCount).toFixed(1)),
+    estrategias_explicadas: Number((scoreSum.estrategias_explicadas / feedbackCount).toFixed(1)),
+    resposta_duvidas: Number((scoreSum.resposta_duvidas / feedbackCount).toFixed(1))
+  } : {
+    sinais_claros: 0,
+    qtd_operacoes: 0,
+    estrategias_explicadas: 0,
+    resposta_duvidas: 0
+  };
+  
+  // Calcular média geral
+  const feedbackAverage = feedbackCount > 0 ? 
+    Number(((feedbackScores.sinais_claros + 
+             feedbackScores.qtd_operacoes + 
+             feedbackScores.estrategias_explicadas + 
+             feedbackScores.resposta_duvidas) / 4).toFixed(1)) : 0;
+
   return {
     ...geral,
     porPar: stats?.porPar || [],
@@ -351,7 +399,11 @@ exports.getTraderStats = async (userId) => {
     communitiesCount,
     avgOpsPerWeek,
     consecutiveDays: maxStreak || 1,
-    avgDurationFormatted
+    avgDurationFormatted,
+    // Adicionar estatísticas de feedback
+    feedbackCount,
+    feedbackScores,
+    feedbackAverage
   };
 };
 

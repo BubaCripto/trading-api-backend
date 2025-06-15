@@ -26,7 +26,9 @@ const roleRoutes = require('./routes/roleRoutes');
 const permissionRoutes = require('./routes/permissionRoutes');
 const webhookRoutes = require('./routes/webhook');
 const operationWebhookRoutes = require('./routes/operationWebhook');
-const dashboardRoutes = require('./routes/dashboardRoutes'); // Nova importação
+const dashboardRoutes = require('./routes/dashboardRoutes'); 
+const feedbackRoutes = require('./routes/feedbackRoutes');
+
 
 // Inicializa app
 const app = express();
@@ -61,7 +63,8 @@ app.use('/api/permissions', permissionRoutes);
 app.use('/api/contracts', contractRoutes);
 app.use('/api/contracts', contractMessageRoutes);
 app.use('/api/communications', communicationRoutes);
-app.use('/api/admin/dashboard', dashboardRoutes); // Nova rota
+app.use('/api/admin/dashboard', dashboardRoutes); 
+app.use('/api/feedbacks', feedbackRoutes);
 
 // Middleware de rota não encontrada
 app.use(notFound);
@@ -81,3 +84,4 @@ process.on('SIGTERM', () => {
 });
 
 module.exports = app;
+

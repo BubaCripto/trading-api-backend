@@ -133,32 +133,11 @@ exports.getRanking = async () => {
         totalPnL: { $sum: '$pnl' },
         count: { $sum: 1 }
       }
-    }
+    },
+    { $sort: { totalPnL: -1 } }
   ]);
 
-  // Fetch communities count per user
-  const communitiesCounts = await Contract.aggregate([
-    { $match: { status: 'ACCEPTED' } },
-    { $group: { _id: '$traderId', communitiesCount: { $addToSet: '$communityId' } } },
-    { $project: { communitiesCount: { $size: '$communitiesCount' } } }
-  ]);
-
-  // Map communities count by traderId
-  const communitiesCountMap = new Map();
-  communitiesCounts.forEach(item => {
-    communitiesCountMap.set(item._id.toString(), item.communitiesCount);
-  });
-
-  // Add communitiesCount to ranking
-  const rankingWithCommunities = ranking.map(item => ({
-    ...item,
-    communitiesCount: communitiesCountMap.get(item._id.toString()) || 0
-  }));
-
-  // Sort by totalPnL descending
-  rankingWithCommunities.sort((a, b) => b.totalPnL - a.totalPnL);
-
-  return rankingWithCommunities;
+  return ranking;
 };
 
 exports.getTraderRankingWithKpis = async () => {
@@ -203,32 +182,11 @@ exports.getTraderRankingWithKpis = async () => {
         avgRiskReward: 1,
         lastTradeDate: 1
       }
-    }
+    },
+    { $sort: { totalPnL: -1 } }
   ]);
 
-  // Fetch communities count per user
-  const communitiesCounts = await Contract.aggregate([
-    { $match: { status: 'ACCEPTED' } },
-    { $group: { _id: '$traderId', communitiesCount: { $addToSet: '$communityId' } } },
-    { $project: { communitiesCount: { $size: '$communitiesCount' } } }
-  ]);
-
-  // Map communities count by traderId
-  const communitiesCountMap = new Map();
-  communitiesCounts.forEach(item => {
-    communitiesCountMap.set(item._id.toString(), item.communitiesCount);
-  });
-
-  // Add communitiesCount to result
-  const resultWithCommunities = result.map(item => ({
-    ...item,
-    communitiesCount: communitiesCountMap.get(item.userId.toString()) || 0
-  }));
-
-  // Sort by totalPnL descending
-  resultWithCommunities.sort((a, b) => b.totalPnL - a.totalPnL);
-
-  return resultWithCommunities;
+  return result;
 };
 
 exports.getTraderStats = async (userId) => {
@@ -250,7 +208,7 @@ exports.getTraderStats = async (userId) => {
 
   // comunidades únicas que contrataram
   const communitiesAgg = await Contract.aggregate([
-    { $match: { traderId: objectId, status: 'ACCEPTED' } },
+    { $match: { traderId: objectId, status: { $in: ['ACCEPTED', 'ENDED'] } } },
     { $group: { _id: "$communityId" } },
     { $count: "communitiesCount" }
   ]);
@@ -385,14 +343,14 @@ exports.getTraderStats = async (userId) => {
   const avgDurationFormatted = `${Math.floor(minutos / 60)}h ${minutos % 60}m`;
 
   // Buscar feedbacks do trader
-  const feedbacks = await Feedback.find({ 
+  const feedbacks = await Feedback.find({
     reviewedId: objectId,
     reviewedType: 'TRADER'
   });
 
   // Calcular estatísticas de feedback
   const feedbackCount = feedbacks.length;
-  
+
   // Inicializar objeto para somar as pontuações
   const scoreSum = {
     sinais_claros: 0,
@@ -400,7 +358,7 @@ exports.getTraderStats = async (userId) => {
     estrategias_explicadas: 0,
     resposta_duvidas: 0
   };
-  
+
   // Somar todas as pontuações
   feedbacks.forEach(feedback => {
     if (feedback.scores) {
@@ -410,7 +368,7 @@ exports.getTraderStats = async (userId) => {
       scoreSum.resposta_duvidas += feedback.scores.resposta_duvidas || 0;
     }
   });
-  
+
   // Calcular médias se houver feedbacks
   const feedbackScores = feedbackCount > 0 ? {
     sinais_claros: Number((scoreSum.sinais_claros / feedbackCount).toFixed(1)),
@@ -423,12 +381,12 @@ exports.getTraderStats = async (userId) => {
     estrategias_explicadas: 0,
     resposta_duvidas: 0
   };
-  
+
   // Calcular média geral
-  const feedbackAverage = feedbackCount > 0 ? 
-    Number(((feedbackScores.sinais_claros + 
-             feedbackScores.qtd_operacoes + 
-             feedbackScores.estrategias_explicadas + 
+  const feedbackAverage = feedbackCount > 0 ?
+    Number(((feedbackScores.sinais_claros +
+             feedbackScores.qtd_operacoes +
+             feedbackScores.estrategias_explicadas +
              feedbackScores.resposta_duvidas) / 4).toFixed(1)) : 0;
 
   return {
@@ -456,15 +414,15 @@ exports.getTraderStats = async (userId) => {
 exports.getOperationsForWebhook = async (filters = {}) => {
   // Aqui você pode aplicar filtros específicos para o webhook
   // Por exemplo, talvez queira limitar quais operações são expostas
-  
+
   // Exemplo de filtro: apenas operações fechadas ou apenas dos últimos 30 dias
   const defaultFilters = {
     // Exemplo: 'status': 'Closed',
     // Exemplo: createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }
   };
-  
+
   const combinedFilters = { ...defaultFilters, ...filters };
-  
+
   // Buscar operações e popular os dados do usuário
   return await Operation.find(combinedFilters)
     .populate({
@@ -473,11 +431,3 @@ exports.getOperationsForWebhook = async (filters = {}) => {
     })
     .sort({ createdAt: -1 });
 };
-
-
-
-
-
-
-
-

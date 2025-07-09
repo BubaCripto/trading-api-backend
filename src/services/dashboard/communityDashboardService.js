@@ -3,6 +3,7 @@ const Community = require('../../models/Community');
 const SignalDispatchLog = require('../../models/SignalDispatchLog');
 const User = require('../../models/User');
 const paginateQuery = require('../../utils/paginateQuery');
+const Contract = require('../../models/Contract');
 
 // Helper to convert string to ObjectId
 const toObjectId = (id) => new mongoose.Types.ObjectId(id);
@@ -10,7 +11,7 @@ const toObjectId = (id) => new mongoose.Types.ObjectId(id);
 exports.getCommunityStats = async (communityId) => {
   const communityObjectId = toObjectId(communityId);
 
-  // Aggregate stats from SignalDispatchLog
+  // Estatísticas de sinais
   const signalStats = await SignalDispatchLog.aggregate([
     { $match: { communityId: communityObjectId } },
     {
@@ -26,13 +27,19 @@ exports.getCommunityStats = async (communityId) => {
     }
   ]);
 
-  // Count contracted traders
-  const contractedTraders = await Community.aggregate([
-    { $match: { _id: communityObjectId } },
-    { $project: { contractedTraders: { $size: { $ifNull: ['$contractedTraders', []] } } } }
-  ]);
+  // Contar traders contratados (contratos ativos)
+  const contractedTradersCount = await Contract.countDocuments({
+    community: communityObjectId,
+    status: 'ACCEPTED'
+  });
 
-  // Count total and active members
+  // Contar traders que já foram contratados (contratos fechados)
+  const formerTradersCount = await Contract.countDocuments({
+    community: communityObjectId,
+    status: 'CLOSED'
+  });
+
+  // Contar membros totais e ativos
   const community = await Community.findById(communityObjectId).select('members activeMembers updatedAt');
 
   return {
@@ -45,7 +52,8 @@ exports.getCommunityStats = async (communityId) => {
     successRate: signalStats[0] && signalStats[0].totalSignalsReceived > 0 ? (signalStats[0].successfulSignals / signalStats[0].totalSignalsReceived) * 100 : 0,
     totalPnl: signalStats[0]?.totalPnl || 0,
     averageSignalDuration: signalStats[0]?.averageSignalDuration || 0,
-    contractedTraders: contractedTraders[0]?.contractedTraders || 0,
+    contractedTraders: contractedTradersCount,
+    formerTraders: formerTradersCount,
     totalMembers: community?.members?.length || 0,
     activeMembers: community?.activeMembers || 0,
     updatedAt: community?.updatedAt || new Date()

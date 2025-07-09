@@ -513,7 +513,6 @@ router.patch('/:id/invite/:userId', auth, checkPermission('ADMIN_INVITE_MEMBER')
  */
 router.patch('/:id/subscribe/:planId',auth, checkPermission('MANAGE_SUBSCRIPTIONS'), controller.subscribeToPlan
 );
-// suas rotas acima...
 
 /**
  * @swagger

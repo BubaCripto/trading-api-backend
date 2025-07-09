@@ -133,11 +133,32 @@ exports.getRanking = async () => {
         totalPnL: { $sum: '$pnl' },
         count: { $sum: 1 }
       }
-    },
-    { $sort: { totalPnL: -1 } }
+    }
   ]);
 
-  return ranking;
+  // Fetch communities count per user
+  const communitiesCounts = await Contract.aggregate([
+    { $match: { status: 'ACCEPTED' } },
+    { $group: { _id: '$traderId', communitiesCount: { $addToSet: '$communityId' } } },
+    { $project: { communitiesCount: { $size: '$communitiesCount' } } }
+  ]);
+
+  // Map communities count by traderId
+  const communitiesCountMap = new Map();
+  communitiesCounts.forEach(item => {
+    communitiesCountMap.set(item._id.toString(), item.communitiesCount);
+  });
+
+  // Add communitiesCount to ranking
+  const rankingWithCommunities = ranking.map(item => ({
+    ...item,
+    communitiesCount: communitiesCountMap.get(item._id.toString()) || 0
+  }));
+
+  // Sort by totalPnL descending
+  rankingWithCommunities.sort((a, b) => b.totalPnL - a.totalPnL);
+
+  return rankingWithCommunities;
 };
 
 exports.getTraderRankingWithKpis = async () => {
@@ -182,11 +203,32 @@ exports.getTraderRankingWithKpis = async () => {
         avgRiskReward: 1,
         lastTradeDate: 1
       }
-    },
-    { $sort: { totalPnL: -1 } }
+    }
   ]);
 
-  return result;
+  // Fetch communities count per user
+  const communitiesCounts = await Contract.aggregate([
+    { $match: { status: 'ACCEPTED' } },
+    { $group: { _id: '$traderId', communitiesCount: { $addToSet: '$communityId' } } },
+    { $project: { communitiesCount: { $size: '$communitiesCount' } } }
+  ]);
+
+  // Map communities count by traderId
+  const communitiesCountMap = new Map();
+  communitiesCounts.forEach(item => {
+    communitiesCountMap.set(item._id.toString(), item.communitiesCount);
+  });
+
+  // Add communitiesCount to result
+  const resultWithCommunities = result.map(item => ({
+    ...item,
+    communitiesCount: communitiesCountMap.get(item.userId.toString()) || 0
+  }));
+
+  // Sort by totalPnL descending
+  resultWithCommunities.sort((a, b) => b.totalPnL - a.totalPnL);
+
+  return resultWithCommunities;
 };
 
 exports.getTraderStats = async (userId) => {
@@ -208,7 +250,7 @@ exports.getTraderStats = async (userId) => {
 
   // comunidades únicas que contrataram
   const communitiesAgg = await Contract.aggregate([
-    { $match: { traderId: objectId, status: { $in: ['ACCEPTED', 'ENDED'] } } },
+    { $match: { traderId: objectId, status: 'ACCEPTED' } },
     { $group: { _id: "$communityId" } },
     { $count: "communitiesCount" }
   ]);

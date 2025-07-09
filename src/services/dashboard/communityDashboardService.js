@@ -1,0 +1,132 @@
+const mongoose = require('mongoose');
+const Community = require('../../models/Community');
+const SignalDispatchLog = require('../../models/SignalDispatchLog');
+const User = require('../../models/User');
+const paginateQuery = require('../../utils/paginateQuery');
+
+// Helper to convert string to ObjectId
+const toObjectId = (id) => new mongoose.Types.ObjectId(id);
+
+exports.getCommunityStats = async (communityId) => {
+  const communityObjectId = toObjectId(communityId);
+
+  // Aggregate stats from SignalDispatchLog
+  const signalStats = await SignalDispatchLog.aggregate([
+    { $match: { communityId: communityObjectId } },
+    {
+      $group: {
+        _id: '$communityId',
+        totalSignalsReceived: { $sum: 1 },
+        activeSignals: { $sum: { $cond: [{ $eq: ['$status', 'ACTIVE'] }, 1, 0] } },
+        closedSignals: { $sum: { $cond: [{ $eq: ['$status', 'CLOSED'] }, 1, 0] } },
+        successfulSignals: { $sum: { $cond: [{ $eq: ['$result', 'PROFIT'] }, 1, 0] } },
+        totalPnl: { $sum: '$pnlAmount' },
+        averageSignalDuration: { $avg: '$durationDays' }
+      }
+    }
+  ]);
+
+  // Count contracted traders
+  const contractedTraders = await Community.aggregate([
+    { $match: { _id: communityObjectId } },
+    { $project: { contractedTraders: { $size: { $ifNull: ['$contractedTraders', []] } } } }
+  ]);
+
+  // Count total and active members
+  const community = await Community.findById(communityObjectId).select('members activeMembers updatedAt');
+
+  return {
+    _id: communityId,
+    communityId: communityId,
+    totalSignalsReceived: signalStats[0]?.totalSignalsReceived || 0,
+    activeSignals: signalStats[0]?.activeSignals || 0,
+    closedSignals: signalStats[0]?.closedSignals || 0,
+    successfulSignals: signalStats[0]?.successfulSignals || 0,
+    successRate: signalStats[0] && signalStats[0].totalSignalsReceived > 0 ? (signalStats[0].successfulSignals / signalStats[0].totalSignalsReceived) * 100 : 0,
+    totalPnl: signalStats[0]?.totalPnl || 0,
+    averageSignalDuration: signalStats[0]?.averageSignalDuration || 0,
+    contractedTraders: contractedTraders[0]?.contractedTraders || 0,
+    totalMembers: community?.members?.length || 0,
+    activeMembers: community?.activeMembers || 0,
+    updatedAt: community?.updatedAt || new Date()
+  };
+};
+
+exports.getCommunitySignals = async (communityId, req) => {
+  const communityObjectId = toObjectId(communityId);
+
+  const baseFilter = { communityId: communityObjectId };
+
+  return await paginateQuery(SignalDispatchLog, req, {
+    baseFilter,
+    select: '-__v',
+    defaultSort: '-sentAt'
+  });
+};
+
+exports.getCommunityPerformance = async (communityId) => {
+  const communityObjectId = toObjectId(communityId);
+
+  // Aggregate daily performance
+  const performance = await SignalDispatchLog.aggregate([
+    { $match: { communityId: communityObjectId } },
+    {
+      $group: {
+        _id: { $dateToString: { format: '%Y-%m-%d', date: '$sentAt' } },
+        totalPnl: { $sum: '$pnlAmount' },
+        dailyPnl: { $sum: '$pnlAmount' },
+        signalsCount: { $sum: 1 },
+        successfulSignals: { $sum: { $cond: [{ $eq: ['$result', 'PROFIT'] }, 1, 0] } },
+      }
+    },
+    {
+      $project: {
+        date: '$_id',
+        totalPnl: 1,
+        dailyPnl: 1,
+        signalsCount: 1,
+        successfulSignals: 1,
+        successRate: { $cond: [{ $eq: ['$signalsCount', 0] }, 0, { $multiply: [{ $divide: ['$successfulSignals', '$signalsCount'] }, 100] }] }
+      }
+    },
+    { $sort: { date: 1 } }
+  ]);
+
+  return performance;
+};
+
+exports.getCommunityTraders = async (communityId) => {
+  const communityObjectId = toObjectId(communityId);
+
+  // Aggregate traders contracted by community
+  const traders = await Community.aggregate([
+    { $match: { _id: communityObjectId } },
+    { $unwind: '$contractedTraders' },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'contractedTraders.traderId',
+        foreignField: '_id',
+        as: 'traderInfo'
+      }
+    },
+    { $unwind: '$traderInfo' },
+    {
+      $project: {
+        _id: '$contractedTraders._id',
+        communityId: '$_id',
+        traderId: '$contractedTraders.traderId',
+        traderName: '$traderInfo.name',
+        contractStatus: '$contractedTraders.status',
+        totalSignalsSent: '$contractedTraders.totalSignalsSent',
+        successfulSignals: '$contractedTraders.successfulSignals',
+        successRate: { $cond: [{ $eq: ['$contractedTraders.totalSignalsSent', 0] }, 0, { $multiply: [{ $divide: ['$contractedTraders.successfulSignals', '$contractedTraders.totalSignalsSent'] }, 100] }] },
+        totalPnl: '$contractedTraders.totalPnl',
+        contractStartDate: '$contractedTraders.contractStartDate',
+        contractEndDate: '$contractedTraders.contractEndDate'
+      }
+    }
+  ]);
+
+  return traders;
+};

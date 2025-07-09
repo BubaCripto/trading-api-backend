@@ -95,6 +95,7 @@ router.get('/:id/signals',
   communityDashboardController.getCommunitySignals
 );
 
+
 /**
  * @swagger
  * /api/communities/{id}/performance:

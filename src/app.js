@@ -61,7 +61,7 @@ app.use('/api/logs', logRoutes);
 app.use('/api/roles', roleRoutes);
 app.use('/api/permissions', permissionRoutes);
 app.use('/api/contracts', contractRoutes);
-app.use('/api/contracts', contractMessageRoutes);
+app.use('/api/contracts/messages', contractMessageRoutes);
 app.use('/api/communications', communicationRoutes);
 app.use('/api/admin/dashboard', dashboardRoutes); 
 app.use('/api/feedbacks', feedbackRoutes);

@@ -57,11 +57,39 @@ exports.getCommunitySignals = async (communityId, req) => {
 
   const baseFilter = { communityId: communityObjectId };
 
-  return await paginateQuery(SignalDispatchLog, req, {
-    baseFilter,
-    select: '-__v',
-    defaultSort: '-sentAt'
-  });
+  // Usar agregação para juntar SignalDispatchLog com Operation
+  const aggregatePipeline = [
+    { $match: baseFilter },
+    {
+      $lookup: {
+        from: 'operations',
+        localField: 'operationId',
+        foreignField: '_id',
+        as: 'operationDetails'
+      }
+    },
+    { $unwind: { path: '$operationDetails', preserveNullAndEmptyArrays: true } },
+    { $sort: { sentAt: -1 } },
+    // Aqui pode-se adicionar paginação manual se necessário
+  ];
+
+  // Para paginação, pode-se usar skip e limit baseados em req.query.page e req.query.limit
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const total = await SignalDispatchLog.countDocuments(baseFilter);
+  const data = await SignalDispatchLog.aggregate(aggregatePipeline).skip(skip).limit(limit);
+
+  return {
+    data,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit)
+    }
+  };
 };
 
 exports.getCommunityPerformance = async (communityId) => {

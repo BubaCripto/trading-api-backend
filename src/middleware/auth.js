@@ -1,16 +1,14 @@
 
-const jwt = require('../utils/jwt');
+const { verifyToken } = require('../utils/jwt');
 const User = require('../models/User');
 
 exports.auth = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ message: 'Token não fornecido' });
-  }
-
-  const token = authHeader.split(' ')[1];
   try {
-    const decoded = jwt.verifyToken(token);
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ error: 'Token não fornecido' });
+    }
+    const decoded = verifyToken(token);
     const user = await User.findById(decoded._id).populate({
       path: 'roles',
       populate: {
@@ -20,13 +18,15 @@ exports.auth = async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(401).json({ message: 'Usuário não encontrado' });
+      return res.status(401).json({ error: 'Usuário não encontrado' });
     }
 
     req.user = user;
     next();
   } catch (err) {
-    console.error('Erro no middleware de autenticação:', err);
-    return res.status(401).json({ message: 'Token inválido ou expirado' });
+    if (err.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expirado. Por favor, faça login novamente.' });
+    }
+    return res.status(401).json({ error: 'Token inválido' });
   }
 };

@@ -46,7 +46,7 @@ const { validateCreateCommunity, validateUpdateCommunity } = require('../middlew
  */
 router.get('/:id/stats',
   auth,
-
+  checkPermission('VIEW_COMMUNITY_DASHBOARD'),
   param('id').isMongoId(),
   handleValidation,
   communityDashboardController.getCommunityStats
@@ -89,7 +89,7 @@ router.get('/:id/stats',
  */
 router.get('/:id/signals',
   auth,
-  //checkPermission('VIEW_COMMUNITY_DASHBOARD'),
+  checkPermission('VIEW_COMMUNITY_DASHBOARD'),
   param('id').isMongoId(),
   handleValidation,
   communityDashboardController.getCommunitySignals
@@ -136,7 +136,7 @@ router.get('/:id/signals',
  */
 router.get('/:id/performance',
   auth,
-  //checkPermission('VIEW_COMMUNITY_DASHBOARD'),
+  checkPermission('VIEW_COMMUNITY_DASHBOARD'),
   param('id').isMongoId(),
   handleValidation,
   communityDashboardController.getCommunityPerformance

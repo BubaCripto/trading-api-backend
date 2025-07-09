@@ -1,5 +1,14 @@
-const formatPrice = (price) => price ? `$${Number(price).toFixed(2)}` : 'N/A';
-const formatPercentage = (value) => value ? `${Number(value).toFixed(2)}%` : 'N/A';
+const formatPrice = (price) => {
+  if (price == null) return 'N/A';
+  const num = Number(price);
+  return num < 0.01 ? `$${num.toFixed(8)}` : `$${num.toFixed(4)}`;
+};
+
+const formatPercentage = (value) => {
+  if (value == null) return 'N/A';
+  return `${Number(value).toFixed(2)}%`;
+};
+
 const formatDate = (date) => new Date(date).toLocaleString();
 
 function getSignalColor(signal) {

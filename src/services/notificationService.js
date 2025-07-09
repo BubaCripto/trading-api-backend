@@ -1,5 +1,6 @@
 const Community = require('../models/Community');
 const Communication = require('../models/Communication');
+const SignalDispatchLog = require('../models/SignalDispatchLog');
 const messageFormatter = require('./messageFormatterService');
 const telegramService = require('./communications/telegramService');
 const discordService = require('./communications/discordService');
@@ -8,7 +9,7 @@ const whatsappService = require('./communications/whatsappService');
 class NotificationService {
   async notify(type, operation = {}) {
     try {
-      // Get active communities where the trader is hired
+      // Comunidades ativas que contrataram o trader
       const communities = await Community.find({
         active: true,
         hiredTraders: operation.userId
@@ -19,11 +20,26 @@ class NotificationService {
         return;
       }
 
-      // Format the message
+      // Mensagem formatada
       const message = messageFormatter.formatOperationMessage(type, operation);
 
-      // Process each community
+      // Enviar para cada comunidade + registrar o envio
       for (const community of communities) {
+        // ✅ Registra o envio (se ainda não existir)
+        await SignalDispatchLog.findOneAndUpdate(
+          {
+            operationId: operation._id,
+            communityId: community._id
+          },
+          {
+            operationId: operation._id,
+            communityId: community._id,
+            traderId: operation.userId
+          },
+          { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+
+        // Envia para canais ativos
         await this.processCommunityCommunications(community._id, message);
       }
     } catch (error) {
@@ -33,13 +49,11 @@ class NotificationService {
 
   async processCommunityCommunications(communityId, message) {
     try {
-      // Get active communication channels for the community
       const communications = await Communication.find({
         communityId,
         active: true
       });
 
-      // Send message through each active channel
       for (const comm of communications) {
         await this.sendMessage(comm, message);
       }

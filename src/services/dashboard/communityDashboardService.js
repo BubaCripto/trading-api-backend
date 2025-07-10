@@ -4,43 +4,61 @@ const SignalDispatchLog = require('../../models/SignalDispatchLog');
 const User = require('../../models/User');
 const paginateQuery = require('../../utils/paginateQuery');
 const Contract = require('../../models/Contract');
+const Operation = require('../../models/Operation');
 
 // Helper to convert string to ObjectId
 const toObjectId = (id) => new mongoose.Types.ObjectId(id);
 
+// Estatísticas gerais da comunidade
 exports.getCommunityStats = async (communityId) => {
   const communityObjectId = toObjectId(communityId);
 
-  // Estatísticas de sinais
-  const signalStats = await SignalDispatchLog.aggregate([
-    { $match: { communityId: communityObjectId } },
-    {
-      $group: {
-        _id: '$communityId',
-        totalSignalsReceived: { $sum: 1 },
-        activeSignals: { $sum: { $cond: [{ $eq: ['$status', 'ACTIVE'] }, 1, 0] } },
-        closedSignals: { $sum: { $cond: [{ $eq: ['$status', 'CLOSED'] }, 1, 0] } },
-        successfulSignals: { $sum: { $cond: [{ $eq: ['$result', 'PROFIT'] }, 1, 0] } },
-        totalPnl: { $sum: '$pnlAmount' },
-        averageSignalDuration: { $avg: '$durationDays' }
-      }
-    }
-  ]);
+  // Buscar membros
+  const community = await Community.findById(communityObjectId).select('members createdAt');
+  const totalMembers = community?.members?.length || 0;
 
-  // Contar traders contratados (contratos ativos)
+  // Buscar contratos ativos e fechados
   const contractedTradersCount = await Contract.countDocuments({
     community: communityObjectId,
     status: 'ACCEPTED'
   });
-
-  // Contar traders que já foram contratados (contratos fechados)
   const formerTradersCount = await Contract.countDocuments({
     community: communityObjectId,
     status: 'CLOSED'
   });
 
-  // Contar membros totais e ativos
-  const community = await Community.findById(communityObjectId).select('members activeMembers updatedAt');
+  // Buscar sinais e performance via join com Operation
+  const signalStats = await SignalDispatchLog.aggregate([
+    { $match: { communityId: communityObjectId } },
+    {
+      $lookup: {
+        from: 'operations',
+        localField: 'operationId',
+        foreignField: '_id',
+        as: 'operation'
+      }
+    },
+    { $unwind: '$operation' },
+    {
+      $group: {
+        _id: '$communityId',
+        totalSignalsReceived: { $sum: 1 },
+        activeSignals: { $sum: { $cond: [{ $eq: ['$operation.status', 'Open'] }, 1, 0] } },
+        closedSignals: { $sum: { $cond: [{ $eq: ['$operation.status', 'Closed'] }, 1, 0] } },
+        successfulSignals: { $sum: { $cond: [{ $gt: ['$operation.history.pnlAmount', 0] }, 1, 0] } },
+        totalPnl: { $sum: '$operation.history.pnlAmount' },
+        averageSignalDuration: {
+          $avg: {
+            $cond: [
+              { $and: ['$operation.history.entryDate', '$operation.history.exitDate'] },
+              { $divide: [{ $subtract: ['$operation.history.exitDate', '$operation.history.entryDate'] }, 1000 * 60 * 60 * 24] },
+              null
+            ]
+          }
+        }
+      }
+    }
+  ]);
 
   return {
     _id: communityId,
@@ -54,18 +72,16 @@ exports.getCommunityStats = async (communityId) => {
     averageSignalDuration: signalStats[0]?.averageSignalDuration || 0,
     contractedTraders: contractedTradersCount,
     formerTraders: formerTradersCount,
-    totalMembers: community?.members?.length || 0,
-    activeMembers: community?.activeMembers || 0,
+    totalMembers,
     updatedAt: community?.updatedAt || new Date()
   };
 };
 
+// Listar sinais da comunidade com detalhes reais da operação
 exports.getCommunitySignals = async (communityId, req) => {
   const communityObjectId = toObjectId(communityId);
-
   const baseFilter = { communityId: communityObjectId };
 
-  // Usar agregação para juntar SignalDispatchLog com Operation
   const aggregatePipeline = [
     { $match: baseFilter },
     {
@@ -78,10 +94,8 @@ exports.getCommunitySignals = async (communityId, req) => {
     },
     { $unwind: { path: '$operationDetails', preserveNullAndEmptyArrays: true } },
     { $sort: { sentAt: -1 } },
-    // Aqui pode-se adicionar paginação manual se necessário
   ];
 
-  // Para paginação, pode-se usar skip e limit baseados em req.query.page e req.query.limit
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
@@ -100,19 +114,28 @@ exports.getCommunitySignals = async (communityId, req) => {
   };
 };
 
+// Performance diária real da comunidade
 exports.getCommunityPerformance = async (communityId) => {
   const communityObjectId = toObjectId(communityId);
 
-  // Aggregate daily performance
   const performance = await SignalDispatchLog.aggregate([
     { $match: { communityId: communityObjectId } },
     {
+      $lookup: {
+        from: 'operations',
+        localField: 'operationId',
+        foreignField: '_id',
+        as: 'operation'
+      }
+    },
+    { $unwind: '$operation' },
+    {
       $group: {
-        _id: { $dateToString: { format: '%Y-%m-%d', date: '$sentAt' } },
-        totalPnl: { $sum: '$pnlAmount' },
-        dailyPnl: { $sum: '$pnlAmount' },
+        _id: { $dateToString: { format: '%Y-%m-%d', date: '$operation.history.exitDate' } },
+        totalPnl: { $sum: '$operation.history.pnlAmount' },
+        dailyPnl: { $sum: '$operation.history.pnlAmount' },
         signalsCount: { $sum: 1 },
-        successfulSignals: { $sum: { $cond: [{ $eq: ['$result', 'PROFIT'] }, 1, 0] } },
+        successfulSignals: { $sum: { $cond: [{ $gt: ['$operation.history.pnlAmount', 0] }, 1, 0] } },
       }
     },
     {
@@ -131,38 +154,24 @@ exports.getCommunityPerformance = async (communityId) => {
   return performance;
 };
 
+// Listar traders contratados pela comunidade de forma real
 exports.getCommunityTraders = async (communityId) => {
   const communityObjectId = toObjectId(communityId);
 
-  // Aggregate traders contracted by community
-  const traders = await Community.aggregate([
-    { $match: { _id: communityObjectId } },
-    { $unwind: '$contractedTraders' },
-    {
-      $lookup: {
-        from: 'users',
-        localField: 'contractedTraders.traderId',
-        foreignField: '_id',
-        as: 'traderInfo'
-      }
-    },
-    { $unwind: '$traderInfo' },
-    {
-      $project: {
-        _id: '$contractedTraders._id',
-        communityId: '$_id',
-        traderId: '$contractedTraders.traderId',
-        traderName: '$traderInfo.name',
-        contractStatus: '$contractedTraders.status',
-        totalSignalsSent: '$contractedTraders.totalSignalsSent',
-        successfulSignals: '$contractedTraders.successfulSignals',
-        successRate: { $cond: [{ $eq: ['$contractedTraders.totalSignalsSent', 0] }, 0, { $multiply: [{ $divide: ['$contractedTraders.successfulSignals', '$contractedTraders.totalSignalsSent'] }, 100] }] },
-        totalPnl: '$contractedTraders.totalPnl',
-        contractStartDate: '$contractedTraders.contractStartDate',
-        contractEndDate: '$contractedTraders.contractEndDate'
-      }
-    }
-  ]);
+  // Buscar contratos ativos e fechados
+  const contracts = await Contract.find({
+    community: communityObjectId,
+    status: { $in: ['ACCEPTED', 'CLOSED'] }
+  }).populate('trader');
 
-  return traders;
+  // Montar resposta com dados reais do trader e status do contrato
+  return contracts.map(contract => ({
+    contractId: contract._id,
+    communityId: contract.community,
+    traderId: contract.trader?._id,
+    traderName: contract.trader?.username,
+    contractStatus: contract.status,
+    contractStartDate: contract.createdAt,
+    contractEndDate: contract.status === 'CLOSED' ? contract.updatedAt : null
+  }));
 };

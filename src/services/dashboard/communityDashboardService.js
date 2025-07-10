@@ -38,13 +38,20 @@ exports.getCommunityStats = async (communityId) => {
         as: 'operation'
       }
     },
-    { $unwind: '$operation' },
+    { $unwind: { path: '$operation', preserveNullAndEmptyArrays: false } },
     {
       $group: {
         _id: '$communityId',
         totalSignalsReceived: { $sum: 1 },
-        activeSignals: { $sum: { $cond: [{ $eq: ['$operation.status', 'Open'] }, 1, 0] } },
-        closedSignals: { $sum: { $cond: [{ $eq: ['$operation.status', 'Closed'] }, 1, 0] } },
+        activeSignals: { $sum: { $cond: [
+          { $and: [
+            { $eq: ['$operation.history.isOpen', true] },
+            { $eq: ['$operation.history.isClosed', false] },
+            { $eq: ['$operation.history.isCancelled', false] }
+          ] }, 1, 0] } },
+        closedSignals: { $sum: { $cond: [{ $eq: ['$operation.history.isClosed', true] }, 1, 0] } },
+        cancelledSignals: { $sum: { $cond: [{ $eq: ['$operation.history.isCancelled', true] }, 1, 0] } },
+        stopSignals: { $sum: { $cond: [{ $eq: ['$operation.history.isStop', true] }, 1, 0] } },
         successfulSignals: { $sum: { $cond: [{ $gt: ['$operation.history.pnlAmount', 0] }, 1, 0] } },
         totalPnl: { $sum: '$operation.history.pnlAmount' },
         averageSignalDuration: {

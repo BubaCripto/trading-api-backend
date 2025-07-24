@@ -1,3 +1,7 @@
+require('dotenv').config();
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
 exports.handleStripeWebhook = async (req, res) => {
   console.log('🔔 [WEBHOOK] Stripe chamado em', new Date().toISOString());
   const sig = req.headers['stripe-signature'];

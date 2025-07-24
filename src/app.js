@@ -24,11 +24,10 @@ const logRoutes = require('./routes/logRoutes');
 const planRoutes = require('./routes/planRoutes');
 const roleRoutes = require('./routes/roleRoutes');
 const permissionRoutes = require('./routes/permissionRoutes');
-const webhookRoutes = require('./routes/webhook');
+const webhookRoutes = require('./routes/webhook'); // ⚠️ Webhook do Stripe
 const operationWebhookRoutes = require('./routes/operationWebhook');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
-
 
 // Inicializa app
 const app = express();
@@ -36,21 +35,24 @@ const app = express();
 // Conecta ao MongoDB
 connectDB();
 
-// Configuração CORS
+// CORS
 app.use(cors());
 
-// IMPORTANTE: Registrar as rotas de webhook ANTES dos middlewares express.json()
+/**
+ * ⚠️ Rota de Webhook Stripe deve vir ANTES do express.json()
+ * pois usa express.raw() para manter o buffer do corpo da requisição
+ */
 app.use('/api/webhook', webhookRoutes);
 app.use('/api/operations/webhook', operationWebhookRoutes);
 
-// Middlewares globais para as demais rotas
+// ⚠️ Apenas depois dos webhooks
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Documentação Swagger
+// Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// Demais rotas
+// Demais rotas da API
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
@@ -66,18 +68,18 @@ app.use('/api/communications', communicationRoutes);
 app.use('/api/admin/dashboard', dashboardRoutes);
 app.use('/api/feedbacks', feedbackRoutes);
 
-// Middleware de rota não encontrada
+// Tratamento de rota inexistente
 app.use(notFound);
 
-// Middleware de tratamento global de erros
+// Tratamento de erros globais
 app.use(errorHandler);
 
-// Serviço de operações de trading (não roda em teste)
+// Inicializa serviço de trading se não estiver em modo de teste
 if (process.env.NODE_ENV !== 'test') {
   tradingOperationsService.start();
 }
 
-// Graceful shutdown
+// Encerramento gracioso
 process.on('SIGTERM', () => {
   tradingOperationsService.stop();
   process.exit(0);

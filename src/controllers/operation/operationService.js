@@ -208,7 +208,7 @@ exports.getTraderStats = async (userId) => {
 
   // comunidades únicas que contrataram
   const communitiesAgg = await Contract.aggregate([
-    { $match: { traderId: objectId, status: { $in: ['ACCEPTED', 'ENDED'] } } },
+    { $match: { traderId: objectId, status: { $in: ['ACCEPTED'] } } },
     { $group: { _id: "$communityId" } },
     { $count: "communitiesCount" }
   ]);

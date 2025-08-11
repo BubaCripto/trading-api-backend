@@ -78,35 +78,35 @@ isStopHit(operation, currentPrice) {
     if (operation.history.isOpen || operation.history.isClosed) {
       return false;
     }
-  
+
     const isLong = operation.signal === 'LONG';
     const entryPrice = operation.entry;
     const threshold = entryPrice * this.PRICE_THRESHOLD;
-  
+
     // Ajuste da lógica para SHORT e LONG
     if (isLong) {
       const upperBound = entryPrice + threshold;
       const lowerBound = entryPrice - threshold;
       const isInRange = currentPrice >= lowerBound && currentPrice <= upperBound;
-      
+
       console.log(`LONG Entry Check - ${operation.pair}:
         Current=${currentPrice},
         Entry=${entryPrice},
         Range=[${lowerBound}-${upperBound}]
         InRange=${isInRange}`);
-      
+
       return isInRange;
     } else {
       const upperBound = entryPrice + threshold;
       const lowerBound = entryPrice - threshold;
       const isInRange = currentPrice >= lowerBound && currentPrice <= upperBound;
-      
+
       console.log(`SHORT Entry Check - ${operation.pair}:
         Current=${currentPrice},
         Entry=${entryPrice},
         Range=[${lowerBound}-${upperBound}]
         InRange=${isInRange}`);
-      
+
       return isInRange;
     }
   }
@@ -120,7 +120,7 @@ isStopHit(operation, currentPrice) {
         ...operation.history,
         isOpen: true,
         entry: currentPrice,
-        isNew: false,  // Corrigido o nome da propriedade
+        isNew: false,
         entryDate: new Date(),
         events: [
           ...(operation.history.events || []),
@@ -138,8 +138,8 @@ isStopHit(operation, currentPrice) {
     console.log(`Processing ${operation.signal} entry at ${currentPrice} for ${operation.pair}`);
 
     const updatedOperation = await Operation.findByIdAndUpdate(
-      operation._id, 
-      updates, 
+      operation._id,
+      updates,
       { new: true, runValidators: true }  // Adicionado runValidators
     );
 
@@ -329,8 +329,8 @@ isStopHit(operation, currentPrice) {
     try {
       const operations = await Operation.find({
         $or: [
-          { status: 'Pending' },
-          { 'history.isOpen': true, 'history.isClosed': false }
+          //{ status: 'Pending' },
+          { 'history.isClosed': false }
         ]
       });
 
@@ -341,17 +341,17 @@ isStopHit(operation, currentPrice) {
       const pairs = [...new Set(operations.map(op => {
         return op.pair.replace('USDT', '').replace('USD', '').replace('/', '');
       }))];
-      
+
       logger.debug(`Consultando preços`, { pairs });
-      
+
       // Tratamento de erro mais robusto
       let prices;
       try {
         prices = await cryptoApiService.getPrices(pairs);
       } catch (error) {
-        logger.error(`Falha ao obter preços`, { 
-          error: error.message, 
-          pairs 
+        logger.error(`Falha ao obter preços`, {
+          error: error.message,
+          pairs
         });
         return; // Encerra a execução atual e tentará novamente no próximo ciclo
       }
@@ -359,12 +359,12 @@ isStopHit(operation, currentPrice) {
       // Processamento em paralelo com limite de concorrência
       const concurrencyLimit = 5; // Processa 5 operações por vez
       const chunks = [];
-      
+
       // Divide as operações em chunks para processamento paralelo limitado
       for (let i = 0; i < operations.length; i += concurrencyLimit) {
         chunks.push(operations.slice(i, i + concurrencyLimit));
       }
-      
+
       // Processa cada chunk sequencialmente, mas operações dentro do chunk em paralelo
       for (const chunk of chunks) {
         await Promise.all(chunk.map(async operation => {
@@ -372,16 +372,16 @@ isStopHit(operation, currentPrice) {
           const currentPrice = prices[formattedPair]?.USD?.PRICE;
 
           if (!currentPrice) {
-            logger.warn(`Preço não encontrado`, { 
-              pair: operation.pair, 
-              formattedPair 
+            logger.warn(`Preço não encontrado`, {
+              pair: operation.pair,
+              formattedPair
             });
             return;
           }
-          
-          logger.debug(`Processando operação`, { 
-            pair: operation.pair, 
-            price: currentPrice, 
+
+          logger.debug(`Processando operação`, {
+            pair: operation.pair,
+            price: currentPrice,
             status: operation.status,
             id: operation._id
           });
@@ -394,7 +394,7 @@ isStopHit(operation, currentPrice) {
           }
 
           // Processamento paralelo de todas as ações possíveis
-          const [newResult, entryResult, targetsResult, stopLossResult, cancellationResult] = 
+          const [newResult, entryResult, targetsResult, stopLossResult, cancellationResult] =
             await Promise.all([
               this.processNew(operation),
               this.processEntry(operation, currentPrice),
@@ -404,7 +404,7 @@ isStopHit(operation, currentPrice) {
             ]);
 
           if (newResult || entryResult || targetsResult || stopLossResult || cancellationResult) {
-            logger.info(`Operação atualizada`, { 
+            logger.info(`Operação atualizada`, {
               id: operation._id,
               updates: {
                 new: newResult,
@@ -418,9 +418,9 @@ isStopHit(operation, currentPrice) {
         }));
       }
     } catch (error) {
-      logger.error(`Erro no monitoramento de operações`, { 
+      logger.error(`Erro no monitoramento de operações`, {
         error: error.message,
-        stack: error.stack 
+        stack: error.stack
       });
     }
   }
@@ -476,8 +476,3 @@ isStopHit(operation, currentPrice) {
 
 
   module.exports = new TradingOperationsService();
-
-
-
-
- 
